@@ -1,0 +1,47 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/reports/reports-client/dist
+/reports/reports-client/tmp
+/reports/reports-client/out-tsc
+# Only exists if Bazel was run
+/reports/reports-client/bazel-out
+
+# dependencies
+/reports/server/node_modules
+/reports/reports-client/node_modules
+
+# profiling files
+/reports/reports-client/chrome-profiler-events*.json
+/reports/reports-client/speed-measure-plugin*.json
+
+# IDEs and editors
+/reports/reports-client/.idea
+/reports/reports-client/.project
+/reports/reports-client/.classpath
+/reports/reports-client/.c9/
+/reports/reports-client/*.launch
+/reports/reports-client/.settings/
+/reports/reports-client/*.sublime-workspace
+
+# IDE - VSCode
+/reports/reports-client/.vscode/*
+/reports/reports-client/!.vscode/settings.json
+/reports/reports-client/!.vscode/tasks.json
+/reports/reports-client/!.vscode/launch.json
+/reports/reports-client/!.vscode/extensions.json
+/reports/reports-client/.history/*
+
+# misc
+/reports/reports-client/.sass-cache
+/reports/reports-client/connect.lock
+/reports/reports-client/coverage
+/reports/reports-client/libpeerconnection.log
+/reports/reports-clientnpm-debug.log
+/reports/reports-clientyarn-error.log
+/reports/reports-clienttestem.log
+/reports/reports-client/typings
+
+# System Files
+.DS_Store
+Thumbs.db

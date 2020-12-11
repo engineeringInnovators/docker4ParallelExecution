@@ -1,0 +1,51 @@
+{
+    "totalSpecs": 31,
+    "files": {
+        "01.Aug.2020 10:41:39": {
+            "type": "folder",
+            "name": "01Aug2020104139",
+            "filename": "01Aug2020104139",
+            "path": "results/01Aug2020104139",
+            "dateModified": "2020-12-10T10:19:37.613Z",
+            "dateCreated": "2020-12-10T10:19:37.613Z",
+            "files": [{
+                "type": "file",
+                "name": "report.html",
+                "filename": "resultsFor01_purchaseRequisitionForFreeText - Copy",
+                "path": "results/01Aug2020104139/resultsFor01_purchaseRequisitionForFreeText - Copy/report.html",
+                "dateModified": "2020-11-30T09:17:15.152Z",
+                "dateCreated": "2020-12-10T07:05:52.782Z",
+                "passed": 88,
+                "failed": 0,
+                "total": 88
+            }, {
+                "type": "file",
+                "name": "report.html",
+                "filename": "spec 1",
+                "path": "results/01Aug2020104139/spec 1/report.html",
+                "dateModified": "2020-11-30T09:17:15.152Z",
+                "dateCreated": "2020-12-05T06:16:28.743Z",
+                "passed": 88,
+                "failed": 0,
+                "total": 88
+            }],
+            "totalCounts": {
+                "totalSpecs": 2,
+                "passed": 2,
+                "failed": 0,
+                "testCases": 176,
+                "passedTestCases": 176,
+                "failedTestCases": 0,
+                "total": 100,
+                "inProgress": 60,
+                "completed": 40,
+                "executionStartTime": 1607600326703,
+                "executionEndTime": 1607600326703,
+                "totalExecutionTime": 15
+            }
+        }
+    },
+    "dates": ["01.Aug.2020 10:41:39"],
+    "new": false,
+    "lastModified": 1607679720174
+}
