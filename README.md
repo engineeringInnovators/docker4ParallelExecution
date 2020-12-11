@@ -1,4 +1,4 @@
 # Reports
 
-More [detail](./reports/server/README.md) on node js (server related)
+More [detail](./reports/README.md)
 
