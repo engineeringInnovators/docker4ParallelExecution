@@ -1,5 +1,5 @@
 {
-    "totalSpecs": 10,
+    "totalSpecs": 2,
     "files": {
         "01.Aug.2020 10:41:39": {
             "type": "folder",
@@ -18,23 +18,13 @@
                 "passed": 88,
                 "failed": 0,
                 "total": 88
-            }, {
-                "type": "file",
-                "name": "report.html",
-                "filename": "spec 1",
-                "path": "results/01Aug2020104139/spec 1/report.html",
-                "dateModified": "2020-11-30T09:17:15.152Z",
-                "dateCreated": "2020-12-05T06:16:28.743Z",
-                "passed": 88,
-                "failed": 0,
-                "total": 88
             }],
             "totalCounts": {
-                "totalSpecs": 2,
-                "passed": 2,
+                "totalSpecs": 1,
+                "passed": 1,
                 "failed": 0,
-                "testCases": 176,
-                "passedTestCases": 176,
+                "testCases": 88,
+                "passedTestCases": 88,
                 "failedTestCases": 0,
                 "total": 100,
                 "inProgress": 60,
@@ -44,169 +34,30 @@
                 "totalExecutionTime": 15
             }
         },
-        "11.Aug.2020 10:41:39": {
+        "02.Aug.2020 10:41:30": {
             "type": "folder",
-            "name": "11Aug2020104139",
-            "filename": "11Aug2020104139",
-            "path": "results/11Aug2020104139",
-            "dateModified": "2020-12-11T15:31:08.574Z",
-            "dateCreated": "2020-12-11T15:31:15.041Z",
+            "name": "02Aug2020104130",
+            "filename": "02Aug2020104130",
+            "path": "results/02Aug2020104130",
+            "dateModified": "2020-12-11T18:31:02.639Z",
+            "dateCreated": "2020-12-11T18:31:47.727Z",
             "files": [{
                 "type": "file",
                 "name": "report.html",
                 "filename": "resultsFor01_purchaseRequisitionForFreeText - Copy",
-                "path": "results/11Aug2020104139/resultsFor01_purchaseRequisitionForFreeText - Copy/report.html",
+                "path": "results/02Aug2020104130/resultsFor01_purchaseRequisitionForFreeText - Copy/report.html",
                 "dateModified": "2020-11-30T09:17:15.152Z",
-                "dateCreated": "2020-12-11T15:31:05.088Z",
-                "passed": 88,
-                "failed": 0,
-                "total": 88
-            }, {
-                "type": "file",
-                "name": "report.html",
-                "filename": "spec 1",
-                "path": "results/11Aug2020104139/spec 1/report.html",
-                "dateModified": "2020-11-30T09:17:15.152Z",
-                "dateCreated": "2020-12-11T15:31:46.207Z",
+                "dateCreated": "2020-12-11T18:30:59.721Z",
                 "passed": 88,
                 "failed": 0,
                 "total": 88
             }],
             "totalCounts": {
-                "totalSpecs": 2,
-                "passed": 2,
+                "totalSpecs": 1,
+                "passed": 1,
                 "failed": 0,
-                "testCases": 176,
-                "passedTestCases": 176,
-                "failedTestCases": 0,
-                "total": 100,
-                "inProgress": 60,
-                "completed": 40,
-                "executionStartTime": 1607600326703,
-                "executionEndTime": 1607600326703,
-                "totalExecutionTime": 15
-            }
-        },
-        "21.Aug.2020 10:41:39": {
-            "type": "folder",
-            "name": "21Aug2020104139",
-            "filename": "21Aug2020104139",
-            "path": "results/21Aug2020104139",
-            "dateModified": "2020-12-11T15:33:22.452Z",
-            "dateCreated": "2020-12-11T15:33:25.884Z",
-            "files": [{
-                "type": "file",
-                "name": "report.html",
-                "filename": "resultsFor01_purchaseRequisitionForFreeText - Copy",
-                "path": "results/21Aug2020104139/resultsFor01_purchaseRequisitionForFreeText - Copy/report.html",
-                "dateModified": "2020-11-30T09:17:15.152Z",
-                "dateCreated": "2020-12-11T15:33:19.532Z",
-                "passed": 88,
-                "failed": 0,
-                "total": 88
-            }, {
-                "type": "file",
-                "name": "report.html",
-                "filename": "spec 1",
-                "path": "results/21Aug2020104139/spec 1/report.html",
-                "dateModified": "2020-11-30T09:17:15.152Z",
-                "dateCreated": "2020-12-11T15:33:23.668Z",
-                "passed": 88,
-                "failed": 0,
-                "total": 88
-            }],
-            "totalCounts": {
-                "totalSpecs": 2,
-                "passed": 2,
-                "failed": 0,
-                "testCases": 176,
-                "passedTestCases": 176,
-                "failedTestCases": 0,
-                "total": 100,
-                "inProgress": 60,
-                "completed": 40,
-                "executionStartTime": 1607600326703,
-                "executionEndTime": 1607600326703,
-                "totalExecutionTime": 15
-            }
-        },
-        "22.Aug.2020 10:41:39": {
-            "type": "folder",
-            "name": "22Aug2020104139",
-            "filename": "22Aug2020104139",
-            "path": "results/22Aug2020104139",
-            "dateModified": "2020-12-11T15:37:53.221Z",
-            "dateCreated": "2020-12-11T15:37:56.825Z",
-            "files": [{
-                "type": "file",
-                "name": "report.html",
-                "filename": "resultsFor01_purchaseRequisitionForFreeText - Copy",
-                "path": "results/22Aug2020104139/resultsFor01_purchaseRequisitionForFreeText - Copy/report.html",
-                "dateModified": "2020-11-30T09:17:15.152Z",
-                "dateCreated": "2020-12-11T15:37:50.456Z",
-                "passed": 88,
-                "failed": 0,
-                "total": 88
-            }, {
-                "type": "file",
-                "name": "report.html",
-                "filename": "spec 1",
-                "path": "results/22Aug2020104139/spec 1/report.html",
-                "dateModified": "2020-11-30T09:17:15.152Z",
-                "dateCreated": "2020-12-11T15:37:53.731Z",
-                "passed": 88,
-                "failed": 0,
-                "total": 88
-            }],
-            "totalCounts": {
-                "totalSpecs": 2,
-                "passed": 2,
-                "failed": 0,
-                "testCases": 176,
-                "passedTestCases": 176,
-                "failedTestCases": 0,
-                "total": 100,
-                "inProgress": 60,
-                "completed": 40,
-                "executionStartTime": 1607600326703,
-                "executionEndTime": 1607600326703,
-                "totalExecutionTime": 15
-            }
-        },
-        "23.Sep.2020 10:41:39": {
-            "type": "folder",
-            "name": "23Sep2020104139",
-            "filename": "23Sep2020104139",
-            "path": "results/23Sep2020104139",
-            "dateModified": "2020-12-11T15:39:18.731Z",
-            "dateCreated": "2020-12-11T15:39:59.838Z",
-            "files": [{
-                "type": "file",
-                "name": "report.html",
-                "filename": "resultsFor01_purchaseRequisitionForFreeText - Copy",
-                "path": "results/23Sep2020104139/resultsFor01_purchaseRequisitionForFreeText - Copy/report.html",
-                "dateModified": "2020-11-30T09:17:15.152Z",
-                "dateCreated": "2020-12-11T15:39:16.463Z",
-                "passed": 88,
-                "failed": 0,
-                "total": 88
-            }, {
-                "type": "file",
-                "name": "report.html",
-                "filename": "spec 1",
-                "path": "results/23Sep2020104139/spec 1/report.html",
-                "dateModified": "2020-11-30T09:17:15.152Z",
-                "dateCreated": "2020-12-11T15:39:19.015Z",
-                "passed": 88,
-                "failed": 0,
-                "total": 88
-            }],
-            "totalCounts": {
-                "totalSpecs": 2,
-                "passed": 2,
-                "failed": 0,
-                "testCases": 176,
-                "passedTestCases": 176,
+                "testCases": 88,
+                "passedTestCases": 88,
                 "failedTestCases": 0,
                 "total": 100,
                 "inProgress": 60,
@@ -218,6 +69,6 @@
         }
     },
     "new": true,
-    "lastModified": 1607701200043,
-    "dates": ["23.Sep.2020 10:41:39", "22.Aug.2020 10:41:39", "21.Aug.2020 10:41:39", "11.Aug.2020 10:41:39", "01.Aug.2020 10:41:39"]
+    "lastModified": 1607711507930,
+    "dates": ["02.Aug.2020 10:41:30", "01.Aug.2020 10:41:39"]
 }

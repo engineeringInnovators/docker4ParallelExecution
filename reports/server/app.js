@@ -59,7 +59,8 @@ app.get('/syncBrowser', async (req, res) => {
             totalSpecs: struc.data.totalSpecs,
             files: struc.data.all,
             dates: struc.data.dates,
-            new: struc.data.dates.includes("NaN.undefined.NaN NaN:NaN:NaN"),
+            new: true,
+            // new: struc.data.dates.includes("NaN.undefined.NaN NaN:NaN:NaN"),
             lastModified: Date.now()
         }
         fs.writeFileSync('./fileStructure.json', JSON.stringify(data));
@@ -69,8 +70,6 @@ app.get('/syncBrowser', async (req, res) => {
 
 
 app.get('/results/:folder/:spec/report.html', (req, res) => {
-
-
     if (req.params.folder) {
         app.use(express.static(path.join(__dirname, `results/${decodeURIComponent(req.params.folder)}/${decodeURIComponent(req.params.spec)}`)));
         app.use(express.static(path.join(__dirname, `results/${decodeURIComponent(req.params.folder)}/${decodeURIComponent(req.params.spec)}/assets`)));
@@ -137,7 +136,8 @@ function readFiles(date) {
                     all: reportJson.files,
                     totalSpecs: reportJson.totalSpecs
                 },
-                new: reportJson.new
+                new: true
+                // new: reportJson.new
             })
         } catch (error) {
             return rej(error);
@@ -248,10 +248,10 @@ watch(rootPath, {
 }, async (evt, name) => {
 
     //     console.log("Files added");
-    if (name.split(path.sep).length == 2) {
+    // if (name.split(path.sep).length == 2) {
         console.log('%s changed.', name, evt);
         await GetFiles();
-    }
+    // }
 });
 
 // fs.watch(rootPath, async (event, file) => {
