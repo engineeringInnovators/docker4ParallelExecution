@@ -1,0 +1,5 @@
+<ul class="dates">
+  <li *ngFor="let date of dates;let i = index;" class="date" [ngClass]="{'active' : i ==activeIndex}" (click)="loadSpecFiles(date, i)">
+    {{date}}
+  </li>
+</ul>

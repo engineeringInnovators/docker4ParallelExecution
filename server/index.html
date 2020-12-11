@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <h1>Report Summary</h1>
+    <table cellspacing="0">
+        <tr>
+            <th>Total Tests</th>
+            <th>Passed</th>
+            <th>Failed</th>
+        </tr>
+        <tr>
+            <td><span id="TOTAL_SPECS">1</span></td>
+            <td><span id="TOTAL_SPECS_PASSED">1</span></td>
+            <td><span id="TOTAL_SPECS_FAILED">0</span></td>
+        </tr>
+    </table>
+    <!-- <h4 class="">Total Specs: <span id="TOTAL_SPECS">{{TOTAL_SPECS}}</span></h4> -->
+    <!-- <h4 class="">Total Cases: <span id="TEST_CASES">88</span></h4> -->
+    <!-- <h4 class="">Total Specs Passed : <span id="TOTAL_SPECS_PASSED">{{TOTAL_SPECS_PASSED}}</span> -->
+    <!-- </h4> -->
+    <!-- <h4 class="">Total Specs Failed: <span id="TOTAL_SPECS_FAILED">{{TOTAL_SPECS_FAILED}}</span></h4> -->
+    <!-- <h4 class="w-50 d-inline-block">Total Cases Passed: <span id="TEST_CASES_PASSED">88</span></h4>
+    <h4 class="w-50 d-inline-block">Total Cases Failed: <span id="TEST_CASES_FAILED">0</span></h4> -->
+
+    <div class="filter">
+        <span id="selectedFilter">all</span>
+        <img src="./filter.png" id="filter-img" onclick="clickFilterIcon()">
+        <ul id="filter-ul" style="display: none;">
+            <li onclick="selectFilter('All')">
+                All
+            </li>
+            <li onclick="selectFilter('Today')">
+                Today
+            </li>
+            <li onclick="selectFilter('Past 2 Days')">
+                Past 2 Days
+            </li>
+            <li onclick="selectFilter('Past 3 Days')">
+                Past 3 Days
+            </li>
+            <li onclick="selectFilter('Past 7 Days')">
+                Past 7 Days
+            </li>
+            <li>
+                <label for="selectDate">Date <input type="date" id="selectDate" onchange="dateSelected(this, [], true)" /></label>
+            </li>
+            <li>
+                <label for="from">From <input type="date" name="from" id="from" onchange="fromToSelected()"></label>
+                <label for="to">To <input type="date" name="to" id="to" onchange="fromToSelected()"></label>
+            </li>
+        </ul>
+    </div>
+    <ul class="dates">
+        <li class="date active" data-date="{{DATE_INDEX}}" onclick="loadSpecFiles('04.Dec.2020 10:41:39', this)">
+    04.Dec.2020 10:41:39
+</li><li class="date {{ACTIVE}}" data-date="{{DATE_INDEX}}" onclick="loadSpecFiles('01.Aug.2020 10:41:39', this)">
+    01.Aug.2020 10:41:39
+</li>
+    </ul>
+
+    <div class="container">
+        <div class="card">
+    <div>
+        <p class="file_name"><a class="passed" href="results/04Dec2020104139/resultsFor01_purchaseRequisitionForFreeText/report.html">resultsFor01_purchaseRequisitionForFreeText</a></p>
+    </div>
+    <div class="piechart" style="background-image: conic-gradient(#8ad98d 360deg, #ff4444 0); ">
+        <p class="totalCases"><label class="label">88/88</label></p>
+    </div>
+    <div class="legend">
+        <span class="passed">Passed: 88</span>
+        <span class="failed">Failed: 0</span>
+    </div>
+    <div>
+        <p class="date_modified"><label class="label">Modified:</label> Nov 30, 2020 14:47</p>
+        <p class="date_created"><label class="label">Created:</label> Dec 10, 2020 12:35</p>
+
+    </div>
+</div>
+    </div>
+
+    <script src="./fileStructure.json"></script>
+    <script src="./script.js"></script>
+</body>
+
+</html>
