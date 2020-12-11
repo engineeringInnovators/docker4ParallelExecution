@@ -59,8 +59,8 @@ app.get('/syncBrowser', async (req, res) => {
             totalSpecs: struc.data.totalSpecs,
             files: struc.data.all,
             dates: struc.data.dates,
-            new: true,
-            // new: struc.data.dates.includes("NaN.undefined.NaN NaN:NaN:NaN"),
+            // new: true,
+            new: struc.data.dates.includes("NaN.undefined.NaN NaN:NaN:NaN"),
             lastModified: Date.now()
         }
         fs.writeFileSync('./fileStructure.json', JSON.stringify(data));
@@ -136,8 +136,8 @@ function readFiles(date) {
                     all: reportJson.files,
                     totalSpecs: reportJson.totalSpecs
                 },
-                new: true
-                // new: reportJson.new
+                // new: true
+                new: reportJson.new
             })
         } catch (error) {
             return rej(error);
@@ -309,9 +309,11 @@ function GetFiles(path = rootPath) {
 
         try {
 
+
             let topLevel = await GetTopLevelFolder(path);
 
             for (let i = 0; i < topLevel.length; i++) {
+                console.log({file: topLevel[i]});
                 _struc.dates.push(getDate(topLevel[i]));
                 _struc.files[getDate(topLevel[i])] = await GetStatDetails(`${path}/${topLevel[i]}`);
                 const reports = await GetHtmlReportFiles(`${path}/${topLevel[i]}`);
