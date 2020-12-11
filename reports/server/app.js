@@ -59,8 +59,8 @@ app.get('/syncBrowser', async (req, res) => {
             totalSpecs: struc.data.totalSpecs,
             files: struc.data.all,
             dates: struc.data.dates,
-            // new: true,
-            new: struc.data.dates.includes("NaN.undefined.NaN NaN:NaN:NaN"),
+            new: true,
+            // new: struc.data.dates.includes("NaN.undefined.NaN NaN:NaN:NaN"),
             lastModified: Date.now()
         }
         fs.writeFileSync('./fileStructure.json', JSON.stringify(data));
