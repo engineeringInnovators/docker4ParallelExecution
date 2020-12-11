@@ -1,6 +1,6 @@
 # Reports Server
 
-This directory is to watch results and create a overall reports using node js. (Client end)[../reports-client/README.md] of the the application in written in angular.
+This directory is to watch results and create a overall reports using node js. [Client end](../reports-client/README.md) of the the application in written in angular.
 
 
 
@@ -20,4 +20,4 @@ This directory is to watch results and create a overall reports using node js. (
 
 
 ## Note:
-If you want to change any UI changes please refer (here)[../reports-client/README.md]
+If you want to change any UI changes please refer [here](../reports-client/README.md)

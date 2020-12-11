@@ -1,6 +1,6 @@
 # ReportsClient
 
-This directory is UI for reporting summary. To apply changes in server use `ng build --prod` and move the **reports-client** folder inside **dist** to root folder of (node js)[../server] application.
+This directory is UI for reporting summary. To apply changes in server use `ng build --prod` and move the **reports-client** folder inside **dist** to root folder of [node js](../server) application.
 
 
 # Prerequisites
