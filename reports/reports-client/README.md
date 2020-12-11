@@ -1,6 +1,12 @@
 # ReportsClient
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.4.
+This directory is UI for reporting summary. To apply changes in server use `ng build --prod` and move the **reports-client** folder inside **dist** to root folder of (node js)[../server] application.
+
+
+# Prerequisites
+
+- [nodejs](https://nodejs.org/en/) (created with v14.15.0)
+- [Angular CLI](https://github.com/angular/angular-cli) (created with v11.0.4)
 
 ## Development server
 

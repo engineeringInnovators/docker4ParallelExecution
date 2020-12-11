@@ -1,46 +1,46 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/reports-client/dist
-/reports-client/tmp
-/reports-client/out-tsc
+/reports/reports-client/dist
+/reports/reports-client/tmp
+/reports/reports-client/out-tsc
 # Only exists if Bazel was run
-/reports-client/bazel-out
+/reports/reports-client/bazel-out
 
 # dependencies
-/server/node_modules
-/reports-client/node_modules
+/reports/server/node_modules
+/reports/reports-client/node_modules
 
 # profiling files
-/reports-client/chrome-profiler-events*.json
-/reports-client/speed-measure-plugin*.json
+/reports/reports-client/chrome-profiler-events*.json
+/reports/reports-client/speed-measure-plugin*.json
 
 # IDEs and editors
-/reports-client/.idea
-/reports-client/.project
-/reports-client/.classpath
-/reports-client/.c9/
-/reports-client/*.launch
-/reports-client/.settings/
-/reports-client/*.sublime-workspace
+/reports/reports-client/.idea
+/reports/reports-client/.project
+/reports/reports-client/.classpath
+/reports/reports-client/.c9/
+/reports/reports-client/*.launch
+/reports/reports-client/.settings/
+/reports/reports-client/*.sublime-workspace
 
 # IDE - VSCode
-/reports-client/.vscode/*
-/reports-client/!.vscode/settings.json
-/reports-client/!.vscode/tasks.json
-/reports-client/!.vscode/launch.json
-/reports-client/!.vscode/extensions.json
-/reports-client/.history/*
+/reports/reports-client/.vscode/*
+/reports/reports-client/!.vscode/settings.json
+/reports/reports-client/!.vscode/tasks.json
+/reports/reports-client/!.vscode/launch.json
+/reports/reports-client/!.vscode/extensions.json
+/reports/reports-client/.history/*
 
 # misc
-/reports-client/.sass-cache
-/reports-client/connect.lock
-/reports-client/coverage
-/reports-client/libpeerconnection.log
-/reports-clientnpm-debug.log
-/reports-clientyarn-error.log
-/reports-clienttestem.log
-/reports-client/typings
+/reports/reports-client/.sass-cache
+/reports/reports-client/connect.lock
+/reports/reports-client/coverage
+/reports/reports-client/libpeerconnection.log
+/reports/reports-clientnpm-debug.log
+/reports/reports-clientyarn-error.log
+/reports/reports-clienttestem.log
+/reports/reports-client/typings
 
 # System Files
 .DS_Store
