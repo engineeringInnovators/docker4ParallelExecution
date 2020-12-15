@@ -242,6 +242,7 @@ function onListening() {
 console.log("Application started. and watching for files");
 
 const watch = require('node-watch');
+const { isRegExp } = require('util');
 
 watch(rootPath, {
     recursive: true
@@ -314,6 +315,7 @@ function GetFiles(path = rootPath) {
 
             for (let i = 0; i < topLevel.length; i++) {
                 console.log({file: topLevel[i]});
+                // while(getDate(topLevel[i]) === "NaN.undefined.NaN NaN:NaN:NaN") {}
                 _struc.dates.push(getDate(topLevel[i]));
                 _struc.files[getDate(topLevel[i])] = await GetStatDetails(`${path}/${topLevel[i]}`);
                 const reports = await GetHtmlReportFiles(`${path}/${topLevel[i]}`);
