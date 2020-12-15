@@ -16,10 +16,10 @@ dateTimeObj = datetime.now()
 if args.containers_number:
     max_containers_up = int(args.containers_number)
 else:
-    max_containers_up = 5
+    max_containers_up = 50
 list_containers = []
 job_endtime = 'Job still ongoing'
-final_destination = '/opt/destination'
+final_destination = '/home/ccloud/reports/server/results/'
 work_dir = os.getcwd() + os.sep + args.dirname
 root_dir = os.getcwd()
 main_folder = dateTimeObj.strftime("%d%b%Y%H%M%S")
@@ -28,7 +28,6 @@ volumes_dir = os.path.join(root_dir,'test_volumes')
 docker_client = docker.from_env()
 templ_script = 'tplstart.sh'
 selected_test = '/tmp/test/config.js'
-metadata_file = '/opt/destination/metadata.json'
 ##### Declaring all functions needed ########
 def get_config_file():
     '''
@@ -85,43 +84,50 @@ def prepare_results_report(container):
         new_results_name = os.path.join(main_folder_path,container_name)
         shutil.move(result_folder, new_results_name)
         # Change the files and folders permission for security purposes
+        os.chown(new_results_name, 1000, 1000)
+        os.chmod(new_results_name, 0o755)
         for root, dirs, files in os.walk(new_results_name):
             for dir in [os.path.join(root,d) for d in dirs]:
+                os.chown(dir, 1000, 1000)
                 os.chmod(dir, 0o755)
             for file in [os.path.join(root, f) for f in files]:
+                os.chown(file, 1000, 1000)
                 os.chmod(file, 0o644)
-def build_metadata(total, starttime, endtime, completed):
-    inprogress = total - completed
+def build_metadata(total, starttime, endtime, inprogress):
+    # metadata_file = os.path.join(main_folder_path,'metadata.json')
+    metadata_file = '/home/ccloud/reports/server/metadata.json'
+    completed = total - inprogress
     if endtime == 'Job still ongoing':
         totalexecutiontime = 'Not calculated'
-        data = {
-                  main_folder: {
-                    "total": total ,
-                    "inProgress": inprogress,
-                    "completed": completed,
-                    "executionStartTime": starttime.strftime("%H:%M:%S"),
-                    "executionEndTime": endtime,
-                    "totalExecutionTime": totalexecutiontime
-                  }
-        }
     else:
         totalexecutiontime = endtime - starttime
-        totalexecutiontime = totalexecutiontime.seconds / 60
-        data = {
-                  main_folder: {
-                    "total": total ,
-                    "inProgress": inprogress,
-                    "completed": completed,
-                    "executionStartTime": starttime.strftime("%H:%M:%S"),
-                    "executionEndTime": endtime.strftime("%H:%M:%S"),
-                    "totalExecutionTime": totalexecutiontime
-                  }
-        }
-    with open(metadata_file, "w") as file:
-        json.dump(data, file)
+        totalexecutiontime = int(totalexecutiontime.seconds / 60)
+        endtime = endtime.strftime("%d%b%Y%H%M%S")
+    new_data = {
+              main_folder: {
+                "total": total ,
+                "inProgress": inprogress,
+                "completed": completed,
+                "executionStartTime": starttime.strftime("%d%b%Y%H%M%S"),
+                "executionEndTime": endtime,
+                "totalExecutionTime": totalexecutiontime
+              }
+    }
+    if os.path.isfile(metadata_file):
+        with open(metadata_file) as json_file:
+            data = json.load(json_file)
+        data.update(new_data)
+    else:
+        data = new_data
+    with open(metadata_file,'w') as f:
+        json.dump(data, f, indent=4)
+    os.chown(metadata_file, 1000, 1000)
+    os.chmod(metadata_file, 0o644)
 ###### The main script #####################
 if args.dirname and args.docker_image:
     os.mkdir(main_folder_path)
+    os.chown(main_folder_path, 1000, 1000)
+    os.chmod(main_folder_path, 0o644)
     os.mkdir(volumes_dir)
     # vyper_image = docker_client.images.pull(args.docker_image,tag='latest')
     vyper_image = args.docker_image
@@ -129,13 +135,14 @@ if args.dirname and args.docker_image:
     get_config_file()
     tests_number = get_testfiles_number()
     print ('{} |  There will be {} containers to be created'.format(datetime.now().strftime("%H:%M:%S"),str(tests_number)))
+    print ('The results will be stored at {}'.format(main_folder_path))
     left_containers = tests_number
     # Browse every file in the directory with its path
     for subdir, dirs, files in os.walk(work_dir):
         for file in files:
             filepath = os.path.join(subdir,file)
             filename = file
-            if filepath.endswith(".spec.js") and filename != 'index.spec.js':
+            if filepath.endswith(".spec.js") and filename:
                 while len(docker_client.containers.list()) >= max_containers_up and  max_containers_up != 0:
                     time.sleep(5)
                     print ('{} |  max permitted number of running container reached'.format(datetime.now().strftime("%H:%M:%S")))
