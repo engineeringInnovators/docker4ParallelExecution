@@ -16,6 +16,7 @@
 export DISPLAY=:99.0;Xvfb -ac $DISPLAY &
 # vyper /tmp/test/config.js --specs=$1
 cd /vyper && vyper /vyper/config.js --specs=/tmp/test/config.js
+# chown ccloud:ccloud /vyper/results
 
 #vyper /tmp/uiAutomation/config/config.js --specs=/tmp/uiAutomation/testScripts/sample.spec.js
 #vyper /tmp/test/config.js --specs=/tmp/test/sampleTest.spec.js
