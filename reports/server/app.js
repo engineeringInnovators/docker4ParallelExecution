@@ -59,7 +59,8 @@ app.get('/syncBrowser', async (req, res) => {
             totalSpecs: struc.data.totalSpecs,
             files: struc.data.all,
             dates: struc.data.dates,
-            new: struc.data.dates.includes("NaN.undefined.NaN NaN:NaN:NaN"),
+            new: true,
+            // new: struc.data.dates.includes("NaN.undefined.NaN NaN:NaN:NaN"),
             lastModified: Date.now()
         }
         fs.writeFileSync('./fileStructure.json', JSON.stringify(data));
@@ -69,8 +70,6 @@ app.get('/syncBrowser', async (req, res) => {
 
 
 app.get('/results/:folder/:spec/report.html', (req, res) => {
-
-
     if (req.params.folder) {
         app.use(express.static(path.join(__dirname, `results/${decodeURIComponent(req.params.folder)}/${decodeURIComponent(req.params.spec)}`)));
         app.use(express.static(path.join(__dirname, `results/${decodeURIComponent(req.params.folder)}/${decodeURIComponent(req.params.spec)}/assets`)));
@@ -118,7 +117,7 @@ function readFiles(date) {
             date = !date && reportJson.dates.length ? reportJson.dates[0] : date;
             if (date && reportJson.files[date]) {
                 metaData = JSON.parse(metaData.toString());
-                console.log(getDate(date, "ddMMMyyyyHHMMSS"));
+                // console.log(getDate(date, "ddMMMyyyyHHMMSS"));
                 if (metaData[getDate(date, "ddMMMyyyyHHMMSS")]) {
                     reportJson.files[date].totalCounts = {
                         ...reportJson.files[date].totalCounts,
@@ -126,9 +125,9 @@ function readFiles(date) {
                     };
                 }
             }
-            console.log({
-                date
-            });
+            // console.log({
+            //     date
+            // });
             return res({
                 code: 200,
                 data: {
@@ -137,6 +136,7 @@ function readFiles(date) {
                     all: reportJson.files,
                     totalSpecs: reportJson.totalSpecs
                 },
+                // new: true
                 new: reportJson.new
             })
         } catch (error) {
@@ -241,10 +241,24 @@ function onListening() {
 
 console.log("Application started. and watching for files");
 
-fs.watch(rootPath, async (event, file) => {
-    console.log("Files added");
-    await GetFiles();
+const watch = require('node-watch');
+const { isRegExp } = require('util');
+
+watch(rootPath, {
+    recursive: true
+}, async (evt, name) => {
+
+    //     console.log("Files added");
+    // if (name.split(path.sep).length == 2) {
+        console.log('%s changed.', name, evt);
+        await GetFiles();
+    // }
 });
+
+// fs.watch(rootPath, async (event, file) => {
+//     console.log("Files added");
+//     await GetFiles();
+// });
 
 function getDate(date, format = "dd.MMM.yyyy HH:MM:SS") {
     if (date === 'now') date = new Date();
@@ -296,21 +310,24 @@ function GetFiles(path = rootPath) {
 
         try {
 
+
             let topLevel = await GetTopLevelFolder(path);
 
             for (let i = 0; i < topLevel.length; i++) {
+                console.log({file: topLevel[i]});
+                // while(getDate(topLevel[i]) === "NaN.undefined.NaN NaN:NaN:NaN") {}
                 _struc.dates.push(getDate(topLevel[i]));
                 _struc.files[getDate(topLevel[i])] = await GetStatDetails(`${path}/${topLevel[i]}`);
                 const reports = await GetHtmlReportFiles(`${path}/${topLevel[i]}`);
                 _struc.files[getDate(topLevel[i])].files = reports.files;
-                
-            let metaData = await readJsonFile("./metadata.json");
+
+                let metaData = await readJsonFile("./metadata.json");
 
 
                 metaData = JSON.parse(metaData.toString());
-                
+
                 if (!metaData[topLevel[i]]) {
-                    
+
                     metaData[topLevel[i]] = {
                         "total": 100,
                         "inProgress": 60,
@@ -319,8 +336,8 @@ function GetFiles(path = rootPath) {
                         "executionEndTime": 1607600326703,
                         "totalExecutionTime": 15
                     };
-                } 
-                
+                }
+
                 reports.totalCounts = {
                     ...reports.totalCounts,
                     ...metaData[topLevel[i]]

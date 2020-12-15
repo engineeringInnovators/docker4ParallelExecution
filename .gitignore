@@ -10,6 +10,8 @@
 # dependencies
 /reports/server/node_modules
 /reports/reports-client/node_modules
+/reports/server/package-lock.json
+/reports/reports-client/package-lock.json
 
 # profiling files
 /reports/reports-client/chrome-profiler-events*.json
