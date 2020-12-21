@@ -25,7 +25,7 @@ root_dir = os.getcwd()
 # Changed results folder path
 reports_dir = os.path.join(root_dir, 'reports' + os.sep + 'server' + os.sep)
 final_destination = os.path.join(reports_dir, 'results' + os.sep)
-print(final_destination)
+print("final_destination: " + final_destination)
 main_folder = dateTimeObj.strftime("%d%b%Y%H%M%S")
 main_folder_path = os.path.join(final_destination,main_folder)
 volumes_dir = os.path.join(root_dir,'test_volumes')
