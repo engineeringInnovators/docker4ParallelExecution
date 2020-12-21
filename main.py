@@ -132,6 +132,7 @@ def build_metadata(total, starttime, endtime, inprogress):
 ###### The main script #####################
 if args.dirname and args.docker_image:
     os.mkdir(main_folder_path)
+    print(main_folder_path + " Folder created")
     os.chown(main_folder_path, 1000, 1000)
     os.chmod(main_folder_path, 0o644)
     os.mkdir(volumes_dir)
