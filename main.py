@@ -130,10 +130,15 @@ def build_metadata(total, starttime, endtime, inprogress):
     os.chown(metadata_file, 1000, 1000)
     os.chmod(metadata_file, 0o644)
 ###### The main script #####################
-if args.dirname and args.docker_image:
-    print(main_folder_path + "creating folder .....")
-    os.mkdir(main_folder_path)
-    print(main_folder_path + " Folder created")
+if args.dirname and args.docker_image:    
+    try:
+        print("creating folder : " +main_folder_path)
+        os.mkdir(main_folder_path)
+    except OSError:
+        print ("Creation of the directory %s failed" % main_folder_path)
+    else:
+        print ("Successfully created the directory %s " % main_folder_path)
+    # print(main_folder_path + " Folder created")
     os.chown(main_folder_path, 1000, 1000)
     os.chmod(main_folder_path, 0o644)
     os.mkdir(volumes_dir)
