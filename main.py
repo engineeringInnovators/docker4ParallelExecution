@@ -131,6 +131,8 @@ def build_metadata(total, starttime, endtime, inprogress):
     os.chmod(metadata_file, 0o644)
 ###### The main script #####################
 if args.dirname and args.docker_image:    
+    if not os.path.exists(final_destination):
+        os.makedirs(final_destination)
     try:
         print("creating folder : " +main_folder_path)
         os.mkdir(main_folder_path)
