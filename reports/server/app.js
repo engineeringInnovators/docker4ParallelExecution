@@ -1,5 +1,5 @@
 const
-    rootPath = process.env.templateName || "results";
+    rootPath = process.env.templateName || "./results";
 
 
 const
@@ -176,73 +176,12 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-/**
- * Normalize a port into a number, string, or false.
- */
 
-function normalizePort(val) {
-    var port = parseInt(val, 10);
-
-    if (isNaN(port)) {
-        // named pipe
-        return val;
-    }
-
-    if (port >= 0) {
-        // port number
-        return port;
-    }
-
-    return false;
-}
-
-/**
- * Event listener for HTTP server "error" event.
- */
-
-function onError(error) {
-    if (error.syscall !== 'listen') {
-        throw error;
-    }
-
-    var bind = typeof port === 'string' ?
-        'Pipe ' + port :
-        'Port ' + port;
-
-    // handle specific listen errors with friendly messages
-    switch (error.code) {
-        case 'EACCES':
-            console.error(bind + ' requires elevated privileges');
-            process.exit(1);
-            break;
-        case 'EADDRINUSE':
-            console.error(bind + ' is already in use');
-            process.exit(1);
-            break;
-        default:
-            throw error;
-    }
-}
-
-/**
- * Event listener for HTTP server "listening" event.
- */
-
-function onListening() {
-    var addr = server.address();
-    var bind = typeof addr === 'string' ?
-        'pipe ' + addr :
-        'port ' + addr.port;
-    console.log('Listening on ' + bind);
-}
-
-
-// GetFiles().then(console.log).catch(console.log)
+GetFiles().then(console.log).catch(console.log);
 
 console.log("Application started. and watching for files");
 
 const watch = require('node-watch');
-const { isRegExp } = require('util');
 
 watch(rootPath, {
     recursive: true
@@ -250,15 +189,10 @@ watch(rootPath, {
 
     //     console.log("Files added");
     // if (name.split(path.sep).length == 2) {
-        console.log('%s changed.', name, evt);
-        await GetFiles();
+    console.log('%s changed.', name, evt);
+    await GetFiles();
     // }
 });
-
-// fs.watch(rootPath, async (event, file) => {
-//     console.log("Files added");
-//     await GetFiles();
-// });
 
 function getDate(date, format = "dd.MMM.yyyy HH:MM:SS") {
     if (date === 'now') date = new Date();
@@ -314,7 +248,9 @@ function GetFiles(path = rootPath) {
             let topLevel = await GetTopLevelFolder(path);
 
             for (let i = 0; i < topLevel.length; i++) {
-                console.log({file: topLevel[i]});
+                console.log({
+                    file: topLevel[i]
+                });
                 // while(getDate(topLevel[i]) === "NaN.undefined.NaN NaN:NaN:NaN") {}
                 _struc.dates.push(getDate(topLevel[i]));
                 _struc.files[getDate(topLevel[i])] = await GetStatDetails(`${path}/${topLevel[i]}`);
@@ -462,3 +398,66 @@ function GetStatDetails(filepath) {
     })
 
 }
+
+
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+    var port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+
+    if (port >= 0) {
+        // port number
+        return port;
+    }
+
+    return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
+
+    var bind = typeof port === 'string' ?
+        'Pipe ' + port :
+        'Port ' + port;
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+    var addr = server.address();
+    var bind = typeof addr === 'string' ?
+        'pipe ' + addr :
+        'port ' + addr.port;
+    console.log('Listening on ' + bind);
+}
+

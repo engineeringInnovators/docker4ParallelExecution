@@ -19,9 +19,13 @@ else:
     max_containers_up = 50
 list_containers = []
 job_endtime = 'Job still ongoing'
-final_destination = '/home/ccloud/reports/server/results/'
+# final_destination = '/home/ccloud/reports/server/results/'
 work_dir = os.getcwd() + os.sep + args.dirname
 root_dir = os.getcwd()
+# Changed results folder path
+reports_dir = os.path.join(root_dir, 'reports' + os.sep + 'server' + os.sep)
+final_destination = os.path.join(reports_dir, 'results' + os.sep)
+print(final_destination)
 main_folder = dateTimeObj.strftime("%d%b%Y%H%M%S")
 main_folder_path = os.path.join(final_destination,main_folder)
 volumes_dir = os.path.join(root_dir,'test_volumes')
@@ -95,7 +99,9 @@ def prepare_results_report(container):
                 os.chmod(file, 0o644)
 def build_metadata(total, starttime, endtime, inprogress):
     # metadata_file = os.path.join(main_folder_path,'metadata.json')
-    metadata_file = '/home/ccloud/reports/server/metadata.json'
+    # metadata_file = '/home/ccloud/reports/server/metadata.json'
+    # Changed relative path
+    metadata_file = os.path.join(reports_dir, 'metadata.json')
     completed = total - inprogress
     if endtime == 'Job still ongoing':
         totalexecutiontime = 'Not calculated'
