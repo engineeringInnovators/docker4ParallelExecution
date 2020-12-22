@@ -87,6 +87,7 @@ def prepare_results_report(container):
     container_object.remove(v=False)
     container_name = container_name[:-3]
     result_folder = os.path.join(container_volume,'results')
+    print("is " + result_folder + " a directory - " + os.path.isdir(result_folder))
     if os.path.isdir(result_folder):
         new_results_name = os.path.join(main_folder_path,container_name)
         print("new_results_name: " + new_results_name)
