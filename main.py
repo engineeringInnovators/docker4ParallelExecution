@@ -87,7 +87,7 @@ def prepare_results_report(container):
     container_object.remove(v=False)
     container_name = container_name[:-3]
     result_folder = os.path.join(container_volume,'results')
-    print("result_folder: " + result_folder)
+    # print("result_folder: " + result_folder)
     if os.path.isdir(result_folder):
         new_results_name = os.path.join(main_folder_path,container_name)
         print("new_results_name: " + new_results_name)
@@ -173,7 +173,7 @@ if args.dirname and args.docker_image:
                 container_volume = os.path.join(volumes_dir,filename)
                 os.mkdir(container_volume)
                 run_script = os.path.join(container_volume,'start.sh')
-                print("run_script path " +run_script)
+                # print("run_script path " +run_script)
                 source_config = os.path.join(root_dir,'config.js')
                 dest_config = os.path.join(container_volume,'config.js')
                 shutil.copy(source_config,dest_config)
