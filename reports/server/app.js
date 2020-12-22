@@ -159,7 +159,7 @@ function readJsonFile(fileName = "./fileStructure.json") {
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort('80');
+var port = normalizePort('8082');
 app.set('port', port);
 
 /**
