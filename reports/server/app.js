@@ -1,5 +1,5 @@
 const
-    rootPath = process.env.templateName || "results";
+    rootPath = process.env.templateName || "./results";
 
 
 const
@@ -59,7 +59,7 @@ app.get('/syncBrowser', async (req, res) => {
             totalSpecs: struc.data.totalSpecs,
             files: struc.data.all,
             dates: struc.data.dates,
-            new: true,
+            new: false,
             // new: struc.data.dates.includes("NaN.undefined.NaN NaN:NaN:NaN"),
             lastModified: Date.now()
         }
@@ -176,89 +176,27 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-/**
- * Normalize a port into a number, string, or false.
- */
 
-function normalizePort(val) {
-    var port = parseInt(val, 10);
-
-    if (isNaN(port)) {
-        // named pipe
-        return val;
-    }
-
-    if (port >= 0) {
-        // port number
-        return port;
-    }
-
-    return false;
-}
-
-/**
- * Event listener for HTTP server "error" event.
- */
-
-function onError(error) {
-    if (error.syscall !== 'listen') {
-        throw error;
-    }
-
-    var bind = typeof port === 'string' ?
-        'Pipe ' + port :
-        'Port ' + port;
-
-    // handle specific listen errors with friendly messages
-    switch (error.code) {
-        case 'EACCES':
-            console.error(bind + ' requires elevated privileges');
-            process.exit(1);
-            break;
-        case 'EADDRINUSE':
-            console.error(bind + ' is already in use');
-            process.exit(1);
-            break;
-        default:
-            throw error;
-    }
-}
-
-/**
- * Event listener for HTTP server "listening" event.
- */
-
-function onListening() {
-    var addr = server.address();
-    var bind = typeof addr === 'string' ?
-        'pipe ' + addr :
-        'port ' + addr.port;
-    console.log('Listening on ' + bind);
-}
-
-
-// GetFiles().then(console.log).catch(console.log)
+GetFiles().then(console.log).catch(console.log);
 
 console.log("Application started. and watching for files");
 
 const watch = require('node-watch');
-const { isRegExp } = require('util');
 
 watch(rootPath, {
-    recursive: true
+    recursive: true,
+    filter(f, skip) {
+        // console.log({f, co: /results([\\]|[\/])[0-9]{2}[A-z]{3}[0-9]{10}([\\]|[\/]).*([\\]|[\/])report\.html/.test(f)});
+        // 04Dec2020104139
+        // 'results\\04Dec2020104139\\off-contract - Copy\\report.html'
+        // if (!(/results([\\]|[\/])[0-9]{2}[A-z]{3}[0-9]{10}([\\]|[\/]).*/.test(f))) return skip;
+        // else 
+        return true;
+    }
 }, async (evt, name) => {
-
-    //     console.log("Files added");
-    // if (name.split(path.sep).length == 2) {
-        console.log('%s changed.', name, evt);
-        await GetFiles();
-    // }
+    console.log('%s changed.', name, evt);
+    await GetFiles();
 });
-
-// fs.watch(rootPath, async (event, file) => {
-//     console.log("Files added");
-//     await GetFiles();
-// });
 
 function getDate(date, format = "dd.MMM.yyyy HH:MM:SS") {
     if (date === 'now') date = new Date();
@@ -314,7 +252,12 @@ function GetFiles(path = rootPath) {
             let topLevel = await GetTopLevelFolder(path);
 
             for (let i = 0; i < topLevel.length; i++) {
-                console.log({file: topLevel[i]});
+                console.log({
+                    file: topLevel[i],
+                    IsEmpty: IsEmpty(`${path}/${topLevel[i]}`)
+                });
+                if(IsEmpty(`${path}/${topLevel[i]}`)) continue;
+
                 // while(getDate(topLevel[i]) === "NaN.undefined.NaN NaN:NaN:NaN") {}
                 _struc.dates.push(getDate(topLevel[i]));
                 _struc.files[getDate(topLevel[i])] = await GetStatDetails(`${path}/${topLevel[i]}`);
@@ -440,6 +383,10 @@ function GetTopLevelFolder(filepath = rootPath) {
     })
 }
 
+function IsEmpty(path) {
+    return fs.readdirSync(path).length === 0;
+}
+
 
 function GetStatDetails(filepath) {
 
@@ -461,4 +408,66 @@ function GetStatDetails(filepath) {
         }
     })
 
+}
+
+
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+    var port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+
+    if (port >= 0) {
+        // port number
+        return port;
+    }
+
+    return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
+
+    var bind = typeof port === 'string' ?
+        'Pipe ' + port :
+        'Port ' + port;
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+    var addr = server.address();
+    var bind = typeof addr === 'string' ?
+        'pipe ' + addr :
+        'port ' + addr.port;
+    console.log('Listening on ' + bind);
 }

@@ -9,6 +9,8 @@
 
 # dependencies
 /reports/server/node_modules
+/reports/server/results
+/reports/server/fileStructure.json
 /reports/reports-client/node_modules
 /reports/server/package-lock.json
 /reports/reports-client/package-lock.json
@@ -47,3 +49,4 @@
 # System Files
 .DS_Store
 Thumbs.db
+pipeline.txt

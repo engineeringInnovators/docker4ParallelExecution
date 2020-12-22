@@ -17,28 +17,30 @@ export class AppComponent {
   dates = [];
   filteredDates = [];
   files = [];
-  total = { total: 0, passed: 0, failed: 0, inProgress: 0, executionStartTime: 0,totalExecutionTime:0 };
+  total = { total: 0, passed: 0, failed: 0, inProgress: 0, executionStartTime: 0, totalExecutionTime: 0 };
   showFilter = false;
   filteredText = "all";
-  activeIndex= 0;
+  activeIndex = 0;
 
-  constructor(private appService: AppService ) {
+  constructor(private appService: AppService) {
     this.getFileStructureJson();
 
     setInterval(() => {
       this.appService
-        .apiCall('syncBrowser')
+        .apiCall('syncBrowser', this.selectedDate)
         .subscribe((res) => {
 
           if (res && res['code'] === 200 && res['data'] && res['new'] && res['data']['dates'] && res['data']['dates'].length && !res['data']['dates'].includes("NaN.undefined.NaN NaN:NaN:NaN")) {
-            console.log(res);
+            // console.log(res);
 
             this.specs = res['data']['all'];
             this.filteredDates = res['data']['dates'];
             this.dates = res['data']['dates'];
+            if (!this.selectedDate && this.dates.length)
+              this.selectedDate = this.dates[0];
             this.files = res['data']['files']['files'];
             this.total = res['data']['files']['totalCounts'];
-            this.dateSelected(this.dates[0]);
+            this.dateSelected(this.selectedDate);
             this.activeIndex = 0;
           }
         })
@@ -57,8 +59,10 @@ export class AppComponent {
           this.specs = res['data']['all'];
           this.dates = res['data']['dates'];
           this.filteredDates = res['data']['dates'];
+          if (this.filteredDates.length)
+            this.selectedDate = this.filteredDates[0];
           this.files = res['data']['files']['files'];
-          this.total = res['data']['files']['totalCounts']
+          this.total = res['data']['files']['totalCounts'];
         } else {
           this.specs = {};
           this.selectedDate = '';
@@ -69,9 +73,9 @@ export class AppComponent {
   }
 
   dateSelected(event = "") {
-    console.log(event);
+    console.log({ event });
 
-    // this.selectedDate = event;
+    this.selectedDate = event;
     if (event == "all") {
       this.filteredDates = this.dates;
       event = this.dates[0];

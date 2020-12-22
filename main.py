@@ -10,6 +10,7 @@ parser = ArgumentParser()
 parser.add_argument("-d", "--dir", dest="dirname", help="The folder\'s name that contains the tests.")
 parser.add_argument("-i", "--image", dest="docker_image", help="The docker image to download.")
 parser.add_argument("-n", "--number", dest="containers_number", help= "The maximum number of containers that will be running simultaneously. 5 is the default value. 0 for unlimited number ")
+# parser.add_argument("-f", "--string", dest="targeted_server", help= "")
 args = parser.parse_args()
 ##### Initiating the global variables #######
 dateTimeObj = datetime.now()
@@ -19,9 +20,15 @@ else:
     max_containers_up = 50
 list_containers = []
 job_endtime = 'Job still ongoing'
-final_destination = '/home/ccloud/reports/server/results/'
+# Commented below line for testing
+# final_destination = '/home/ccloud/reports/server/results/'
 work_dir = os.getcwd() + os.sep + args.dirname
 root_dir = os.getcwd()
+# Changed results folder path
+reports_dir = os.path.join(root_dir, "reports" + os.sep + 'server' + os.sep)
+final_destination = os.path.join(reports_dir, 'results' + os.sep)
+
+print("final_destination: " + final_destination)
 main_folder = dateTimeObj.strftime("%d%b%Y%H%M%S")
 main_folder_path = os.path.join(final_destination,main_folder)
 volumes_dir = os.path.join(root_dir,'test_volumes')
@@ -82,6 +89,7 @@ def prepare_results_report(container):
     result_folder = os.path.join(container_volume,'results')
     if os.path.isdir(result_folder):
         new_results_name = os.path.join(main_folder_path,container_name)
+        print("new_results_name: " + new_results_name)
         shutil.move(result_folder, new_results_name)
         # Change the files and folders permission for security purposes
         os.chown(new_results_name, 1000, 1000)
@@ -95,7 +103,9 @@ def prepare_results_report(container):
                 os.chmod(file, 0o644)
 def build_metadata(total, starttime, endtime, inprogress):
     # metadata_file = os.path.join(main_folder_path,'metadata.json')
-    metadata_file = '/home/ccloud/reports/server/metadata.json'
+    # metadata_file = '/home/ccloud/reports/server/metadata.json'
+    # Changed relative path
+    metadata_file = os.path.join(reports_dir, 'metadata.json')
     completed = total - inprogress
     if endtime == 'Job still ongoing':
         totalexecutiontime = 'Not calculated'
@@ -124,8 +134,17 @@ def build_metadata(total, starttime, endtime, inprogress):
     os.chown(metadata_file, 1000, 1000)
     os.chmod(metadata_file, 0o644)
 ###### The main script #####################
-if args.dirname and args.docker_image:
-    os.mkdir(main_folder_path)
+if args.dirname and args.docker_image:    
+    if not os.path.exists(final_destination):
+        os.makedirs(final_destination)
+    try:
+        print("creating folder : " +main_folder_path)
+        os.mkdir(main_folder_path)
+    except OSError:
+        print ("Creation of the directory %s failed" % main_folder_path)
+    else:
+        print ("Successfully created the directory %s " % main_folder_path)
+    # print(main_folder_path + " Folder created")
     os.chown(main_folder_path, 1000, 1000)
     os.chmod(main_folder_path, 0o644)
     os.mkdir(volumes_dir)
