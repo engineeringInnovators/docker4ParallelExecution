@@ -10,7 +10,7 @@ parser = ArgumentParser()
 parser.add_argument("-d", "--dir", dest="dirname", help="The folder\'s name that contains the tests.")
 parser.add_argument("-i", "--image", dest="docker_image", help="The docker image to download.")
 parser.add_argument("-n", "--number", dest="containers_number", help= "The maximum number of containers that will be running simultaneously. 5 is the default value. 0 for unlimited number ")
-parser.add_argument("-f", "--string", dest="targeted_server", help= "")
+# parser.add_argument("-f", "--string", dest="targeted_server", help= "")
 args = parser.parse_args()
 ##### Initiating the global variables #######
 dateTimeObj = datetime.now()

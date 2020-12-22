@@ -189,7 +189,7 @@ watch(rootPath, {
         // console.log({f, co: /results([\\]|[\/])[0-9]{2}[A-z]{3}[0-9]{10}([\\]|[\/]).*([\\]|[\/])report\.html/.test(f)});
         // 04Dec2020104139
         // 'results\\04Dec2020104139\\off-contract - Copy\\report.html'
-        if (!(/results([\\]|[\/])[0-9]{2}[A-z]{3}[0-9]{10}([\\]|[\/]).*([\\]|[\/])report\.html/.test(f))) return skip;
+        if (!(/results([\\]|[\/])[0-9]{2}[A-z]{3}[0-9]{10}([\\]|[\/]).*/.test(f))) return skip;
         else return true;
     }
 }, async (evt, name) => {
