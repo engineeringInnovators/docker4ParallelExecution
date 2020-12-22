@@ -50,6 +50,11 @@ export class AppComponent {
   }
 
 
+  calculatePercent(num) {
+    const val = num * 100 / this.total.total;
+    const totl = 100 - val;
+    return `${val} ${totl}`;
+  }
 
   getFileStructureJson() {
     this.appService

@@ -17,6 +17,27 @@
        <td><span *ngIf="total?.totalExecutionTime">{{total?.totalExecutionTime}}</span></td>
      </tr>
    </table>
+   <!-- <div style="text-align: center;">
+
+     <app-donut [fill]="'#999'" [dasharray]="calculatePercent(total?.total)" [stroke]="'#999'" [value]="total?.total" [total]="total?.total" [legend]="'Total'"></app-donut>
+     <app-donut [fill]="'#2B9348'" [dasharray]="calculatePercent(total?.passed)" [stroke]="'#2B9348'" [value]="total?.passed" [total]="total?.total" [legend]="'passed'"></app-donut>
+     <app-donut [fill]="'#D90429'" [dasharray]="calculatePercent(total?.failed)" [stroke]="'#D90429'" [value]="total?.failed" [total]="total?.total" [legend]="'failed'"></app-donut>
+     <app-donut [fill]="'orange'" [dasharray]="calculatePercent(total?.inProgress)" [stroke]="'orange'" [value]="total?.inProgress" [total]="total?.total" [legend]="'in progress'"></app-donut>
+    </div> -->
+   <!-- <svg width="100" height="100" viewBox="0 0 42 42" class="donut">
+     <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="#fff"></circle>
+     <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d2d3d4"
+       stroke-width="3"></circle>
+
+     <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#ce4b99"
+       stroke-width="3" stroke-dasharray="75 15" stroke-dashoffset="10"></circle>
+   </svg> -->
+   <!-- <div style="display: block; width: 100%;height: 200px;">
+
+     <ngx-charts-pie-grid [scheme]="colorScheme" [results]="single">
+     </ngx-charts-pie-grid>
+   </div> -->
+   <br>
    <div class="filter">
      <span id="selectedFilter">{{filteredText}}</span>
      <img src="./assets/filter.png" id="filter-img" (click)="clickFilterIcon()">
@@ -46,5 +67,9 @@
        </li>
      </ul>
    </div>
-   <app-dates [dates]="filteredDates" (dateSelected)="dateSelected($event)" [activeIndex]="activeIndex"></app-dates>
-   <app-card [files]="files"></app-card>
+   <div>
+
+     <app-dates [dates]="filteredDates" (dateSelected)="dateSelected($event)" [activeIndex]="activeIndex"></app-dates>
+     <app-card [files]="files"></app-card>
+
+   </div>
