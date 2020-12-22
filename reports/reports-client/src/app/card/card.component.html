@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="card" *ngFor="let file of files; let i = index" [ngClass]="!file?.failed ? 'failed' : 'passed'">
+  <div class="card" *ngFor="let file of files; let i = index" [ngClass]="file?.failed ? 'failed' : 'passed'">
     <div>
       <p class="file_name"><a target="_blank" [href]="host+file?.path">{{file?.filename}}</a></p>
     </div>
