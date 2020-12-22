@@ -111,7 +111,7 @@ def build_metadata(total, starttime, endtime, inprogress):
     metadata_file = os.path.join(reports_dir, 'metadata.json')
     completed = total - inprogress
     if endtime == 'Job still ongoing':
-        totalexecutiontime = 'Not calculated'
+        totalexecutiontime = '-'
     else:
         totalexecutiontime = endtime - starttime
         totalexecutiontime = int(totalexecutiontime.seconds / 60)
