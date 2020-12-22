@@ -159,7 +159,7 @@ function readJsonFile(fileName = "./fileStructure.json") {
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort('8082');
+var port = normalizePort('80');
 app.set('port', port);
 
 /**
@@ -184,14 +184,17 @@ console.log("Application started. and watching for files");
 const watch = require('node-watch');
 
 watch(rootPath, {
-    recursive: true
+    recursive: true,
+    filter(f, skip) {
+        // console.log({f, co: /results([\\]|[\/])[0-9]{2}[A-z]{3}[0-9]{10}([\\]|[\/]).*([\\]|[\/])report\.html/.test(f)});
+        // 04Dec2020104139
+        // 'results\\04Dec2020104139\\off-contract - Copy\\report.html'
+        if (!(/results([\\]|[\/])[0-9]{2}[A-z]{3}[0-9]{10}([\\]|[\/]).*([\\]|[\/])report\.html/.test(f))) return skip;
+        else return true;
+    }
 }, async (evt, name) => {
-
-    //     console.log("Files added");
-    // if (name.split(path.sep).length == 2) {
     console.log('%s changed.', name, evt);
     await GetFiles();
-    // }
 });
 
 function getDate(date, format = "dd.MMM.yyyy HH:MM:SS") {
@@ -249,8 +252,11 @@ function GetFiles(path = rootPath) {
 
             for (let i = 0; i < topLevel.length; i++) {
                 console.log({
-                    file: topLevel[i]
+                    file: topLevel[i],
+                    IsEmpty: IsEmpty(`${path}/${topLevel[i]}`)
                 });
+                if(IsEmpty(`${path}/${topLevel[i]}`)) continue;
+
                 // while(getDate(topLevel[i]) === "NaN.undefined.NaN NaN:NaN:NaN") {}
                 _struc.dates.push(getDate(topLevel[i]));
                 _struc.files[getDate(topLevel[i])] = await GetStatDetails(`${path}/${topLevel[i]}`);
@@ -376,6 +382,10 @@ function GetTopLevelFolder(filepath = rootPath) {
     })
 }
 
+function IsEmpty(path) {
+    return fs.readdirSync(path).length === 0;
+}
+
 
 function GetStatDetails(filepath) {
 
@@ -460,4 +470,3 @@ function onListening() {
         'port ' + addr.port;
     console.log('Listening on ' + bind);
 }
-
