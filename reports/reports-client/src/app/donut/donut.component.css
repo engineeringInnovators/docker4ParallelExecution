@@ -72,7 +72,7 @@
 
 .donut-data {
   font-size: 0.20em;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   line-height: 1;
   transform: translateY(0.5em);
   text-align: center;
