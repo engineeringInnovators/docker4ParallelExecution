@@ -1,5 +1,5 @@
    <h1>Report Summary</h1>
-   <table cellspacing="0">
+   <!-- <table cellspacing="0">
      <tr>
        <th>Total Tests</th>
        <th>Passed</th>
@@ -16,14 +16,16 @@
        <td><span *ngIf="total?.executionStartTime">{{getDate(total?.executionStartTime) }}</span></td>
        <td><span *ngIf="total?.totalExecutionTime">{{total?.totalExecutionTime}}</span></td>
      </tr>
-   </table>
-   <!-- <div style="text-align: center;">
+   </table> -->
+   <div style="text-align: center;">
 
      <app-donut [fill]="'#999'" [dasharray]="calculatePercent(total?.total)" [stroke]="'#999'" [value]="total?.total" [total]="total?.total" [legend]="'Total'"></app-donut>
      <app-donut [fill]="'#2B9348'" [dasharray]="calculatePercent(total?.passed)" [stroke]="'#2B9348'" [value]="total?.passed" [total]="total?.total" [legend]="'passed'"></app-donut>
      <app-donut [fill]="'#D90429'" [dasharray]="calculatePercent(total?.failed)" [stroke]="'#D90429'" [value]="total?.failed" [total]="total?.total" [legend]="'failed'"></app-donut>
      <app-donut [fill]="'orange'" [dasharray]="calculatePercent(total?.inProgress)" [stroke]="'orange'" [value]="total?.inProgress" [total]="total?.total" [legend]="'in progress'"></app-donut>
-    </div> -->
+     <app-donut [fill]="'#999'" [dasharray]="calculatePercent(total?.totalExecutionTime, 60)" [stroke]="'#999'" [value]="total?.totalExecutionTime" [total]="total?.total" [legend]="'Time (mins)'"></app-donut>
+
+    </div>
    <div class="filter">
      <span id="selectedFilter">{{filteredText}}</span>
      <img src="./assets/filter.png" id="filter-img" (click)="clickFilterIcon()">

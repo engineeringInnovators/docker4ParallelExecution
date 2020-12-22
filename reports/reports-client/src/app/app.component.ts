@@ -50,8 +50,8 @@ export class AppComponent {
   }
 
 
-  calculatePercent(num) {
-    const val = num * 100 / this.total.total;
+  calculatePercent(num, off = this.total.total) {
+    const val = num * 100 / off;
     const totl = 100 - val;
     return `${val} ${totl}`;
   }
