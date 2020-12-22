@@ -25,7 +25,7 @@ job_endtime = 'Job still ongoing'
 work_dir = os.getcwd() + os.sep + args.dirname
 root_dir = os.getcwd()
 # Changed results folder path
-reports_dir = os.path.join(root_dir, args.targeted_server + os.sep + 'server' + os.sep)
+reports_dir = os.path.join(root_dir, "reports" + os.sep + 'server' + os.sep)
 final_destination = os.path.join(reports_dir, 'results' + os.sep)
 
 print("final_destination: " + final_destination)
