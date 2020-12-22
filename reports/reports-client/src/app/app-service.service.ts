@@ -10,7 +10,9 @@ export class AppService {
 
   constructor(private http: HttpClient) { }
 
-  apiCall(url = 'getfiles', date = ""): Observable<Object> {
+  apiCall(url = 'getfiles', date:any = ""): Observable<Object> {
+    // console.log({date});
+    
     return this.http.get(environment.host + url, { params: { date } });
   }
 }

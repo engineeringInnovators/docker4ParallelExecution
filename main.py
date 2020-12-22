@@ -10,6 +10,7 @@ parser = ArgumentParser()
 parser.add_argument("-d", "--dir", dest="dirname", help="The folder\'s name that contains the tests.")
 parser.add_argument("-i", "--image", dest="docker_image", help="The docker image to download.")
 parser.add_argument("-n", "--number", dest="containers_number", help= "The maximum number of containers that will be running simultaneously. 5 is the default value. 0 for unlimited number ")
+parser.add_argument("-f", "--string", dest="targeted_server", help= "")
 args = parser.parse_args()
 ##### Initiating the global variables #######
 dateTimeObj = datetime.now()
@@ -19,12 +20,14 @@ else:
     max_containers_up = 50
 list_containers = []
 job_endtime = 'Job still ongoing'
+# Commented below line for testing
 # final_destination = '/home/ccloud/reports/server/results/'
 work_dir = os.getcwd() + os.sep + args.dirname
 root_dir = os.getcwd()
 # Changed results folder path
-reports_dir = os.path.join(root_dir, 'reports' + os.sep + 'server' + os.sep)
+reports_dir = os.path.join(root_dir, args.targeted_server + os.sep + 'server' + os.sep)
 final_destination = os.path.join(reports_dir, 'results' + os.sep)
+
 print("final_destination: " + final_destination)
 main_folder = dateTimeObj.strftime("%d%b%Y%H%M%S")
 main_folder_path = os.path.join(final_destination,main_folder)
@@ -86,6 +89,7 @@ def prepare_results_report(container):
     result_folder = os.path.join(container_volume,'results')
     if os.path.isdir(result_folder):
         new_results_name = os.path.join(main_folder_path,container_name)
+        print("new_results_name: " + new_results_name)
         shutil.move(result_folder, new_results_name)
         # Change the files and folders permission for security purposes
         os.chown(new_results_name, 1000, 1000)
