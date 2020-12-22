@@ -3,18 +3,5 @@
     <div>
       <p class="file_name"><a target="_blank" [href]="host+file?.path">{{file?.filename}}</a></p>
     </div>
-    <!-- <div class="piechart" [style]="'background-image: conic-gradient(#8ad98d '+ calculatePercentage(file?.passed,file?.total)+'deg, #ff4444 0); '">
-      <p class="totalCases"><label class="label">{{file?.passed}}/{{file?.total}}</label></p>
-    </div>
-    <div class="legend">
-      <span class="passed">Passed: {{file?.passed}}</span>
-      <span class="failed">Failed: {{file?.failed}}</span>
-    </div>
-    <div>
-      <p class="date_modified"><label class="label">Modified:</label> {{file?.dateModified | date}}</p>
-      <p class="date_created"><label class="label">Created:</label> {{file?.dateCreated | date}}</p>
-
-    </div>
-  </div> -->
-
+    <p class="duration"><img src="./assets/duration.png" alt="time">{{file?.duration}}</p>
 </div>

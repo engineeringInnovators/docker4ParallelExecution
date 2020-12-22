@@ -182,6 +182,9 @@ GetFiles().then(console.log).catch(console.log);
 console.log("Application started. and watching for files");
 
 const watch = require('node-watch');
+const {
+    resolve
+} = require('path');
 
 watch(rootPath, {
     recursive: true,
@@ -256,7 +259,7 @@ function GetFiles(path = rootPath) {
                     file: topLevel[i],
                     IsEmpty: IsEmpty(`${path}/${topLevel[i]}`)
                 });
-                if(IsEmpty(`${path}/${topLevel[i]}`)) continue;
+                if (IsEmpty(`${path}/${topLevel[i]}`)) continue;
 
                 // while(getDate(topLevel[i]) === "NaN.undefined.NaN NaN:NaN:NaN") {}
                 _struc.dates.push(getDate(topLevel[i]));
@@ -315,7 +318,8 @@ function GetHtmlReportFiles(filepath, files = [], totalCounts = {
     failed: 0,
     testCases: 0,
     passedTestCases: 0,
-    failedTestCases: 0
+    failedTestCases: 0,
+    duration: '0h 0min 0s'
 }) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -353,6 +357,8 @@ function GetHtmlReportFiles(filepath, files = [], totalCounts = {
                     if (_file.failed) totalCounts.failed++;
                     else totalCounts.passed++;
 
+                    _file.duration = await calucateTotalMinTookForExecution(reportJson);
+                    console.log({duration: _file.duration});
                     files.push(_file)
                 }
                 return resolve({
@@ -385,6 +391,36 @@ function GetTopLevelFolder(filepath = rootPath) {
 
 function IsEmpty(path) {
     return fs.readdirSync(path).length === 0;
+}
+
+function calucateTotalMinTookForExecution(json) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            json = JSON.parse(JSON.parse(json));
+            let duration = 0;
+            // console.log(json.length);
+            for (let i = 0; i < json.length; i++) {
+                duration += json[i].duration;
+            }
+            return resolve(await getDuration(duration));
+        } catch (error) {
+            return reject("0h 0min 0s")
+        }
+    })
+}
+
+function getDuration(duration) {
+    return new Promise((resolve, reject) => {
+        if (duration == null) {
+            return "NaN";
+        }
+        var hmsS = duration / 1000;
+        var hmsHr = Math.trunc(hmsS / 60 / 60);
+        var hmsM = hmsS / 60;
+        var hmsMr = Math.trunc(hmsM - hmsHr * 60);
+        var hmsSo = hmsS - (hmsHr * 60 * 60) - (hmsMr * 60);
+        return resolve("".concat(hmsHr).concat("h ").concat(hmsMr).concat("min ").concat(hmsSo.toFixed(2)).concat("s"));
+    });
 }
 
 

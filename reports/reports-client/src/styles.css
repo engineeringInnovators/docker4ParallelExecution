@@ -57,9 +57,6 @@ h4 {
   text-align: center;
 }
 
-.card label.label {
-  font-weight: 600;
-}
 
 /* .card .spec_number {
     height: 60px;
@@ -88,7 +85,7 @@ span.passed::before {
 } */
 
 .card .file_name {
-  margin-top: 10px;
+  margin: 10px 0 0 0;
   /* font-size: 1em; */
   padding: 5px;
 }
@@ -99,6 +96,7 @@ span.passed::before {
   color: #fff;
   letter-spacing: 1px;
   text-decoration: none;
+  font-weight: bold;
 }
 
 .card.passed {
@@ -114,19 +112,21 @@ span.passed::before {
 
 }
 
+.card .duration {
+    color: #fff;
+}
+
+.card .duration img{
+    width: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+    margin-top: -5px;
+}
 
 .passed {
   color: #2B9348;
 }
 
-.card .date_modified {
-  font-size: 10px;
-}
-
-.card .date_created {
-  /* margin-bottom: 15px; */
-  font-size: 10px;
-}
 
 .dates {
   display: -webkit-box;
@@ -162,20 +162,6 @@ span.passed::before {
   font-weight: bold;
 }
 
-p.totalCases {
-  margin: auto auto;
-
-}
-
-.piechart {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  margin: 10px auto;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-}
 
 .d-inline-block {
   display: inline-block;
@@ -185,22 +171,6 @@ p.totalCases {
   width: 48%;
 }
 
-.legend span {
-  display: inline-block;
-  position: relative;
-  font-size: 8px;
-  margin: 0 10px;
-  color: #000;
-}
-
-.legend span::before {
-  content: "";
-  display: inline-block;
-  position: absolute;
-  height: 10px;
-  width: 10px;
-  left: -15px;
-}
 
 div.filter {
   text-align: right;
@@ -291,12 +261,3 @@ input {
   border-radius: 12px;
   border: 1px solid;
 }
-
-/* .piechart { 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-}  */
-
-
-/* <p class="spec_number {{CLASS}}"><span>{{SPEC_NUMBER}}</span></p> */

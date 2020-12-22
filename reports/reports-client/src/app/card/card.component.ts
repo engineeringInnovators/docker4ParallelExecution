@@ -19,8 +19,5 @@ export class CardComponent implements OnInit {
     }
   }
   
-  calculatePercentage(passed= 0, total= 1) {
-    return ((passed / total) * 360);
-  }
 
 }
