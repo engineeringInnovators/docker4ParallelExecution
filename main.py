@@ -103,7 +103,9 @@ def prepare_results_report(container):
                 os.chown(file, 1000, 1000)
                 os.chmod(file, 0o644)
     else:
-        print("")
+        print("--------------------------------------------------------")
+        print("Not a directory: " + result_folder)
+        print("--------------------------------------------------------")
 def build_metadata(total, starttime, endtime, inprogress):
     # metadata_file = os.path.join(main_folder_path,'metadata.json')
     # metadata_file = '/home/ccloud/reports/server/metadata.json'
