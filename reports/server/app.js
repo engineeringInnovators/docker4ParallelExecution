@@ -176,6 +176,12 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
+if (!fs.existsSync(rootPath)){
+    console.log("Creating results folder");
+    fs.mkdirSync(rootPath);
+} else {
+    console.log("Results folder found");
+}
 
 GetFiles().then().catch(console.log);
 
