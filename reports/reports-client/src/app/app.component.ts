@@ -42,7 +42,7 @@ export class AppComponent {
             this.files = res['data']['files']['files'];
             this.total = res['data']['files']['totalCounts'];
             this.dateSelected(this.selectedDate);
-            this.activeIndex = 0;
+            // this.activeIndex = 0;
             this.filterDates(this.selectedFilter);
           }
         })
