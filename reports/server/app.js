@@ -303,7 +303,7 @@ function GetFiles(path = rootPath) {
             _struc.new = _struc.totalSpecs != currentJson.totalSpecs;
             fs.writeFileSync("./fileStructure.json", JSON.stringify(_struc));
 
-            console.log(_struc);
+            // console.log(_struc);
             return resolve(_struc);
 
         } catch (error) {
