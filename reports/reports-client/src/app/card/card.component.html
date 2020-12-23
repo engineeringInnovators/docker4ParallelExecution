@@ -1,7 +1,11 @@
 <div class="container">
-  <div class="card" *ngFor="let file of files; let i = index" [ngClass]="file?.failed ? 'failed' : 'passed'">
-    <div>
-      <p class="file_name"><a target="_blank" [href]="host+file?.path">{{file?.filename}}</a></p>
+
+  <ng-container *ngFor="let file of files; let i = index">
+    <div class="card" *ngIf="file?.show" [ngClass]="file?.failed ? 'failed' : 'passed'">
+      <div>
+        <p class="file_name"><a target="_blank" [href]="host+file?.path">{{file?.filename}}</a></p>
+      </div>
+      <p class="duration"><img src="./assets/duration.png" alt="time">{{file?.duration}}</p>
     </div>
-    <p class="duration"><img src="./assets/duration.png" alt="time">{{file?.duration}}</p>
+  </ng-container>
 </div>

@@ -19,11 +19,11 @@
    </table> -->
    <div style="text-align: center;">
 
-     <app-donut [fill]="'#999'" [dasharray]="calculatePercent(total?.total)" [stroke]="'#999'" [value]="total?.total" [total]="total?.total" [legend]="'TOTAL'"></app-donut>
-     <app-donut [fill]="'#2B9348'" [dasharray]="calculatePercent(total?.passed)" [stroke]="'#2B9348'" [value]="total?.passed" [total]="total?.total" [legend]="'PASSED'"></app-donut>
-     <app-donut [fill]="'#D90429'" [dasharray]="calculatePercent(total?.failed)" [stroke]="'#D90429'" [value]="total?.failed" [total]="total?.total" [legend]="'FAILED'"></app-donut>
-     <app-donut [fill]="'orange'" [dasharray]="calculatePercent(total?.inProgress)" [stroke]="'orange'" [value]="total?.inProgress" [total]="total?.total" [legend]="'IN PROGRESS'"></app-donut>
-     <app-donut [fill]="'#999'" [dasharray]="calculatePercent(total?.totalExecutionTime, 60)" [stroke]="'#999'" [value]="total?.totalExecutionTime" [total]="total?.total" [legend]="'TIME (Mins)'"></app-donut>
+     <app-donut [fill]="'#999'" (filterDates)="filterDates($event)" [dasharray]="calculatePercent(total?.total)" [stroke]="'#999'" [value]="total?.total" [total]="total?.total" [legend]="'TOTAL'"></app-donut>
+     <app-donut [fill]="'#2B9348'" (filterDates)="filterDates($event)" [dasharray]="calculatePercent(total?.passed)" [stroke]="'#2B9348'" [value]="total?.passed" [total]="total?.total" [legend]="'PASSED'"></app-donut>
+     <app-donut [fill]="'#D90429'" (filterDates)="filterDates($event)" [dasharray]="calculatePercent(total?.failed)" [stroke]="'#D90429'" [value]="total?.failed" [total]="total?.total" [legend]="'FAILED'"></app-donut>
+     <app-donut [fill]="'orange'" (filterDates)="filterDates($event)" [dasharray]="calculatePercent(total?.inProgress)" [stroke]="'orange'" [value]="total?.inProgress" [total]="total?.total" [legend]="'IN PROGRESS'"></app-donut>
+     <app-donut [fill]="'#999'" (filterDates)="filterDates($event)" [dasharray]="calculatePercent(total?.totalExecutionTime, 60)" [stroke]="'#999'" [value]="total?.totalExecutionTime" [total]="total?.total" [legend]="'TIME (Mins)'"></app-donut>
 
     </div>
    <div class="filter">

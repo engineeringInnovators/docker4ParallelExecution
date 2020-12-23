@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-donut',
@@ -13,20 +13,21 @@ export class DonutComponent implements OnInit {
   @Input('total') total = 50;
   @Input('legend') legend = "test";
   @Input('dasharray') dasharray = "25 100";
-  percentage = 50;
-  // @HostBinding('style.--value')
-  // @Input('value') targetValue: number = 50;
   @HostBinding('style.--stroke')
   @Input('stroke') stroke: string = "darkred";
   @HostBinding('style.--fill')
   @Input('fill') fill: string = "darkred";
-  // @HostBinding('style.--total')
-  // @Input('fill') targetTotal: number = 50;
+
+  @Output() filterDates = new EventEmitter<string>();
 
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  filterSelected(type) {
+    this.filterDates.emit(type);
   }
 
 }

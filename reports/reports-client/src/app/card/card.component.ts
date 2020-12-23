@@ -15,7 +15,7 @@ export class CardComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes && changes['files'] && String(changes['files'].currentValue) !=  String(changes['files'].previousValue)) {
-      this.files = changes['files'].currentValue;
+      this.files = changes['files'].currentValue;      
     }
   }
   
