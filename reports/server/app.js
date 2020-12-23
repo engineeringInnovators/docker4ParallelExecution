@@ -358,7 +358,7 @@ function GetHtmlReportFiles(filepath, files = [], totalCounts = {
                     else totalCounts.passed++;
 
                     _file.duration = await calucateTotalMinTookForExecution(reportJson);
-                    console.log({duration: _file.duration});
+                    // console.log({duration: _file.duration});
                     files.push(_file)
                 }
                 return resolve({
@@ -414,11 +414,11 @@ function getDuration(duration) {
         if (duration == null) {
             return "NaN";
         }
-        var hmsS = duration / 1000;
-        var hmsHr = Math.trunc(hmsS / 60 / 60);
-        var hmsM = hmsS / 60;
-        var hmsMr = Math.trunc(hmsM - hmsHr * 60);
-        var hmsSo = hmsS - (hmsHr * 60 * 60) - (hmsMr * 60);
+        const hmsS = duration / 1000;
+        const hmsHr = Math.trunc(hmsS / 60 / 60);
+        const hmsM = hmsS / 60;
+        const hmsMr = Math.trunc(hmsM - hmsHr * 60);
+        const hmsSo = hmsS - (hmsHr * 60 * 60) - (hmsMr * 60);
         return resolve("".concat(hmsHr).concat("h ").concat(hmsMr).concat("min ").concat(hmsSo.toFixed(2)).concat("s"));
     });
 }
