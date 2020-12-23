@@ -1,5 +1,6 @@
 body {
   margin-bottom: 25px;
+  font-family: monospace;
 }
 
 h1 {
@@ -17,7 +18,7 @@ h4 {
   -ms-grid-columns: 18% 2% 18% 2% 18% 2% 18% 2% 18%;
   grid-template-columns: 18% 18% 18% 18% 18%;
   grid-column-gap: 2%;
-  grid-row-gap: 1%;
+  grid-row-gap: 2%;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
@@ -41,24 +42,21 @@ h4 {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 10px 0;
-  -webkit-box-shadow: 0 0 18px rgba(110, 110, 110, 0.5);
-  box-shadow: 0 0 18px rgba(110, 110, 110, 0.5);
+  padding: 10px;
+  /* -webkit-box-shadow: 0 0 18px rgba(110, 110, 110, 0.5); */
+  /* box-shadow: 0 0 18px rgba(110, 110, 110, 0.5); */
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
 }
 
 .card p {
-  margin: 13px 0 0 0;
-  font-size: 15px;
+  margin: 10px;
+  font-size: 13px;
   /* letter-spacing: -0.2px; */
   text-align: center;
 }
 
-.card label.label {
-  font-weight: 600;
-}
 
 /* .card .spec_number {
     height: 60px;
@@ -73,12 +71,12 @@ h4 {
 
 /* .card .spec_number.failed, */
 span.failed::before {
-  background-color: #ff4444;
+  background-color: #D90429;
 }
 
 /* .card .spec_number.passed,  */
 span.passed::before {
-  background: #8ad98d;
+  background: #2B9348;
 }
 
 /* .card .spec_number span {
@@ -87,7 +85,7 @@ span.passed::before {
 } */
 
 .card .file_name {
-  margin-top: 10px;
+  margin: 10px 0 0 0;
   /* font-size: 1em; */
   padding: 5px;
 }
@@ -95,16 +93,18 @@ span.passed::before {
 .card .file_name a {
   text-transform: capitalize;
   overflow-wrap: anywhere;
-  color: #000;
+  color: #fff;
   letter-spacing: 1px;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .card.passed {
-  background: #8ad98d;
+  background: #2B9348;
 }
 
 .card.failed {
-  background: #ff4444;
+  background: #D90429;
 }
 
 .card.failed .file_name a {
@@ -112,19 +112,21 @@ span.passed::before {
 
 }
 
+.card .duration {
+    color: #fff;
+}
+
+.card .duration img{
+    width: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+    margin-top: -5px;
+}
 
 .passed {
-  color: #8ad98d;
+  color: #2B9348;
 }
 
-.card .date_modified {
-  font-size: 10px;
-}
-
-.card .date_created {
-  /* margin-bottom: 15px; */
-  font-size: 10px;
-}
 
 .dates {
   display: -webkit-box;
@@ -150,27 +152,16 @@ span.passed::before {
   text-align: center;
   border-radius: 3px;
   cursor: pointer;
+  transition: color 0.5s ease-in-out;
 }
 
 
 .dates .date.active {
-  color: #8ad98d;
+  border: 2px solid;
+  color: #2B9348;
+  font-weight: bold;
 }
 
-p.totalCases {
-  margin: auto auto;
-
-}
-
-.piechart {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  margin: 10px auto;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-}
 
 .d-inline-block {
   display: inline-block;
@@ -180,22 +171,6 @@ p.totalCases {
   width: 48%;
 }
 
-.legend span {
-  display: inline-block;
-  position: relative;
-  font-size: 8px;
-  margin: 0 10px;
-  color: #000;
-}
-
-.legend span::before {
-  content: "";
-  display: inline-block;
-  position: absolute;
-  height: 10px;
-  width: 10px;
-  left: -15px;
-}
 
 div.filter {
   text-align: right;
@@ -224,7 +199,7 @@ div.filter ul#filter-ul li {
 }
 
 div.filter ul#filter-ul li:hover {
-  color: #8ad98d;
+  color: #2B9348;
 }
 
 span#selectedFilter {
@@ -250,15 +225,31 @@ table {
   border-spacing: 0px !important;
   font-variant: normal;
   margin: auto;
+  margin-top: 15px;
   text-align: center;
+  box-shadow: 0 0 40px 0 rgba(0, 0, 0, .15);
+  border-radius: 10px;
+}
+
+table tr {
+
+  border-radius: 10px;
+}
+
+table tr th {
+  font-size: 15px;
+  color: #fff;
+  line-height: 1.4;
+  text-transform: uppercase;
+  background-color: #393939;
+  letter-spacing: 1px;
 }
 
 table tr th,
 table tr td {
-  border: 1px solid #000;
-  padding: 5px 10px;
-  min-width: 125px;
-  ;
+  border: transparent;
+  padding: 10px;
+  min-width: 75px;
 }
 
 table tr th {
@@ -270,12 +261,3 @@ input {
   border-radius: 12px;
   border: 1px solid;
 }
-
-/* .piechart { 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-}  */
-
-
-/* <p class="spec_number {{CLASS}}"><span>{{SPEC_NUMBER}}</span></p> */

@@ -21,6 +21,7 @@ export class AppComponent {
   showFilter = false;
   filteredText = "all";
   activeIndex = 0;
+  selectedFilter = "";
 
   constructor(private appService: AppService) {
     this.getFileStructureJson();
@@ -41,7 +42,8 @@ export class AppComponent {
             this.files = res['data']['files']['files'];
             this.total = res['data']['files']['totalCounts'];
             this.dateSelected(this.selectedDate);
-            this.activeIndex = 0;
+            // this.activeIndex = 0;
+            this.filterDates(this.selectedFilter);
           }
         })
 
@@ -50,6 +52,23 @@ export class AppComponent {
   }
 
 
+  calculatePercent(num, off = this.total.total) {
+    const val = num * 100 / off;
+    const totl = 100 - val;
+    return `${val} ${totl}`;
+  }
+
+  filterDates(selectedType = "") {
+    selectedType = selectedType.toLowerCase();
+    this.selectedFilter = selectedType;
+    this.files = this.files.map(file => {
+      if (selectedType === "failed" && !file.failed) file.show = false;
+      else if (selectedType === "passed" && file.failed) file.show = false;
+      else file.show = true;
+      return file;
+    });
+
+  }
 
   getFileStructureJson() {
     this.appService
@@ -63,6 +82,7 @@ export class AppComponent {
             this.selectedDate = this.filteredDates[0];
           this.files = res['data']['files']['files'];
           this.total = res['data']['files']['totalCounts'];
+          this.filterDates(this.selectedFilter);
         } else {
           this.specs = {};
           this.selectedDate = '';
@@ -73,7 +93,6 @@ export class AppComponent {
   }
 
   dateSelected(event = "") {
-    console.log({ event });
 
     this.selectedDate = event;
     if (event == "all") {
@@ -91,6 +110,8 @@ export class AppComponent {
     if (this.specs && this.specs[event]) {
       this.files = this.specs[event].files;
       this.total = this.specs[event]['totalCounts'];
+      
+      this.filterDates("");
     }
   }
 
@@ -163,11 +184,6 @@ export class AppComponent {
       }
     }
 
-    console.log({
-      _dates
-    });
-
-
     if (_dates.length) {
       this.filteredDates = this.getFilteredDates(_dates);
       this.dateSelected(_dates[0]);
@@ -183,7 +199,6 @@ export class AppComponent {
   // }
 
   getFilteredDates(_dates = []) {
-    console.log(_dates);
 
     let filtered = [];
     _dates.forEach(_date => {

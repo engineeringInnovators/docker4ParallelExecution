@@ -87,6 +87,7 @@ def prepare_results_report(container):
     container_object.remove(v=False)
     container_name = container_name[:-3]
     result_folder = os.path.join(container_volume,'results')
+    # print("result_folder: " + result_folder)
     if os.path.isdir(result_folder):
         new_results_name = os.path.join(main_folder_path,container_name)
         print("new_results_name: " + new_results_name)
@@ -101,6 +102,10 @@ def prepare_results_report(container):
             for file in [os.path.join(root, f) for f in files]:
                 os.chown(file, 1000, 1000)
                 os.chmod(file, 0o644)
+    else:
+        print("--------------------------------------------------------")
+        print("Not a directory: " + result_folder)
+        print("--------------------------------------------------------")
 def build_metadata(total, starttime, endtime, inprogress):
     # metadata_file = os.path.join(main_folder_path,'metadata.json')
     # metadata_file = '/home/ccloud/reports/server/metadata.json'
@@ -108,7 +113,7 @@ def build_metadata(total, starttime, endtime, inprogress):
     metadata_file = os.path.join(reports_dir, 'metadata.json')
     completed = total - inprogress
     if endtime == 'Job still ongoing':
-        totalexecutiontime = 'Not calculated'
+        totalexecutiontime = '-'
     else:
         totalexecutiontime = endtime - starttime
         totalexecutiontime = int(totalexecutiontime.seconds / 60)
@@ -170,6 +175,7 @@ if args.dirname and args.docker_image:
                 container_volume = os.path.join(volumes_dir,filename)
                 os.mkdir(container_volume)
                 run_script = os.path.join(container_volume,'start.sh')
+                # print("run_script path " +run_script)
                 source_config = os.path.join(root_dir,'config.js')
                 dest_config = os.path.join(container_volume,'config.js')
                 shutil.copy(source_config,dest_config)
