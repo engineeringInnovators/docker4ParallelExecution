@@ -91,4 +91,6 @@
 .svg-item {
   max-width: 125px;
   display: inline-block;
+  /* margin: 5px;
+  border-bottom: 5px solid transparent; */
 }
