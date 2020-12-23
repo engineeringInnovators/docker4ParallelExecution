@@ -7,9 +7,8 @@ const
     http = require('http'),
     app = express(),
     fs = require("fs"),
-    path = require("path");
-
-var bodyParser = require('body-parser');
+    path = require("path"),
+    bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 
@@ -182,9 +181,6 @@ GetFiles().then(console.log).catch(console.log);
 console.log("Application started. and watching for files");
 
 const watch = require('node-watch');
-const {
-    resolve
-} = require('path');
 
 watch(rootPath, {
     recursive: true,
@@ -192,8 +188,12 @@ watch(rootPath, {
         // console.log({f, co: /results([\\]|[\/])[0-9]{2}[A-z]{3}[0-9]{10}([\\]|[\/]).*([\\]|[\/])report\.html/.test(f)});
         // 04Dec2020104139
         // 'results\\04Dec2020104139\\off-contract - Copy\\report.html'
-        // if (!(/results([\\]|[\/])[0-9]{2}[A-z]{3}[0-9]{10}([\\]|[\/]).*/.test(f))) return skip;
-        // else 
+        // if (/results([\\]|[\/])[0-9]{2}[A-z]{3}[0-9]{10}([\\]|[\/]).*([\\]|[\/])report\.html/.test(f)) return true;
+        // // if (!(/results([\\]|[\/])[0-9]{2}[A-z]{3}[0-9]{10}([\\]|[\/])/.test(f))) return false;
+        // else {
+        //     // console.log(skip);
+        //     return skip;
+        // }
         return true;
     }
 }, async (evt, name) => {
@@ -303,6 +303,7 @@ function GetFiles(path = rootPath) {
             _struc.new = _struc.totalSpecs != currentJson.totalSpecs;
             fs.writeFileSync("./fileStructure.json", JSON.stringify(_struc));
 
+            console.log(_struc);
             return resolve(_struc);
 
         } catch (error) {
@@ -319,7 +320,8 @@ function GetHtmlReportFiles(filepath, files = [], totalCounts = {
     testCases: 0,
     passedTestCases: 0,
     failedTestCases: 0,
-    duration: '0h 0min 0s'
+    duration: '0h 0min 0s',
+    durationInNumber: 0
 }) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -358,6 +360,7 @@ function GetHtmlReportFiles(filepath, files = [], totalCounts = {
                     else totalCounts.passed++;
 
                     _file.duration = await calucateTotalMinTookForExecution(reportJson);
+                    _file.durationInNumber = await calucateTotalMinTookForExecution(reportJson, true);
                     // console.log({duration: _file.duration});
                     files.push(_file)
                 }
@@ -393,7 +396,7 @@ function IsEmpty(path) {
     return fs.readdirSync(path).length === 0;
 }
 
-function calucateTotalMinTookForExecution(json) {
+function calucateTotalMinTookForExecution(json, inNumber = false) {
     return new Promise(async (resolve, reject) => {
         try {
             json = JSON.parse(JSON.parse(json));
@@ -402,7 +405,7 @@ function calucateTotalMinTookForExecution(json) {
             for (let i = 0; i < json.length; i++) {
                 duration += json[i].duration;
             }
-            return resolve(await getDuration(duration));
+            return resolve(inNumber ? duration:await getDuration(duration));
         } catch (error) {
             return reject("0h 0min 0s")
         }

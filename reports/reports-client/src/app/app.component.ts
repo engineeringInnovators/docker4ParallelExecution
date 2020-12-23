@@ -22,6 +22,7 @@ export class AppComponent {
   filteredText = "all";
   activeIndex = 0;
   selectedFilter = "";
+  sortOrder = { type: "desc", by: "name" };
 
   constructor(private appService: AppService) {
     this.getFileStructureJson();
@@ -61,6 +62,14 @@ export class AppComponent {
   filterDates(selectedType = "") {
     selectedType = selectedType.toLowerCase();
     this.selectedFilter = selectedType;
+    console.log({ selectedType });
+
+    if (selectedType === "time (mins)") {
+      this.files = this.sortFiles("time");
+      return;
+    } else if (selectedType === "total") {
+      this.files = this.sortFiles("name");
+    }
     this.files = this.files.map(file => {
       if (selectedType === "failed" && !file.failed) file.show = false;
       else if (selectedType === "passed" && file.failed) file.show = false;
@@ -105,12 +114,10 @@ export class AppComponent {
       this.clickFilterIcon();
     }
 
-
-
     if (this.specs && this.specs[event]) {
       this.files = this.specs[event].files;
       this.total = this.specs[event]['totalCounts'];
-      
+
       this.filterDates("");
     }
   }
@@ -135,6 +142,26 @@ export class AppComponent {
       this.filteredText = this.getDate(from, this.shortDateFormat) + " - " + this.getDate(to, this.shortDateFormat);
       this.clickFilterIcon();
     }
+  }
+
+  sortFiles(by = "name") {
+    this.sortOrder.by = by;
+    const files = this.files.sort((f1, f2) => {
+      if (this.sortOrder.by == "time") {
+        console.log("f1.duration - f2.duration", f1.durationInNumber - f2.durationInNumber);
+        if (this.sortOrder.type == "desc")
+          return f2.durationInNumber - f1.durationInNumber;
+        return f1.durationInNumber - f2.durationInNumber;
+
+      } else {
+        if (this.sortOrder.type == "desc")
+          return f2.filename < f1.filename ? -1 : 1;
+        return f1.filename < f2.filename ? -1 : 1;
+      }
+    });
+    this.sortOrder.type = this.sortOrder.type === "desc" ? "asc" : "desc";
+    return files;
+
   }
 
 
