@@ -189,6 +189,8 @@ console.log("Application started. and watching for files");
 
 const watch = require('node-watch');
 
+let prevActiveTimeOut;
+
 watch(rootPath, {
     recursive: true,
     filter(f, skip) {
@@ -205,7 +207,10 @@ watch(rootPath, {
     }
 }, async (evt, name) => {
     console.log('%s changed.', name, evt);
-    await GetFiles();
+    if(prevActiveTimeOut) clearTimeout(prevActiveTimeOut);
+    prevActiveTimeOut = setTimeout(async () => {
+        await GetFiles();
+    }, 5000);
 });
 
 function getDate(date, format = "dd.MMM.yyyy HH:MM:SS") {
