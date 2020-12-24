@@ -273,7 +273,7 @@ function GetFiles(path = rootPath) {
                 
                 _struc.dates.push(formatedDate);
                 
-                if(fileStructure && fileStructure.files && fileStructure.files[formatedDate] && fileStructure.files[formatedDate].totalCounts  && !fileStructure.files[formatedDate].totalCounts.inProgress) {
+                if(fileStructure && fileStructure.files && fileStructure.files[formatedDate] && fileStructure.files[formatedDate].totalCounts && !fileStructure.files[formatedDate].totalCounts.inProgress) {
                     _struc.files[formatedDate] = fileStructure.files[formatedDate];
                     _struc.totalSpecs += _struc.files[formatedDate].files.length;
                     continue;
