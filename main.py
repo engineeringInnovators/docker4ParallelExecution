@@ -220,7 +220,7 @@ if args.dirname and args.docker_image:
     # delete the containers volumes
     if volumes_dir:
         shutil.rmtree(volumes_dir)
-    if(list_containers_failed.count > 0):
+    if(len(list_containers_failed) > 0):
         print("Below are the list of containers which did not had results folder")
         for container in list_containers_failed:
             print(container)
