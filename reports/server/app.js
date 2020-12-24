@@ -274,9 +274,9 @@ function GetFiles(path = rootPath) {
                 const formatedDate = getDate(topLevel[i]);
 
                 _struc.dates.push(formatedDate);
-                console.log({
-                    [formatedDate + " - in progress"]: fileStructure.files[formatedDate].totalCounts.inProgress
-                });
+                // console.log({
+                //     [formatedDate + " - in progress"]: fileStructure.files[formatedDate].totalCounts.inProgress
+                // });
 
                 if (fileStructure && fileStructure.files && fileStructure.files[formatedDate] && fileStructure.files[formatedDate].totalCounts && !fileStructure.files[formatedDate].totalCounts.inProgress) {
                     _struc.files[formatedDate] = fileStructure.files[formatedDate];
