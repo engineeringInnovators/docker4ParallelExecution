@@ -263,22 +263,24 @@ function GetFiles(path = rootPath) {
             let topLevel = await GetTopLevelFolder(path);
 
             for (let i = 0; i < topLevel.length; i++) {
-                console.log({
-                    file: topLevel[i],
-                    IsEmpty: IsEmpty(`${path}/${topLevel[i]}`)
-                });
+                // console.log({
+                //     file: topLevel[i],
+                //     IsEmpty: IsEmpty(`${path}/${topLevel[i]}`)
+                // });
                 if (IsEmpty(`${path}/${topLevel[i]}`)) continue;
                 
                 const formatedDate = getDate(topLevel[i]);
                 
                 _struc.dates.push(formatedDate);
                 
-                if(fileStructure && fileStructure.files[formatedDate] && fileStructure.files[formatedDate].totalCounts  && !fileStructure.files[formatedDate].totalCounts.inProgress) {
+                if(fileStructure && fileStructure.files && fileStructure.files[formatedDate] && fileStructure.files[formatedDate].totalCounts  && !fileStructure.files[formatedDate].totalCounts.inProgress) {
                     _struc.files[formatedDate] = fileStructure.files[formatedDate];
                     _struc.totalSpecs += _struc.files[formatedDate].files.length;
                     continue;
+                } else {
+                   console.log("Status is in progress for: " + formatedDate); 
                 }
-                
+
                 _struc.files[formatedDate] = await GetStatDetails(`${path}/${topLevel[i]}`);
 
                 // while(getDate(topLevel[i]) === "NaN.undefined.NaN NaN:NaN:NaN") {}
