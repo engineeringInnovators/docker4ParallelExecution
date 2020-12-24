@@ -158,8 +158,9 @@ function readJsonFile(fileName = "./fileStructure.json") {
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort('8082');
-app.set('port', port);
+
+const port = process.env.PORT || '8082';
+app.set('port', normalizePort(port));
 
 /**
  * Create HTTP server.
@@ -175,8 +176,14 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
+if (!fs.existsSync(rootPath)){
+    console.log("Creating results folder");
+    fs.mkdirSync(rootPath);
+} else {
+    console.log("Results folder found");
+}
 
-GetFiles().then(console.log).catch(console.log);
+GetFiles().then().catch(console.log);
 
 console.log("Application started. and watching for files");
 

@@ -19,6 +19,7 @@ if args.containers_number:
 else:
     max_containers_up = 50
 list_containers = []
+list_containers_failed = []
 job_endtime = 'Job still ongoing'
 # Commented below line for testing
 # final_destination = '/home/ccloud/reports/server/results/'
@@ -103,6 +104,7 @@ def prepare_results_report(container):
                 os.chown(file, 1000, 1000)
                 os.chmod(file, 0o644)
     else:
+        list_containers_failed.append(container_name)
         print("--------------------------------------------------------")
         print("Not a directory: " + result_folder)
         print("--------------------------------------------------------")
@@ -218,5 +220,9 @@ if args.dirname and args.docker_image:
     # delete the containers volumes
     if volumes_dir:
         shutil.rmtree(volumes_dir)
+    if(len(list_containers_failed) > 0):
+        print("Below are the list of containers which did not had results folder")
+        for container in list_containers_failed:
+            print(container)
 else:
     print ('Arguments Missing')
