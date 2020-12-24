@@ -258,6 +258,7 @@ function GetFiles(path = rootPath) {
 
         try {
 
+            const fileStructure = await readJsonFile("./fileStructure.json");
 
             let topLevel = await GetTopLevelFolder(path);
 
@@ -267,12 +268,22 @@ function GetFiles(path = rootPath) {
                     IsEmpty: IsEmpty(`${path}/${topLevel[i]}`)
                 });
                 if (IsEmpty(`${path}/${topLevel[i]}`)) continue;
+                
+                const formatedDate = getDate(topLevel[i]);
+                
+                _struc.dates.push(formatedDate);
+                
+                if(fileStructure && fileStructure.files[formatedDate] && fileStructure.files[formatedDate].totalCounts  && !fileStructure.files[formatedDate].totalCounts.inProgress) {
+                    _struc.files[formatedDate] = fileStructure.files[formatedDate];
+                    _struc.totalSpecs += _struc.files[formatedDate].files.length;
+                    continue;
+                }
+                
+                _struc.files[formatedDate] = await GetStatDetails(`${path}/${topLevel[i]}`);
 
                 // while(getDate(topLevel[i]) === "NaN.undefined.NaN NaN:NaN:NaN") {}
-                _struc.dates.push(getDate(topLevel[i]));
-                _struc.files[getDate(topLevel[i])] = await GetStatDetails(`${path}/${topLevel[i]}`);
                 const reports = await GetHtmlReportFiles(`${path}/${topLevel[i]}`);
-                _struc.files[getDate(topLevel[i])].files = reports.files;
+                _struc.files[formatedDate].files = reports.files;
 
                 let metaData = await readJsonFile("./metadata.json");
 
@@ -296,9 +307,9 @@ function GetFiles(path = rootPath) {
                     ...metaData[topLevel[i]]
                 };
 
-                _struc.files[getDate(topLevel[i])].totalCounts = reports.totalCounts;
+                _struc.files[formatedDate].totalCounts = reports.totalCounts;
 
-                _struc.totalSpecs += _struc.files[getDate(topLevel[i])].files.length;
+                _struc.totalSpecs += _struc.files[formatedDate].files.length;
 
                 // console.log({_____:await GetHtmlReportFiles(`${path}/${topLevel[i]}`)});
 
