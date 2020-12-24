@@ -176,7 +176,7 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-if (!fs.existsSync(rootPath)){
+if (!fs.existsSync(rootPath)) {
     console.log("Creating results folder");
     fs.mkdirSync(rootPath);
 } else {
@@ -268,17 +268,22 @@ function GetFiles(path = rootPath) {
                 //     IsEmpty: IsEmpty(`${path}/${topLevel[i]}`)
                 // });
                 if (IsEmpty(`${path}/${topLevel[i]}`)) continue;
-                
+
+                let metaData = await readJsonFile("./metadata.json");
+                metaData = JSON.parse(metaData.toString());
                 const formatedDate = getDate(topLevel[i]);
-                
+
                 _struc.dates.push(formatedDate);
-                
-                if(fileStructure && fileStructure.files && fileStructure.files[formatedDate] && fileStructure.files[formatedDate].totalCounts && !fileStructure.files[formatedDate].totalCounts.inProgress) {
+                console.log({
+                    [formatedDate + " - in progress"]: fileStructure.files[formatedDate].totalCounts.inProgress
+                });
+
+                if (fileStructure && fileStructure.files && fileStructure.files[formatedDate] && fileStructure.files[formatedDate].totalCounts && !fileStructure.files[formatedDate].totalCounts.inProgress) {
                     _struc.files[formatedDate] = fileStructure.files[formatedDate];
                     _struc.totalSpecs += _struc.files[formatedDate].files.length;
                     continue;
                 } else {
-                   console.log("Status is in progress for: " + formatedDate); 
+                    console.log("Status is in progress for: " + formatedDate);
                 }
 
                 _struc.files[formatedDate] = await GetStatDetails(`${path}/${topLevel[i]}`);
@@ -287,10 +292,8 @@ function GetFiles(path = rootPath) {
                 const reports = await GetHtmlReportFiles(`${path}/${topLevel[i]}`);
                 _struc.files[formatedDate].files = reports.files;
 
-                let metaData = await readJsonFile("./metadata.json");
 
 
-                metaData = JSON.parse(metaData.toString());
 
                 if (!metaData[topLevel[i]]) {
 
@@ -425,7 +428,7 @@ function calucateTotalMinTookForExecution(json, inNumber = false) {
             for (let i = 0; i < json.length; i++) {
                 duration += json[i].duration;
             }
-            return resolve(inNumber ? duration:await getDuration(duration));
+            return resolve(inNumber ? duration : await getDuration(duration));
         } catch (error) {
             return reject("0h 0min 0s")
         }
