@@ -262,6 +262,7 @@ function GetFiles(path = rootPath) {
 
             let topLevel = await GetTopLevelFolder(path);
 
+            let lastMsg = "";
             for (let i = 0; i < topLevel.length; i++) {
                 // console.log({
                 //     file: topLevel[i],
@@ -283,7 +284,10 @@ function GetFiles(path = rootPath) {
                     _struc.totalSpecs += _struc.files[formatedDate].files.length;
                     continue;
                 } else {
-                    console.log("Status is in progress for: " + formatedDate);
+                    if (lastMsg != "Status is in progress for: " + formatedDate) {
+                        lastMsg = "Status is in progress for: " + formatedDate;
+                        console.log(lastMsg);
+                    }
                 }
 
                 _struc.files[formatedDate] = await GetStatDetails(`${path}/${topLevel[i]}`);
