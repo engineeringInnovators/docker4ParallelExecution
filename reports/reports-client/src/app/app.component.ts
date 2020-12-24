@@ -62,8 +62,6 @@ export class AppComponent {
   filterDates(selectedType = "") {
     selectedType = selectedType.toLowerCase();
     this.selectedFilter = selectedType;
-    console.log({ selectedType });
-
     if (selectedType === "time (mins)") {
       this.files = this.sortFiles("time");
       return;
