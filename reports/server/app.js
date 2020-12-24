@@ -263,7 +263,9 @@ function GetFiles(path = rootPath) {
 
         try {
 
-            const fileStructure = await readJsonFile("./fileStructure.json");
+            let fileStructure = await readJsonFile("./fileStructure.json");
+
+            fileStructure = JSON.parse(fileStructure.toString());
 
             let topLevel = await GetTopLevelFolder(path);
 
@@ -275,8 +277,6 @@ function GetFiles(path = rootPath) {
                 // });
                 if (IsEmpty(`${path}/${topLevel[i]}`)) continue;
 
-                let metaData = await readJsonFile("./metadata.json");
-                metaData = JSON.parse(metaData.toString());
                 const formatedDate = getDate(topLevel[i]);
 
                 _struc.dates.push(formatedDate);
@@ -303,6 +303,8 @@ function GetFiles(path = rootPath) {
 
 
 
+                let metaData = await readJsonFile("./metadata.json");
+                metaData = JSON.parse(metaData.toString());
 
                 if (!metaData[topLevel[i]]) {
 
