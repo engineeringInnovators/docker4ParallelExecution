@@ -176,7 +176,7 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-if (!fs.existsSync(rootPath)){
+if (!fs.existsSync(rootPath)) {
     console.log("Creating results folder");
     fs.mkdirSync(rootPath);
 } else {
@@ -188,6 +188,8 @@ GetFiles().then().catch(console.log);
 console.log("Application started. and watching for files");
 
 const watch = require('node-watch');
+
+let prevActiveTimeOut;
 
 watch(rootPath, {
     recursive: true,
@@ -205,7 +207,10 @@ watch(rootPath, {
     }
 }, async (evt, name) => {
     console.log('%s changed.', name, evt);
-    await GetFiles();
+    if(prevActiveTimeOut) clearTimeout(prevActiveTimeOut);
+    prevActiveTimeOut = setTimeout(async () => {
+        await GetFiles();
+    }, 5000);
 });
 
 function getDate(date, format = "dd.MMM.yyyy HH:MM:SS") {
@@ -258,25 +263,47 @@ function GetFiles(path = rootPath) {
 
         try {
 
+            let fileStructure = await readJsonFile("./fileStructure.json");
+
+            fileStructure = JSON.parse(fileStructure.toString());
 
             let topLevel = await GetTopLevelFolder(path);
 
+            let lastMsg = "";
             for (let i = 0; i < topLevel.length; i++) {
-                console.log({
-                    file: topLevel[i],
-                    IsEmpty: IsEmpty(`${path}/${topLevel[i]}`)
-                });
+                // console.log({
+                //     file: topLevel[i],
+                //     IsEmpty: IsEmpty(`${path}/${topLevel[i]}`)
+                // });
                 if (IsEmpty(`${path}/${topLevel[i]}`)) continue;
 
+                const formatedDate = getDate(topLevel[i]);
+
+                _struc.dates.push(formatedDate);
+                // console.log({
+                //     [formatedDate + " - in progress"]: fileStructure.files[formatedDate].totalCounts.inProgress
+                // });
+
+                if (fileStructure && fileStructure.files && fileStructure.files[formatedDate] && fileStructure.files[formatedDate].totalCounts && !fileStructure.files[formatedDate].totalCounts.inProgress) {
+                    _struc.files[formatedDate] = fileStructure.files[formatedDate];
+                    _struc.totalSpecs += _struc.files[formatedDate].files.length;
+                    continue;
+                } else {
+                    if (lastMsg != "Status is in progress for: " + formatedDate) {
+                        lastMsg = "Status is in progress for: " + formatedDate;
+                        console.log(lastMsg);
+                    }
+                }
+
+                _struc.files[formatedDate] = await GetStatDetails(`${path}/${topLevel[i]}`);
+
                 // while(getDate(topLevel[i]) === "NaN.undefined.NaN NaN:NaN:NaN") {}
-                _struc.dates.push(getDate(topLevel[i]));
-                _struc.files[getDate(topLevel[i])] = await GetStatDetails(`${path}/${topLevel[i]}`);
                 const reports = await GetHtmlReportFiles(`${path}/${topLevel[i]}`);
-                _struc.files[getDate(topLevel[i])].files = reports.files;
+                _struc.files[formatedDate].files = reports.files;
+
+
 
                 let metaData = await readJsonFile("./metadata.json");
-
-
                 metaData = JSON.parse(metaData.toString());
 
                 if (!metaData[topLevel[i]]) {
@@ -296,9 +323,9 @@ function GetFiles(path = rootPath) {
                     ...metaData[topLevel[i]]
                 };
 
-                _struc.files[getDate(topLevel[i])].totalCounts = reports.totalCounts;
+                _struc.files[formatedDate].totalCounts = reports.totalCounts;
 
-                _struc.totalSpecs += _struc.files[getDate(topLevel[i])].files.length;
+                _struc.totalSpecs += _struc.files[formatedDate].files.length;
 
                 // console.log({_____:await GetHtmlReportFiles(`${path}/${topLevel[i]}`)});
 
@@ -412,7 +439,7 @@ function calucateTotalMinTookForExecution(json, inNumber = false) {
             for (let i = 0; i < json.length; i++) {
                 duration += json[i].duration;
             }
-            return resolve(inNumber ? duration:await getDuration(duration));
+            return resolve(inNumber ? duration : await getDuration(duration));
         } catch (error) {
             return reject("0h 0min 0s")
         }
