@@ -23,6 +23,7 @@ export class AppComponent {
   activeIndex = 0;
   selectedFilter = "";
   sortOrder = { type: "desc", by: "name" };
+  calculatedTime = 0;
 
   constructor(private appService: AppService) {
     this.getFileStructureJson();
@@ -57,6 +58,16 @@ export class AppComponent {
     const val = num * 100 / off;
     const totl = 100 - val;
     return `${val} ${totl}`;
+  }
+
+  calculateExecutionTime() {
+    if (typeof (this.total.totalExecutionTime) == 'string') {
+      const executionStarted = new Date(this.getDate(this.total.executionStartTime)).getTime();
+      const now = new Date().getTime();
+      this.calculatedTime = Math.round((now - executionStarted) / 60000);
+      let off = this.calculatedTime > 60 ? (Math.trunc(this.calculatedTime / 60) + 1) * 60 :60;
+      return this.calculatePercent(this.calculatedTime, off); 
+    }
   }
 
   filterDates(selectedType = "") {
