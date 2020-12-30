@@ -53,7 +53,7 @@ app.use(function (req, res, next) {
 app.get('/syncBrowser', async (req, res) => {
     let struc = await readFiles();
     if (struc && struc.data && struc.data.files && struc.data.files.totalCounts && typeof (struc.data.files.totalCounts.totalExecutionTime) == 'string') {
-        const executionStarted = new Date(this.getDate(struc.data.files.totalCounts.executionStartTime)).getTime();
+        const executionStarted = new Date(getDate(struc.data.files.totalCounts.executionStartTime)).getTime();
         const now = new Date().getTime();
         struc.data.files.totalCounts.calculatedTime = Math.round((now - executionStarted) / 60000);
         struc.data.files.totalCounts.off = calculatedTime > 60 ? (Math.trunc(struc.data.files.totalCounts.calculatedTime / 60) + 1) * 60 :60;
