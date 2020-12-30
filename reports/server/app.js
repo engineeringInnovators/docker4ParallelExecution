@@ -56,7 +56,7 @@ app.get('/syncBrowser', async (req, res) => {
         const executionStarted = new Date(getDate(struc.data.files.totalCounts.executionStartTime)).getTime();
         const now = new Date().getTime();
         struc.data.files.totalCounts.calculatedTime = Math.round((now - executionStarted) / 60000);
-        struc.data.files.totalCounts.off = calculatedTime > 60 ? (Math.trunc(struc.data.files.totalCounts.calculatedTime / 60) + 1) * 60 :60;
+        struc.data.files.totalCounts.off = struc.data.files.totalCounts.calculatedTime > 60 ? (Math.trunc(struc.data.files.totalCounts.calculatedTime / 60) + 1) * 60 :60;
     }
     res.json(struc);
     if (struc.code == 200 && struc.new) {
