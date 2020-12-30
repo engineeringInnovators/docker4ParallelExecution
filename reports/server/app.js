@@ -212,9 +212,9 @@ watch(rootPath, {
         return true;
     }
 }, async (evt, name) => {
-    console.log('%s changed.', name, evt);
     if(prevActiveTimeOut) clearTimeout(prevActiveTimeOut);
     prevActiveTimeOut = setTimeout(async () => {
+        console.log('%s changed.', name, evt);
         await GetFiles();
     }, 5000);
 });
