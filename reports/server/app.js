@@ -133,6 +133,14 @@ function readFiles(date) {
             // console.log({
             //     date
             // });
+
+            if (reportJson && reportJson.files && reportJson.files[date] && reportJson.files[date].totalCounts && typeof (reportJson.files[date].totalCounts.totalExecutionTime) == 'string') {
+                const executionStarted = new Date(getDate(reportJson.files[date].totalCounts.executionStartTime)).getTime();
+                const now = new Date().getTime();
+                reportJson.files[date].totalCounts.totalExecutionTime = Math.round((now - executionStarted) / 60000);
+                reportJson.files[date].totalCounts.off = reportJson.files[date].totalCounts.totalExecutionTime > 60 ? (Math.trunc(reportJson.files[date].totalCounts.totalExecutionTime / 60) + 1) * 60 :60;
+            }
+            
             return res({
                 code: 200,
                 data: {
