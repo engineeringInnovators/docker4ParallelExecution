@@ -51,7 +51,13 @@ app.use(function (req, res, next) {
 
 
 app.get('/syncBrowser', async (req, res) => {
-    const struc = await readFiles();
+    let struc = await readFiles();
+    if (struc && struc.data && struc.data.files && struc.data.files.totalCounts && typeof (struc.data.files.totalCounts.totalExecutionTime) == 'string') {
+        const executionStarted = new Date(getDate(struc.data.files.totalCounts.executionStartTime)).getTime();
+        const now = new Date().getTime();
+        struc.data.files.totalCounts.totalExecutionTime = Math.round((now - executionStarted) / 60000);
+        struc.data.files.totalCounts.off = struc.data.files.totalCounts.totalExecutionTime > 60 ? (Math.trunc(struc.data.files.totalCounts.totalExecutionTime / 60) + 1) * 60 :60;
+    }
     res.json(struc);
     if (struc.code == 200 && struc.new) {
         const data = {
@@ -127,6 +133,14 @@ function readFiles(date) {
             // console.log({
             //     date
             // });
+
+            if (reportJson && reportJson.files && reportJson.files[date] && reportJson.files[date].totalCounts && typeof (reportJson.files[date].totalCounts.totalExecutionTime) == 'string') {
+                const executionStarted = new Date(getDate(reportJson.files[date].totalCounts.executionStartTime)).getTime();
+                const now = new Date().getTime();
+                reportJson.files[date].totalCounts.totalExecutionTime = Math.round((now - executionStarted) / 60000);
+                reportJson.files[date].totalCounts.off = reportJson.files[date].totalCounts.totalExecutionTime > 60 ? (Math.trunc(reportJson.files[date].totalCounts.totalExecutionTime / 60) + 1) * 60 :60;
+            }
+            
             return res({
                 code: 200,
                 data: {
@@ -206,9 +220,9 @@ watch(rootPath, {
         return true;
     }
 }, async (evt, name) => {
-    console.log('%s changed.', name, evt);
     if(prevActiveTimeOut) clearTimeout(prevActiveTimeOut);
     prevActiveTimeOut = setTimeout(async () => {
+        console.log('%s changed.', name, evt);
         await GetFiles();
     }, 5000);
 });

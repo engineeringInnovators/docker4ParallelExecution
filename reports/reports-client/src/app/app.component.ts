@@ -59,6 +59,11 @@ export class AppComponent {
     return `${val} ${totl}`;
   }
 
+  calculateTime(num) {
+    const off = num > 60 ? (Math.trunc(num / 60) + 1) * 60 : 60;
+    return this.calculatePercent(num, off);
+  }
+
   filterDates(selectedType = "") {
     selectedType = selectedType.toLowerCase();
     this.selectedFilter = selectedType;
