@@ -344,7 +344,7 @@ function GetFiles(path = rootPath) {
                 // console.log({_____:await GetHtmlReportFiles(`${path}/${topLevel[i]}`)});
 
             }
-            _struc.dates.reverse();
+            _struc.dates = _struc.dates.sort((d1, d2) => new Date(d2) - new Date(d1));
 
             let currentJson = fs.readFileSync("./fileStructure.json");
             currentJson = currentJson.toString();
