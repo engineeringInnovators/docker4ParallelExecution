@@ -173,7 +173,7 @@ function readJsonFile(fileName = "./fileStructure.json") {
  */
 
 
-const port = process.env.PORT || '8082';
+const port = process.env.PORT || '80';
 app.set('port', normalizePort(port));
 
 /**
