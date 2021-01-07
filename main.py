@@ -45,7 +45,7 @@ def get_config_file():
         for file in files:
             filepath = os.path.join(subdir,file)
             filename = file
-            search_config = 'configuration' + os.sep + 'config.js'
+            search_config = 'config' + os.sep + 'config.js'
             if  filepath.endswith(search_config):
                 config_path = os.path.join(root_dir,filename)
                 shutil.copy(filepath,config_path)
