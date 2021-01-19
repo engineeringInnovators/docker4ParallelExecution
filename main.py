@@ -44,7 +44,7 @@ work_dir = os.getcwd() + os.sep + str(args.dirname)
 root_dir = os.getcwd()
 # Changed results folder path
 reports_dir = os.path.join(root_dir, "reports" + os.sep + 'server' + os.sep)
-final_destination = os.path.join(reports_dir, 'results' + os.sep)
+final_destinationl0 = os.path.join(reports_dir, 'results' + os.sep)
 
 print("final_destination: " + final_destination)
 main_folder = dateTimeObj.strftime("%d%b%Y%H%M%S")
@@ -117,7 +117,7 @@ def build_start_script(filepath,client_base_url):
         if selected_base_url in text[i]:
             text[i] = text[i].replace(selected_base_url, client_base_url)
         i += 1
-    print(text)
+    # print(text)
     with open(run_script, "w") as file:
         file.writelines(text)
         file.close()
@@ -176,7 +176,8 @@ def build_metadata(total, starttime, endtime, inprogress):
             "completed": completed,
             "executionStartTime": starttime.strftime("%d%b%Y%H%M%S"),
             "executionEndTime": endtime,
-            "totalExecutionTime": totalexecutiontime
+            "totalExecutionTime": totalexecutiontime,
+            "baseUrl": client_base_url
         }
     }
     if os.path.isfile(metadata_file):
