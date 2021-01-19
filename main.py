@@ -70,10 +70,11 @@ def get_config_file():
                 config_path = os.path.join(root_dir, filename)
                 shutil.copy(filepath, config_path)
                 with open(config_path) as config_file:
-                    lines = config_file.readlines()
+                    _lines = config_file.readlines()
                     config_file.close()
                 print("-----------------base------------------------")
-                for line in len(lines):
+                print(_lines)
+                for line in _lines:
                     if('baseUrl' in line):
                         print(line)
                 print("-----------------------------------------")
