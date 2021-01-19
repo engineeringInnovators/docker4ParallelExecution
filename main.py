@@ -69,6 +69,13 @@ def get_config_file():
             if filepath.endswith(search_config):
                 config_path = os.path.join(root_dir, filename)
                 shutil.copy(filepath, config_path)
+
+                with open(config_path) as json_file:
+                    _data = json.load(json_file)
+                    json_file.close()
+                print("json___________________________")
+                print(_data)
+                print("--------------------------")
                 with open(config_path) as config_file:
                     _lines = config_file.readlines()
                     config_file.close()
