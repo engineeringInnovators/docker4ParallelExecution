@@ -5,6 +5,7 @@ import docker
 import shutil
 from argparse import ArgumentParser
 import json
+import re
 
 # Key to replace in tplstart.sh for base url passed in jenkins. If not passed, baseUrl from config.js is assigned
 selected_base_url = "client_base_url"
@@ -69,15 +70,20 @@ def get_config_file():
             if filepath.endswith(search_config):
                 config_path = os.path.join(root_dir, filename)
                 shutil.copy(filepath, config_path)
-                with open(config_path) as config_file:
-                    _lines = config_file.readlines()
-                    config_file.close()
-                print("-----------------base------------------------")
-                print(_lines)
-                for line in _lines:
-                    if('baseUrl' in line and not('//' in line)):
-                        print(line)
-                print("-----------------------------------------")
+                if client_base_url == "":
+                    with open(config_path) as config_file:
+                        _lines = config_file.readlines()
+                        config_file.close()
+                    print("-----------------base------------------------")
+                    for line in _lines:
+                        line = line.strip()
+                        if(re.search("^baseUrl[ ]?:[ ]*\"(http.*)\"", line) ):
+                            print(re.search("^baseUrl[ ]?:[ ]*\"(http.*)\"", line).groups()[0])
+                            client_base_url = re.search("^baseUrl[ ]?:[ ]*\"(http.*)\"", line).groups()[0]
+                            break
+                
+                    print("-----------------------------------------")
+                print("Default client_base_url: "+ client_base_url)
 
 
 def get_testfiles_number():
