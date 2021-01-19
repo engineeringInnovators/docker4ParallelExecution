@@ -72,6 +72,9 @@ def get_config_file():
                 with open(config_path) as config_file:
                     line = config_file.readlines()
                     config_file.close()
+                print("-----------------------------------------")
+                print(line)
+                print("-----------------------------------------")
 
 
 def get_testfiles_number():
