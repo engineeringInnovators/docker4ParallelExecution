@@ -30,7 +30,15 @@ else:
 
 # Assigning baseurl from arg if passed. Or default baseurl will be assigned in get_config_file() funtion
 client_base_url = ""
-if args.client_base_url:
+url_regex = re.compile(
+        r'^(?:http|ftp)s?://' # http:// or https://
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' #domain...
+        r'localhost|' #localhost...
+        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
+        r'(?::\d+)?' # optional port
+        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+        
+if args.client_base_url and re.match(url_regex, args.client_base_url):
     client_base_url = args.client_base_url
 
 print("client_base_url " + client_base_url)
@@ -157,7 +165,7 @@ def prepare_results_report(container):
         print("--------------------------------------------------------")
 
 
-def build_metadata(total, starttime, endtime, inprogress):
+def build_metadata(total, starttime, endtime, inprogress,client_base_url):
     # metadata_file = os.path.join(main_folder_path,'metadata.json')
     # metadata_file = '/home/ccloud/reports/server/metadata.json'
     # Changed relative path
@@ -259,8 +267,7 @@ if args.dirname and args.docker_image:
                             if docker_client.containers.get(container).status == 'exited':
                                 prepare_results_report(container)
                                 left_containers = left_containers - 1
-                                build_metadata(
-                                    tests_number, job_starttime, job_endtime, left_containers)
+                                build_metadata(tests_number, job_starttime, job_endtime, left_containers,client_base_url)
                 elif len(list_containers) == tests_number:
                     print('{} |  All containers are created! Waiting for the running ones'.format(
                         datetime.now().strftime("%H:%M:%S")))
