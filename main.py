@@ -58,7 +58,7 @@ selected_test = '/tmp/test/config.js'
 ##### Declaring all functions needed ########
 
 
-def get_config_file():
+def get_config_file(client_base_url):
     '''
     Get the config file from the tests repository and put it in the roor folder
     '''
@@ -84,6 +84,7 @@ def get_config_file():
                 
                     print("-----------------------------------------")
                 print("Default client_base_url: "+ client_base_url)
+    return client_base_url
 
 
 def get_testfiles_number():
@@ -206,7 +207,7 @@ if args.dirname and args.docker_image:
     # vyper_image = docker_client.images.pull(args.docker_image,tag='latest')
     vyper_image = args.docker_image
     docker_client.images.build(path=root_dir, tag=args.docker_image)
-    get_config_file()
+    client_base_url = get_config_file(client_base_url)
     tests_number = get_testfiles_number()
     print('{} |  There will be {} containers to be created'.format(
         datetime.now().strftime("%H:%M:%S"), str(tests_number)))
