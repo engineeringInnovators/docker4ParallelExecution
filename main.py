@@ -101,7 +101,7 @@ def get_testfiles_number():
     return tests_number
 
 
-def build_start_script(filepath):
+def build_start_script(filepath,client_base_url):
     '''
     Update start.sh file to call the selected test
     '''
@@ -114,6 +114,8 @@ def build_start_script(filepath):
     while i < len(text):
         if selected_test in text[i]:
             text[i] = text[i].replace(selected_test, filepath)
+        if selected_base_url in text[i]:
+            text[i] = text[i].replace(selected_base_url, client_base_url)
         i += 1
     print(text)
     with open(run_script, "w") as file:
@@ -235,7 +237,7 @@ if args.dirname and args.docker_image:
                 shutil.copy(source_config, dest_config)
                 relative_workdir = os.path.join(container_volume, args.dirname)
                 shutil.copytree(work_dir, relative_workdir)
-                build_start_script(filepath)
+                build_start_script(filepath, client_base_url)
                 docker_client.containers.run(vyper_image, volumes={container_volume: {
                                              'bind': '/vyper', 'mode': 'rw'}}, detach=True, name=filename, command="/bin/bash /vyper/start.sh  ")
                 print('{} |  {} : is created'.format(datetime.now().strftime(
