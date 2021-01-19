@@ -71,7 +71,9 @@ def get_config_file():
                 shutil.copy(filepath, config_path)
 
                 with open(config_path) as json_file:
-                    _data = json.load(json_file)
+                    _data = json_file.read()
+                    obj = _data[_data.find('{') : _data.rfind('}')+1]
+                    _data = json.load(obj)
                     json_file.close()
                 print("json___________________________")
                 print(_data)
