@@ -28,6 +28,7 @@ else:
     max_containers_up = 50
 
 # Assigning baseurl from arg if passed. Or default baseurl will be assigned in get_config_file() funtion
+client_base_url = ""
 if args.client_base_url:
     client_base_url = args.client_base_url
 
