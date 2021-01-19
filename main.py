@@ -37,7 +37,7 @@ url_regex = re.compile(
         r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
         r'(?::\d+)?' # optional port
         r'(?:/?|[/?]\S+)$', re.IGNORECASE)
-        
+
 if args.client_base_url and re.match(url_regex, args.client_base_url):
     client_base_url = args.client_base_url
 
@@ -52,7 +52,7 @@ work_dir = os.getcwd() + os.sep + str(args.dirname)
 root_dir = os.getcwd()
 # Changed results folder path
 reports_dir = os.path.join(root_dir, "reports" + os.sep + 'server' + os.sep)
-final_destinationl0 = os.path.join(reports_dir, 'results' + os.sep)
+final_destination = os.path.join(reports_dir, 'results' + os.sep)
 
 print("final_destination: " + final_destination)
 main_folder = dateTimeObj.strftime("%d%b%Y%H%M%S")
