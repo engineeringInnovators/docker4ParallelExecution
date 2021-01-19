@@ -6,7 +6,7 @@ import shutil
 from argparse import ArgumentParser
 import json
 
-# Key to replace in tplstart.sh for base url passed in jenkins. If not passed, baseUrl from config.js is assigned 
+# Key to replace in tplstart.sh for base url passed in jenkins. If not passed, baseUrl from config.js is assigned
 selected_base_url = "client_base_url"
 
 parser = ArgumentParser()
@@ -27,9 +27,11 @@ if args.containers_number:
 else:
     max_containers_up = 50
 
-# Assigning baseurl from arg if passed. Or default baseurl will be assigned in get_config_file() funtion 
+# Assigning baseurl from arg if passed. Or default baseurl will be assigned in get_config_file() funtion
 if args.client_base_url:
     client_base_url = args.client_base_url
+
+print("client_base_url " + client_base_url)
 
 list_containers = []
 list_containers_failed = []
@@ -69,7 +71,7 @@ def get_config_file():
                 with open(config_path) as config_file:
                     line = config_file.readlines()
                     config_file.close()
-                
+
 
 def get_testfiles_number():
     '''
