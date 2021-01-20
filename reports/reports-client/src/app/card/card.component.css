@@ -78,3 +78,6 @@ label {
   padding-left: 10px;
   vertical-align: top;
 }
+form input, form label {
+    cursor: pointer;
+}

@@ -31,7 +31,7 @@ export class CardComponent implements OnInit {
   }
 
   errorClicked(file?) {
-    console.log(file);
+    // console.log(file);
     this.isPopUpOpen = !this.isPopUpOpen;
     if (file) {
       this.selectedFile = {
@@ -51,14 +51,14 @@ export class CardComponent implements OnInit {
   }
 
   updateReason() {
-    console.log(this.form.value);
+    // console.log(this.form.value);
     if (!this.selectedFile || !this.form.value['errorType']) return;
 
     let data = { ...this.form.value, ...this.selectedFile };
 
     this.appService.patchReason("update_error_reason", data).subscribe((res) => {
       if (res && res['code'] === 200) {
-        console.log(res['data']);
+        // console.log(res['data']);
         this.counts.emit(res['data']);
         this.form.reset();
         this.errorClicked();

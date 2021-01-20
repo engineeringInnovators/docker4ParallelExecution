@@ -83,6 +83,17 @@ export class AppComponent {
 
   }
 
+  filterSpecsByReason(fileNames = []) {
+    // console.log(fileNames);
+    
+    this.files = this.files.map(file => {
+      // console.log(file);
+      if(fileNames.includes(file['filename'])) file.show = true;
+      else file.show = false;
+      return file;
+    });
+  }
+
   getFileStructureJson() {
     this.appService
       .apiCall('getfiles', this.selectedDate)
@@ -117,7 +128,7 @@ export class AppComponent {
         this.counts = [];
       }
     });
-  } 
+  }
 
   dateSelected(event = "") {
 
@@ -173,7 +184,7 @@ export class AppComponent {
     this.sortOrder.by = by;
     const files = this.files.sort((f1, f2) => {
       if (this.sortOrder.by == "time") {
-        console.log("f1.duration - f2.duration", f1.durationInNumber - f2.durationInNumber);
+        // console.log("f1.duration - f2.duration", f1.durationInNumber - f2.durationInNumber);
         if (this.sortOrder.type == "desc")
           return f2.durationInNumber - f1.durationInNumber;
         return f1.durationInNumber - f2.durationInNumber;

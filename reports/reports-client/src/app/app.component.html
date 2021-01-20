@@ -35,7 +35,7 @@
          [total]="total?.total" [legend]="'TIME (Mins)'"></app-donut>
 
      </div>
-     <!-- <div class="filter">
+     <div class="filter">
        <span id="selectedFilter">{{filteredText}}</span>
        <img src="./assets/filter.png" id="filter-img" (click)="clickFilterIcon()">
        <ul id="filter-ul" *ngIf="showFilter">
@@ -63,12 +63,11 @@
            <label for="to">To <input type="date" name="to" #to id="to" (change)="fromToSelected()"></label>
          </li>
        </ul>
-     </div> -->
-     <div>
+     </div>
 
+     <div>
        <app-dates [dates]="filteredDates" (dateSelected)="dateSelected($event)" [activeIndex]="activeIndex"></app-dates>
        <app-card [files]="files" (counts)="updateCount($event)"></app-card>
-
      </div>
    </div>
-   <app-error-reason [baseUrl]="total?.baseUrl" [counts]="counts"></app-error-reason>
+   <app-error-reason [baseUrl]="total?.baseUrl" [counts]="counts" (filterReason)="filterSpecsByReason($event)"></app-error-reason>

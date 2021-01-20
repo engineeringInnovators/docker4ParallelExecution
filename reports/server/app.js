@@ -10,6 +10,35 @@ const
     path = require("path"),
     bodyParser = require('body-parser');
 
+
+if (!fs.existsSync(rootPath)) {
+    console.log("Creating results folder");
+    fs.mkdirSync(rootPath);
+} else {
+    console.log("Results folder found");
+}
+
+if (!fs.existsSync('./errorReason.json')) {
+    console.log("Creating errorReason.json");
+    fs.writeFileSync('./errorReason.json', JSON.stringify({}));
+} else {
+    console.log("errorReason.json file found");
+}
+
+if (!fs.existsSync('./fileStructure.json')) {
+    console.log("Creating fileStructure.json");
+    fs.writeFileSync('./fileStructure.json', JSON.stringify({}));
+} else {
+    console.log("fileStructure.json file found");
+}
+
+if (!fs.existsSync('./meatadata.json')) {
+    console.log("Creating meatadata.json");
+    fs.writeFileSync('./meatadata.json', JSON.stringify({}));
+} else {
+    console.log("meatadata.json file found");
+}
+
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({
@@ -97,7 +126,7 @@ app.get('/getfiles', async (req, res) => {
 })
 
 app.get('/get_error_reason/:folder/:filename', async (req, res) => {
-    console.log(req.params);
+    // console.log(req.params);
 
     let errorReasonJson = await readJsonFile("./errorReason.json");
     errorReasonJson = JSON.parse(errorReasonJson.toString());
@@ -113,14 +142,12 @@ app.get('/get_error_reason/:folder/:filename', async (req, res) => {
 })
 
 app.get('/get_error_reasons/:folder', async (req, res) => {
-    console.log(req.params);
+    // console.log(req.params);
     let errorReasonJson = await readJsonFile("./errorReason.json");
     errorReasonJson = JSON.parse(errorReasonJson.toString());
     if (errorReasonJson && req.params && errorReasonJson[req.params.folder]) {
-        let data = [];
-        for (const key in errorReasonJson[req.params.folder]["_counts"]) {
-            data.push({key,value:errorReasonJson[req.params.folder]["_counts"][key]});
-        }
+        let data = await getErrorReasonCount(req.params.folder, errorReasonJson);
+        // console.log(data);
         return res.json({
             code: 200,
             data
@@ -132,7 +159,7 @@ app.get('/get_error_reasons/:folder', async (req, res) => {
 })
 
 app.patch('/update_error_reason', async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     if (!req.body || !req.body.errorType || !req.body.folder || !req.body.filename) {
         return res.json({
             code: 422,
@@ -161,12 +188,9 @@ app.patch('/update_error_reason', async (req, res) => {
             errorReasonJson[req.body.folder]["_counts"][element]++;
         }
     }
-    let data = [];
-    for (const key in errorReasonJson[req.body.folder]["_counts"]) {
-        data.push({key,value:errorReasonJson[req.body.folder]["_counts"][key]});
-    }
+    let data = await getErrorReasonCount(req.body.folder, errorReasonJson);
 
-    console.log(errorReasonJson);
+    // console.log(data);
     fs.writeFileSync("./errorReason.json", JSON.stringify(errorReasonJson));
 
     return res.json({
@@ -174,7 +198,32 @@ app.patch('/update_error_reason', async (req, res) => {
         data
     })
 
-})
+});
+
+async function getErrorReasonCount(folder, errorReasonJson) {
+    return new Promise((resolve, reject) => {
+        let data = [],
+            fileNames = {};
+        // console.log(errorReasonJson[folder]);
+        if (errorReasonJson[folder]) {
+            for (const key in errorReasonJson[folder]) {
+                if (key != '_counts') {
+                    if (!fileNames[errorReasonJson[folder][key]['reason']])
+                        fileNames[errorReasonJson[folder][key]['reason']] = []
+                    fileNames[errorReasonJson[folder][key]['reason']].push(key)
+                }
+            }
+            for (const key in errorReasonJson[folder]["_counts"]) {
+                data.push({
+                    key,
+                    value: errorReasonJson[folder]["_counts"][key],
+                    fileNames: fileNames[key]
+                });
+            }
+        }
+        return resolve(data);
+    });
+}
 
 app.get("*", (req, res, next) => {
     res.render("index.html");
@@ -250,7 +299,7 @@ function readJsonFile(fileName = "./fileStructure.json") {
  * Get port from environment and store in Express.
  */
 
-const port = process.env.PORT || '80';
+const port = process.env.PORT || '8082';
 app.set('port', normalizePort(port));
 
 /**
@@ -266,34 +315,6 @@ const server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-
-if (!fs.existsSync(rootPath)) {
-    console.log("Creating results folder");
-    fs.mkdirSync(rootPath);
-} else {
-    console.log("Results folder found");
-}
-
-if (!fs.existsSync('./errorReason.json')) {
-    console.log("Creating errorReason.json");
-    fs.writeFileSync('./errorReason.json', JSON.stringify({}));
-} else {
-    console.log("errorReason.json file found");
-}
-
-if (!fs.existsSync('./fileStructure.json')) {
-    console.log("Creating fileStructure.json");
-    fs.writeFileSync('./fileStructure.json', JSON.stringify({}));
-} else {
-    console.log("fileStructure.json file found");
-}
-
-if (!fs.existsSync('./meatadata.json')) {
-    console.log("Creating meatadata.json");
-    fs.writeFileSync('./meatadata.json', JSON.stringify({}));
-} else {
-    console.log("meatadata.json file found");
-}
 
 GetFiles().then().catch(console.log);
 
