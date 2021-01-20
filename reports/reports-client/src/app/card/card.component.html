@@ -2,10 +2,39 @@
 
   <ng-container *ngFor="let file of files; let i = index">
     <div class="card" *ngIf="file?.show" [ngClass]="file?.failed ? 'failed' : 'passed'">
+      <img src="./assets/error.png" alt="error" *ngIf="file?.failed" class="error" (click)="errorClicked(file)">
       <div>
         <p class="file_name"><a target="_blank" [href]="host+file?.path">{{file?.filename}}</a></p>
       </div>
       <p class="duration"><img src="./assets/duration.png" alt="time">{{file?.duration}}</p>
     </div>
   </ng-container>
+</div>
+
+<div class="popup" [ngClass]="{'visible': isPopUpOpen}">
+  <div class="popup-inner" [ngClass]="{'visible': isPopUpOpen}">
+    <span (click)="isPopUpOpen = !isPopUpOpen" class="close-icon">x</span>
+    <h3>Why your script failed?</h3>
+    <form [formGroup]="form">
+        <div>
+          <input id="application" type="radio" value="application" name="errorType" formControlName="errorType">
+          <label for="application">application Issue</label>
+        </div>
+        <div>
+           <input id="automation" type="radio" value="automation" name="errorType" formControlName="errorType">
+           <label for="automation">Automation Issue</label>
+        </div>
+        <div>
+           <input id="api" type="radio" value="api" name="errorType" formControlName="errorType">
+           <label for="api">API Issue</label>
+        </div>
+        <div>
+           <input id="data" type="radio" value="data" name="errorType" formControlName="errorType">
+           <label for="data">DATA Issue</label>
+        </div>
+    </form>
+    <div class="submit">
+      <button (click)="updateReason()">SUBMIT</button>
+    </div>
+  </div>
 </div>

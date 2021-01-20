@@ -17,12 +17,13 @@ export class AppComponent {
   dates = [];
   filteredDates = [];
   files = [];
-  total = { total: 0, passed: 0, failed: 0, inProgress: 0, executionStartTime: 0, totalExecutionTime: 0 };
+  total = { total: 0, passed: 0, failed: 0, inProgress: 0, executionStartTime: 0, totalExecutionTime: 0, baseUrl: "" };
   showFilter = false;
   filteredText = "all";
   activeIndex = 0;
   selectedFilter = "";
   sortOrder = { type: "desc", by: "name" };
+  counts = [];
 
   constructor(private appService: AppService) {
     this.getFileStructureJson();
@@ -90,8 +91,10 @@ export class AppComponent {
           this.specs = res['data']['all'];
           this.dates = res['data']['dates'];
           this.filteredDates = res['data']['dates'];
-          if (this.filteredDates.length)
+          if (this.filteredDates.length){
             this.selectedDate = this.filteredDates[0];
+            this.getReasons(this.selectedDate);
+          }
           this.files = res['data']['files']['files'];
           this.total = res['data']['files']['totalCounts'];
           this.filterDates(this.selectedFilter);
@@ -104,7 +107,21 @@ export class AppComponent {
 
   }
 
+  getReasons(date) {
+    
+    const folder = this.getDate(date, "ddMMMyyyyHHMMSS");
+    this.appService.getReasons(folder).subscribe(res=>{
+      if(res && res['code'] === 200) {
+        this.counts = res['data'];
+      } else {
+        this.counts = [];
+      }
+    });
+  } 
+
   dateSelected(event = "") {
+
+    this.getReasons(event);
 
     this.selectedDate = event;
     if (event == "all") {
@@ -123,6 +140,11 @@ export class AppComponent {
 
       this.filterDates("");
     }
+    
+  }
+
+  updateCount(_counts) {
+    this.counts = _counts;
   }
 
   clickFilterIcon() {

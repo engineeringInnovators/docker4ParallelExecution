@@ -17,47 +17,58 @@
        <td><span *ngIf="total?.totalExecutionTime">{{total?.totalExecutionTime}}</span></td>
      </tr>
    </table> -->
-   <div style="text-align: center;">
+   <div class="main">
+     <!-- {{total|json}} -->
+     <div style="text-align: center;">
 
-     <app-donut [fill]="'#999'" (filterDates)="filterDates($event)" [dasharray]="calculatePercent(total?.total)" [stroke]="'#999'" [value]="total?.total" [total]="total?.total" [legend]="'TOTAL'"></app-donut>
-     <app-donut [fill]="'#2B9348'" (filterDates)="filterDates($event)" [dasharray]="calculatePercent(total?.passed)" [stroke]="'#2B9348'" [value]="total?.passed" [total]="total?.total" [legend]="'PASSED'"></app-donut>
-     <app-donut [fill]="'#D90429'" (filterDates)="filterDates($event)" [dasharray]="calculatePercent(total?.failed)" [stroke]="'#D90429'" [value]="total?.failed" [total]="total?.total" [legend]="'FAILED'"></app-donut>
-     <app-donut [fill]="'orange'" (filterDates)="filterDates($event)" [dasharray]="calculatePercent(total?.inProgress)" [stroke]="'orange'" [value]="total?.inProgress" [total]="total?.total" [legend]="'IN PROGRESS'"></app-donut>
-     <app-donut [fill]="'#999'" (filterDates)="filterDates($event)" [dasharray]="calculateTime(total?.totalExecutionTime)" [stroke]="'#999'" [value]="total?.totalExecutionTime" [total]="total?.total" [legend]="'TIME (Mins)'"></app-donut>
+       <app-donut [fill]="'#999'" (filterDates)="filterDates($event)" [dasharray]="calculatePercent(total?.total)"
+         [stroke]="'#999'" [value]="total?.total" [total]="total?.total" [legend]="'TOTAL'"></app-donut>
+       <app-donut [fill]="'#2B9348'" (filterDates)="filterDates($event)" [dasharray]="calculatePercent(total?.passed)"
+         [stroke]="'#2B9348'" [value]="total?.passed" [total]="total?.total" [legend]="'PASSED'"></app-donut>
+       <app-donut [fill]="'#D90429'" (filterDates)="filterDates($event)" [dasharray]="calculatePercent(total?.failed)"
+         [stroke]="'#D90429'" [value]="total?.failed" [total]="total?.total" [legend]="'FAILED'"></app-donut>
+       <app-donut [fill]="'orange'" (filterDates)="filterDates($event)"
+         [dasharray]="calculatePercent(total?.inProgress)" [stroke]="'orange'" [value]="total?.inProgress"
+         [total]="total?.total" [legend]="'IN PROGRESS'"></app-donut>
+       <app-donut [fill]="'#999'" (filterDates)="filterDates($event)"
+         [dasharray]="calculateTime(total?.totalExecutionTime)" [stroke]="'#999'" [value]="total?.totalExecutionTime"
+         [total]="total?.total" [legend]="'TIME (Mins)'"></app-donut>
 
-    </div>
-   <div class="filter">
-     <span id="selectedFilter">{{filteredText}}</span>
-     <img src="./assets/filter.png" id="filter-img" (click)="clickFilterIcon()">
-     <ul id="filter-ul" *ngIf="showFilter">
-       <li (click)="selectFilter('All')">
-         All
-       </li>
-       <li (click)="selectFilter('Today')">
-         Today
-       </li>
-       <li (click)="selectFilter('Past 2 Days')">
-         Past 2 Days
-       </li>
-       <li (click)="selectFilter('Past 3 Days')">
-         Past 3 Days
-       </li>
-       <li (click)="selectFilter('Past 7 Days')">
-         Past 7 Days
-       </li>
-       <li>
-         <label for="selectDate">Date <input type="date" #date id="selectDate"
-             (change)="dateSelected('date')" /></label>
-       </li>
-       <li>
-         <label for="from">From <input type="date" name="from" #from id="from" (change)="fromToSelected()"></label>
-         <label for="to">To <input type="date" name="to" #to id="to" (change)="fromToSelected()"></label>
-       </li>
-     </ul>
+     </div>
+     <!-- <div class="filter">
+       <span id="selectedFilter">{{filteredText}}</span>
+       <img src="./assets/filter.png" id="filter-img" (click)="clickFilterIcon()">
+       <ul id="filter-ul" *ngIf="showFilter">
+         <li (click)="selectFilter('All')">
+           All
+         </li>
+         <li (click)="selectFilter('Today')">
+           Today
+         </li>
+         <li (click)="selectFilter('Past 2 Days')">
+           Past 2 Days
+         </li>
+         <li (click)="selectFilter('Past 3 Days')">
+           Past 3 Days
+         </li>
+         <li (click)="selectFilter('Past 7 Days')">
+           Past 7 Days
+         </li>
+         <li>
+           <label for="selectDate">Date <input type="date" #date id="selectDate"
+               (change)="dateSelected('date')" /></label>
+         </li>
+         <li>
+           <label for="from">From <input type="date" name="from" #from id="from" (change)="fromToSelected()"></label>
+           <label for="to">To <input type="date" name="to" #to id="to" (change)="fromToSelected()"></label>
+         </li>
+       </ul>
+     </div> -->
+     <div>
+
+       <app-dates [dates]="filteredDates" (dateSelected)="dateSelected($event)" [activeIndex]="activeIndex"></app-dates>
+       <app-card [files]="files" (counts)="updateCount($event)"></app-card>
+
+     </div>
    </div>
-   <div>
-
-     <app-dates [dates]="filteredDates" (dateSelected)="dateSelected($event)" [activeIndex]="activeIndex"></app-dates>
-     <app-card [files]="files"></app-card>
-
-   </div>
+   <app-error-reason [baseUrl]="total?.baseUrl" [counts]="counts"></app-error-reason>

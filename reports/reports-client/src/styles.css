@@ -27,9 +27,11 @@ h4 {
   -ms-flex-align: stretch;
   align-items: stretch;
   /* font-family: 'Baloo Paaji 2', cursive; */
+  margin-bottom: 50px;
 }
 
 .card {
+  position: relative;
   min-height: 50px;
   border-radius: 5px;
   display: -webkit-box;
@@ -232,7 +234,6 @@ table {
 }
 
 table tr {
-
   border-radius: 10px;
 }
 
@@ -260,4 +261,10 @@ input {
   padding: 3px 3px 3px 10px;
   border-radius: 12px;
   border: 1px solid;
+}
+
+.main{
+  /* display: grid;
+  grid-template-columns: 10% 90%;
+  justify-content: center; */
 }

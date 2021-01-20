@@ -79,7 +79,7 @@ def get_config_file(client_base_url):
             if filepath.endswith(search_config):
                 config_path = os.path.join(root_dir, filename)
                 shutil.copy(filepath, config_path)
-                if client_base_url == "":
+                if not client_base_url:
                     with open(config_path) as config_file:
                         _lines = config_file.readlines()
                         config_file.close()

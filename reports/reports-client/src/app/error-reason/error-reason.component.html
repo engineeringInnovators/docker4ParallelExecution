@@ -1,0 +1,23 @@
+<!-- <table>
+    <tr>
+        <th>BASE</th>
+        <td>{{baseUrl}}</td>
+    </tr>
+    <tr>
+        <th>API ISSUE</th>
+        <td>2</td>
+    </tr>
+    <tr>
+        <th>UI ISSUE</th>
+        <td>4</td>
+    </tr>
+    <tr>
+        <th>AUTOMATION</th>
+        <td>4</td>
+    </tr>
+</table> -->
+<!-- {{counts|json}} -->
+<ul *ngIf="baseUrl || (counts && counts.length)">
+    <li *ngIf="baseUrl"><b>Base URL: </b> {{baseUrl}}</li>
+    <li *ngFor="let reason of counts" class="capitalise"><b>{{reason?.key}}: </b> {{reason?.value}}</li>
+</ul> 
