@@ -1,11 +1,2 @@
 {
-    "04Dec2019104139": {
-        "total": 45,
-        "inProgress": 30,
-        "completed": 15,
-        "executionStartTime": "19Jan2021101739",
-        "executionEndTime": "Job still ongoing",
-        "totalExecutionTime": "-",
-        "baseUrl": "https://ccf-715.wdf.sap.corp?sap-language=EN"
-    }
 }
