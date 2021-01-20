@@ -281,6 +281,20 @@ if (!fs.existsSync('./errorReason.json')) {
     console.log("errorReason.json file found");
 }
 
+if (!fs.existsSync('./fileStructure.json')) {
+    console.log("Creating fileStructure.json");
+    fs.writeFileSync('./fileStructure.json', JSON.stringify({}));
+} else {
+    console.log("fileStructure.json file found");
+}
+
+if (!fs.existsSync('./meatadata.json')) {
+    console.log("Creating meatadata.json");
+    fs.writeFileSync('./meatadata.json', JSON.stringify({}));
+} else {
+    console.log("meatadata.json file found");
+}
+
 GetFiles().then().catch(console.log);
 
 console.log("Application started. and watching for files");
