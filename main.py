@@ -15,7 +15,7 @@ parser.add_argument("-d", "--dir", dest="dirname",
                     help="The folder\'s name that contains the tests.")
 parser.add_argument("-i", "--image", dest="docker_image",
                     help="The docker image to download.")
-parser.add_argument("-b", "--clientbaseurl", default="-", dest=selected_base_url,
+parser.add_argument("-b", "--clientbaseurl", default="-", dest=selected_base_url, required=False,
                     help="The baseurl of the client system to be executed in.")
 parser.add_argument("-n", "--number", default=50, dest="containers_number",
                     help="The maximum number of containers that will be running simultaneously. 5 is the default value. 0 for unlimited number ")
