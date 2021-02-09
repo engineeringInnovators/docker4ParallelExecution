@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { CardComponent } from './card/card.component';
 import { DatesComponent } from './dates/dates.component';
 import { DonutComponent } from './donut/donut.component';
+import { ErrorReasonComponent } from './error-reason/error-reason.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -13,11 +15,13 @@ import { DonutComponent } from './donut/donut.component';
     AppComponent,
     CardComponent,
     DatesComponent,
-    DonutComponent
+    DonutComponent,
+    ErrorReasonComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

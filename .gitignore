@@ -11,6 +11,8 @@
 /reports/server/node_modules
 /reports/server/results
 /reports/server/fileStructure.json
+/reports/server/metadata.json
+/reports/server/errorReason.json
 /reports/reports-client/node_modules
 /reports/server/package-lock.json
 /reports/reports-client/package-lock.json

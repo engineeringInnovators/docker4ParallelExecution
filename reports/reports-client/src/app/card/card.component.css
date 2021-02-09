@@ -1,0 +1,83 @@
+img.error {
+  width: 16px;
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+}
+
+.popup {
+  /* transition: top ease-out 1s, left ease-in-out 1s; */
+  position: fixed;
+  top: -9999;
+  background: rgba(0, 0, 0, .3);
+}
+
+.popup.visible {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.popup-inner {
+  transition: transform ease-in .4s, top ease-in .4s, left ease-in .4s, opacity ease-in .4s;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  opacity: .1;
+  transform: translate(-50%, -50%) scale(0.1);
+  padding: 40px;
+  background: #fff;
+  border-radius: .25rem;
+  box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.42), 0 1.25rem 5rem 2px rgba(0, 0, 0, 0.3);
+  /* min-width: 200px;
+    min-height: 200px; */
+  /* text-align: center; */
+}
+
+.popup-inner.visible {
+  top: 50%;
+  left: 50%;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+
+}
+
+.close-icon {
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-weight: 900;
+  font-size: 15px;
+}
+.submit {
+    text-align: center;
+}
+form {
+    padding: 0 10px;
+}
+.submit button{
+    cursor: pointer;
+    margin-top: 15px;
+    background: #0a6ed1;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    color: #fff;
+    letter-spacing: 1px;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+h3 {
+  margin-top: 0;
+}
+
+label {
+  padding-left: 10px;
+  vertical-align: top;
+}
+form input, form label {
+    cursor: pointer;
+}

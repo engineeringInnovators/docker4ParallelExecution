@@ -10,6 +10,35 @@ const
     path = require("path"),
     bodyParser = require('body-parser');
 
+
+if (!fs.existsSync(rootPath)) {
+    console.log("Creating results folder");
+    fs.mkdirSync(rootPath);
+} else {
+    console.log("Results folder found");
+}
+
+if (!fs.existsSync('./errorReason.json')) {
+    console.log("Creating errorReason.json");
+    fs.writeFileSync('./errorReason.json', JSON.stringify({}));
+} else {
+    console.log("errorReason.json file found");
+}
+
+if (!fs.existsSync('./fileStructure.json')) {
+    console.log("Creating fileStructure.json");
+    fs.writeFileSync('./fileStructure.json', JSON.stringify({}));
+} else {
+    console.log("fileStructure.json file found");
+}
+
+if (!fs.existsSync('./meatadata.json')) {
+    console.log("Creating meatadata.json");
+    fs.writeFileSync('./meatadata.json', JSON.stringify({}));
+} else {
+    console.log("meatadata.json file found");
+}
+
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({
@@ -56,7 +85,7 @@ app.get('/syncBrowser', async (req, res) => {
         const executionStarted = new Date(getDate(struc.data.files.totalCounts.executionStartTime)).getTime();
         const now = new Date().getTime();
         struc.data.files.totalCounts.totalExecutionTime = Math.round((now - executionStarted) / 60000);
-        struc.data.files.totalCounts.off = struc.data.files.totalCounts.totalExecutionTime > 60 ? (Math.trunc(struc.data.files.totalCounts.totalExecutionTime / 60) + 1) * 60 :60;
+        struc.data.files.totalCounts.off = struc.data.files.totalCounts.totalExecutionTime > 60 ? (Math.trunc(struc.data.files.totalCounts.totalExecutionTime / 60) + 1) * 60 : 60;
     }
     res.json(struc);
     if (struc.code == 200 && struc.new) {
@@ -82,7 +111,6 @@ app.get('/results/:folder/:spec/report.html', (req, res) => {
     res.render(path.join(__dirname + decodeURIComponent(req.url)))
 });
 
-
 app.get('/results/:folder/:spec/app.js', (req, res) => {
     res.sendFile(__dirname + decodeURIComponent(req.url));
 })
@@ -97,6 +125,105 @@ app.get('/getfiles', async (req, res) => {
 
 })
 
+app.get('/get_error_reason/:folder/:filename', async (req, res) => {
+    // console.log(req.params);
+
+    let errorReasonJson = await readJsonFile("./errorReason.json");
+    errorReasonJson = JSON.parse(errorReasonJson.toString());
+    if (errorReasonJson && req.params && errorReasonJson[req.params.folder] && errorReasonJson[req.params.folder][req.params.filename])
+        return res.json({
+            code: 200,
+            data: errorReasonJson[req.params.folder][req.params.filename]
+        });
+    else res.json({
+        code: 400,
+        message: "Not found"
+    })
+})
+
+app.get('/get_error_reasons/:folder', async (req, res) => {
+    // console.log(req.params);
+    let errorReasonJson = await readJsonFile("./errorReason.json");
+    errorReasonJson = JSON.parse(errorReasonJson.toString());
+    if (errorReasonJson && req.params && errorReasonJson[req.params.folder]) {
+        let data = await getErrorReasonCount(req.params.folder, errorReasonJson);
+        // console.log(data);
+        return res.json({
+            code: 200,
+            data
+        });
+    } else res.json({
+        code: 400,
+        message: "Not found"
+    })
+})
+
+app.patch('/update_error_reason', async (req, res) => {
+    // console.log(req.body);
+    if (!req.body || !req.body.errorType || !req.body.folder || !req.body.filename) {
+        return res.json({
+            code: 422,
+            message: 'Invalid data'
+        }); //422 - Unprocessable entity
+    }
+
+    let errorReasonJson = await readJsonFile("./errorReason.json");
+    errorReasonJson = JSON.parse(errorReasonJson.toString());
+
+    if (!errorReasonJson[req.body.folder]) errorReasonJson[req.body.folder] = {};
+
+    errorReasonJson[req.body.folder]["_counts"] = {}
+
+    errorReasonJson[req.body.folder][req.body.filename] = {
+        reason: req.body.errorType
+    };
+
+    for (const key in errorReasonJson[req.body.folder]) {
+        if (Object.hasOwnProperty.call(errorReasonJson[req.body.folder], key)) {
+            const element = errorReasonJson[req.body.folder][key]["reason"];
+            if (!element) continue;
+            if (!errorReasonJson[req.body.folder]["_counts"][element]) {
+                errorReasonJson[req.body.folder]["_counts"][element] = 0;
+            }
+            errorReasonJson[req.body.folder]["_counts"][element]++;
+        }
+    }
+    let data = await getErrorReasonCount(req.body.folder, errorReasonJson);
+
+    // console.log(data);
+    fs.writeFileSync("./errorReason.json", JSON.stringify(errorReasonJson));
+
+    return res.json({
+        code: 200,
+        data
+    })
+
+});
+
+async function getErrorReasonCount(folder, errorReasonJson) {
+    return new Promise((resolve, reject) => {
+        let data = [],
+            fileNames = {};
+        // console.log(errorReasonJson[folder]);
+        if (errorReasonJson[folder]) {
+            for (const key in errorReasonJson[folder]) {
+                if (key != '_counts') {
+                    if (!fileNames[errorReasonJson[folder][key]['reason']])
+                        fileNames[errorReasonJson[folder][key]['reason']] = []
+                    fileNames[errorReasonJson[folder][key]['reason']].push(key)
+                }
+            }
+            for (const key in errorReasonJson[folder]["_counts"]) {
+                data.push({
+                    key,
+                    value: errorReasonJson[folder]["_counts"][key],
+                    fileNames: fileNames[key]
+                });
+            }
+        }
+        return resolve(data);
+    });
+}
 
 app.get("*", (req, res, next) => {
     res.render("index.html");
@@ -138,9 +265,9 @@ function readFiles(date) {
                 const executionStarted = new Date(getDate(reportJson.files[date].totalCounts.executionStartTime)).getTime();
                 const now = new Date().getTime();
                 reportJson.files[date].totalCounts.totalExecutionTime = Math.round((now - executionStarted) / 60000);
-                reportJson.files[date].totalCounts.off = reportJson.files[date].totalCounts.totalExecutionTime > 60 ? (Math.trunc(reportJson.files[date].totalCounts.totalExecutionTime / 60) + 1) * 60 :60;
+                reportJson.files[date].totalCounts.off = reportJson.files[date].totalCounts.totalExecutionTime > 60 ? (Math.trunc(reportJson.files[date].totalCounts.totalExecutionTime / 60) + 1) * 60 : 60;
             }
-            
+
             return res({
                 code: 200,
                 data: {
@@ -172,8 +299,7 @@ function readJsonFile(fileName = "./fileStructure.json") {
  * Get port from environment and store in Express.
  */
 
-
-const port = process.env.PORT || '80';
+const port = process.env.PORT || '8082';
 app.set('port', normalizePort(port));
 
 /**
@@ -189,13 +315,6 @@ const server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-
-if (!fs.existsSync(rootPath)) {
-    console.log("Creating results folder");
-    fs.mkdirSync(rootPath);
-} else {
-    console.log("Results folder found");
-}
 
 GetFiles().then().catch(console.log);
 
@@ -220,7 +339,7 @@ watch(rootPath, {
         return true;
     }
 }, async (evt, name) => {
-    if(prevActiveTimeOut) clearTimeout(prevActiveTimeOut);
+    if (prevActiveTimeOut) clearTimeout(prevActiveTimeOut);
     prevActiveTimeOut = setTimeout(async () => {
         console.log('%s changed.', name, evt);
         await GetFiles();
