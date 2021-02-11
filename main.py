@@ -119,7 +119,7 @@ def get_testfiles_number():
                 print("file: " + file)
                 tests_number += 1
     print("___________________________")
-    print("Total specs in " + folder_to_read + " is " + tests_number)
+    print("Total specs in " + folder_to_read + " is " + str(tests_number))
     print("___________________________")
     return tests_number
 
