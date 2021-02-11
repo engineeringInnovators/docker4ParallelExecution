@@ -1,7 +1,7 @@
 import os
 import json
 from argparse import ArgumentParser
-import re
+# import re
 from typing import Dict
 
 parser = ArgumentParser()
@@ -58,8 +58,8 @@ if args.filename:
 
                         text = text.replace("{{BASE_URL}}", str(
                             meta[formated_date]['baseUrl'])).replace(" ", "").replace("\n", "")
-                        print(text)
                         with open("email/output/"+args.filename+".txt", "w") as file:
-                            file.write(text)
+                            file.writelines(text)
+                            print(text)
                             file.close()
                         break
