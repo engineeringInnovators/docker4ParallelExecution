@@ -98,6 +98,7 @@ app.get('/syncBrowser', async (req, res) => {
             lastModified: Date.now(),
             latest: struc.data.latest
         }
+        console.log({latest: data.latest});
         fs.writeFileSync('./fileStructure.json', JSON.stringify(data));
     }
 
