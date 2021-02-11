@@ -53,13 +53,13 @@ if args.filename:
 
                 formated_date = str(meta['latest']).replace(
                     ".", "").replace(" ", "").replace(":", "")
-                print(formated_date)
+                # print(formated_date)
 
                 for key, value in latest["files"].items():
-                    print(key.replace(".", "").replace(" ", ""))
+                    # print(key.replace(".", "").replace(" ", ""))
                     if str(formated_date) == str(key).replace(".", "").replace(" ", "").replace(":", ""):
                         data = value["totalCounts"]
-                        print(data)
+                        # print(data)
                         text = text.replace("{{TOTAL_TIME}}", str(data['totalExecutionTime'])).replace(
                             "{{TOTAL_SPECS}}", str(data['total'])).replace(
                             "{{TOTAL_PASSED}}", str(data['totalSpecs'])).replace(
@@ -67,11 +67,11 @@ if args.filename:
 
                         text = text.replace("{{BASE_URL}}", str(
                             meta[formated_date]['baseUrl'])).replace(" ", "").replace("\n", "")
-                        print("args.filename: " +args.filename)
+                        # print("args.filename: " +args.filename)
                         try:
                           file = open("email/output/"+args.filename+".txt", "w")
                           file.write(text)
-                          print(text)
+                          # print(text)
                           file.close()
                         except OSError:
                             print("error creating file")
