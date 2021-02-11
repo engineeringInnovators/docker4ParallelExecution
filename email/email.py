@@ -19,13 +19,14 @@ text = ""
 latest = {}
 root_dir = os.getcwd()
 reports_dir = os.path.join(root_dir, "reports" + os.sep + 'server' + os.sep)
-print(reports_dir)
+output_dir = os.path.join(root_dir, "email" + os.sep + "output")
+print("output_dir: "+output_dir)
 
-for subdir, dirs, files in os.walk(os.path.join(root_dir, "email/output")):
+for subdir, dirs, files in os.walk(output_dir):
   print(files.count())
   for file in files:
     print(file)
-    file_path = os.path.join("email/output", file)
+    file_path = os.path.join(output_dir, file)
     print(file_path)
     os.remove(file_path)
 
