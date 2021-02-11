@@ -31,7 +31,8 @@ else:
     max_containers_up = 50
 
 if args.folder_to_read:
-    folder_to_read = args.folder_to_read
+    folder_to_read = str(args.folder_to_read).replace(
+        "/", os.sep).replace("\\", os.sep)
 else:
     folder_to_read = ""
 

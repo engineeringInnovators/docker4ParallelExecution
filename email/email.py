@@ -62,11 +62,11 @@ try:
                             data = value["totalCounts"]
                             # print(data)
                             text = text.replace("{{TOTAL_TIME}}", str(data['totalExecutionTime'])).replace(
-                                "{{TOTAL_SPECS}}", str(data['total'])).replace(
                                 "{{TOTAL_PASSED}}", str(data['passed'])).replace(
                                 "{{TOTAL_FAILED}}", str(data['failed']))
 
-                            text = text.replace("{{BASE_URL}}", str(
+                            text = text.replace(
+                                "{{TOTAL_SPECS}}", str(meta[formated_date]['total'])).replace("{{BASE_URL}}", str(
                                 meta[formated_date]['baseUrl'])).replace(" ", "").replace("\n", "")
                             # print("args.filename: " +args.filename)
                             try:
