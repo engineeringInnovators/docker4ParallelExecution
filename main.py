@@ -57,7 +57,7 @@ job_endtime = 'Job still ongoing'
 # Commented below line for testing
 # final_destination = '/home/ccloud/reports/server/results/'
 work_dir = os.getcwd() + os.sep + str(args.dirname)
-folder_to_read = work_dir + folder_to_read
+folder_to_read = os.path.join(work_dir, folder_to_read)
 root_dir = os.getcwd()
 # Changed results folder path
 reports_dir = os.path.join(root_dir, "reports" + os.sep + 'server' + os.sep)
@@ -114,9 +114,13 @@ def get_testfiles_number():
     for subdir, dirs, files in os.walk(folder_to_read):
         for file in files:
             filepath = os.path.join(subdir, file)
-            filename = file
+            # filename = file
             if filepath.endswith(".spec.js"):
+                print("file: " + file)
                 tests_number += 1
+    print("___________________________")
+    print("Total specs in " + folder_to_read + " is " + tests_number)
+    print("___________________________")
     return tests_number
 
 
