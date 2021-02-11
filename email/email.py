@@ -58,8 +58,12 @@ if args.filename:
 
                         text = text.replace("{{BASE_URL}}", str(
                             meta[formated_date]['baseUrl'])).replace(" ", "").replace("\n", "")
-                        file = open("email/output/"+args.filename+".txt", "w")
-                        file.write(text)
-                        print(text)
-                        file.close()
+                        print("args.filename: " +args.filename)
+                        try:
+                          file = open("email/output/"+args.filename+".txt", "w")
+                          file.write(text)
+                          print(text)
+                          file.close()
+                        except OSError:
+                            print("error creating file")
                         break
