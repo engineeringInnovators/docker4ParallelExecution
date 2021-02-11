@@ -22,14 +22,16 @@ reports_dir = os.path.join(root_dir, "reports" + os.sep + 'server' + os.sep)
 output_dir = os.path.join(root_dir, "email" + os.sep + "output")
 print("output_dir: "+output_dir)
 
-for subdir, dirs, files in os.walk(output_dir):
-  # print(files.count())
-  for file in files:
-    print(file)
-    file_path = os.path.join(output_dir, file)
-    print(file_path)
-    os.remove(file_path)
-
+try:
+  for subdir, dirs, files in os.walk(output_dir):
+    # print(files.count())
+    for file in files:
+      print(file)
+      file_path = os.path.join(output_dir, file)
+      print(file_path)
+      os.remove(file_path)
+except OSError:
+  print("Error while deleting text files")
 
 if args.filename:
     with open("email/template.html", "r", encoding='utf-8') as f:
