@@ -245,6 +245,8 @@ function readFiles(date) {
 
             reportJson = JSON.parse(reportJson.toString());
 
+            console.log({latest1: reportJson.latest});
+
             let metaData = await readJsonFile("./metadata.json");
 
 
