@@ -17,6 +17,8 @@ parser.add_argument("-i", "--image", dest="docker_image",
                     help="The docker image to download.")
 parser.add_argument("-b", "--clientbaseurl", default="-", nargs="?", const="-", dest=selected_base_url, required=False,
                     help="The baseurl of the client system to be executed in.")
+parser.add_argument("-f", "--folder", default="", nargs="?", const="", dest="folder_to_read",
+                    required=False, help="folder from where to read")
 parser.add_argument("-n", "--number", default=50, dest="containers_number",
                     help="The maximum number of containers that will be running simultaneously. 5 is the default value. 0 for unlimited number ")
 # parser.add_argument("-f", "--string", dest="targeted_server", help= "")
@@ -27,6 +29,11 @@ if args.containers_number:
     max_containers_up = int(args.containers_number)
 else:
     max_containers_up = 50
+
+if args.folder_to_read:
+    folder_to_read = args.folder_to_read
+else:
+    folder_to_read = ""
 
 # Assigning baseurl from arg if passed. Or default baseurl will be assigned in get_config_file() funtion
 client_base_url = ""
@@ -50,6 +57,7 @@ job_endtime = 'Job still ongoing'
 # Commented below line for testing
 # final_destination = '/home/ccloud/reports/server/results/'
 work_dir = os.getcwd() + os.sep + str(args.dirname)
+folder_to_read = work_dir + folder_to_read
 root_dir = os.getcwd()
 # Changed results folder path
 reports_dir = os.path.join(root_dir, "reports" + os.sep + 'server' + os.sep)
@@ -103,7 +111,7 @@ def get_testfiles_number():
     Calculate the number of the tests that script will be running
     '''
     tests_number = 0
-    for subdir, dirs, files in os.walk(work_dir):
+    for subdir, dirs, files in os.walk(folder_to_read):
         for file in files:
             filepath = os.path.join(subdir, file)
             filename = file
@@ -203,6 +211,21 @@ def build_metadata(total, starttime, endtime, inprogress, client_base_url):
     os.chmod(metadata_file, 0o644)
 
 
+def update_latest_running_file():
+    file_structure = os.path.join(reports_dir, 'fileStructure.json')
+
+    if os.path.isfile(file_structure):
+        with open(file_structure) as json_file:
+            data = json.load(json_file)
+        data.update({"latest": main_folder})
+    else:
+        data = {"latest": main_folder}
+    with open(file_structure, 'w') as f:
+        json.dump(data, f, indent=4)
+    os.chown(file_structure, 1000, 1000)
+    os.chmod(file_structure, 0o644)
+
+
 ###### The main script #####################
 if args.dirname and args.docker_image:
     if not os.path.exists(final_destination):
@@ -227,8 +250,9 @@ if args.dirname and args.docker_image:
         datetime.now().strftime("%H:%M:%S"), str(tests_number)))
     print('The results will be stored at {}'.format(main_folder_path))
     left_containers = tests_number
+    update_latest_running_file()
     # Browse every file in the directory with its path
-    for subdir, dirs, files in os.walk(work_dir):
+    for subdir, dirs, files in os.walk(folder_to_read):
         for file in files:
             filepath = os.path.join(subdir, file)
             filename = file
