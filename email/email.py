@@ -21,6 +21,12 @@ root_dir = os.getcwd()
 reports_dir = os.path.join(root_dir, "reports" + os.sep + 'server' + os.sep)
 print(reports_dir)
 
+for subdir, dirs, files in os.walk("email/output"):
+  for file in files:
+    file_path = os.path.join("email/output", file)
+    print(file_path)
+    os.unlink(file_path)
+
 
 if args.filename:
     with open("email/template.html", "r", encoding='utf-8') as f:
