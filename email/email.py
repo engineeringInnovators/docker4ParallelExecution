@@ -21,7 +21,7 @@ root_dir = os.getcwd()
 reports_dir = os.path.join(root_dir, "reports" + os.sep + 'server' + os.sep)
 print(reports_dir)
 
-for subdir, dirs, files in os.walk("email/output"):
+for subdir, dirs, files in os.walk(os.path.join(root_dir, "email/output")):
   print(files.count())
   for file in files:
     print(file)
