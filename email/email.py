@@ -62,7 +62,7 @@ if args.filename:
                         # print(data)
                         text = text.replace("{{TOTAL_TIME}}", str(data['totalExecutionTime'])).replace(
                             "{{TOTAL_SPECS}}", str(data['total'])).replace(
-                            "{{TOTAL_PASSED}}", str(data['totalSpecs'])).replace(
+                            "{{TOTAL_PASSED}}", str(data['passed'])).replace(
                             "{{TOTAL_FAILED}}", str(data['failed']))
 
                         text = text.replace("{{BASE_URL}}", str(
