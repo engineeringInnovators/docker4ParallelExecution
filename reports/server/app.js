@@ -96,9 +96,7 @@ app.get('/syncBrowser', async (req, res) => {
             new: false,
             // new: struc.data.dates.includes("NaN.undefined.NaN NaN:NaN:NaN"),
             lastModified: Date.now(),
-            latest: struc.data.latest
         }
-        console.log({latest: data.latest});
         fs.writeFileSync('./fileStructure.json', JSON.stringify(data));
     }
 
@@ -245,7 +243,6 @@ function readFiles(date) {
 
             reportJson = JSON.parse(reportJson.toString());
 
-            console.log({latest1: reportJson.latest});
 
             let metaData = await readJsonFile("./metadata.json");
 
@@ -279,7 +276,6 @@ function readFiles(date) {
                     dates: reportJson.dates,
                     all: reportJson.files,
                     totalSpecs: reportJson.totalSpecs,
-                    latest: reportJson.latest
                 },
                 // new: true
                 new: reportJson.new

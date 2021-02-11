@@ -212,18 +212,18 @@ def build_metadata(total, starttime, endtime, inprogress, client_base_url):
 
 
 def update_latest_running_file():
-    file_structure = os.path.join(reports_dir, 'fileStructure.json')
+    metadata = os.path.join(reports_dir, 'metadata.json')
 
-    if os.path.isfile(file_structure):
-        with open(file_structure) as json_file:
+    if os.path.isfile(metadata):
+        with open(metadata) as json_file:
             data = json.load(json_file)
         data.update({"latest": main_folder})
     else:
         data = {"latest": main_folder}
-    with open(file_structure, 'w') as f:
+    with open(metadata, 'w') as f:
         json.dump(data, f, indent=4)
-    os.chown(file_structure, 1000, 1000)
-    os.chmod(file_structure, 0o644)
+    os.chown(metadata, 1000, 1000)
+    os.chmod(metadata, 0o644)
 
 
 ###### The main script #####################

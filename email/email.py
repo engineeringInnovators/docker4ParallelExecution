@@ -16,7 +16,7 @@ args = parser.parse_args()
 print(args.filename)
 
 text = ""
-latest = {"a": "A"}
+latest = {}
 root_dir = os.getcwd()
 reports_dir = os.path.join(root_dir, "reports" + os.sep + 'server' + os.sep)
 print(reports_dir)
@@ -27,38 +27,39 @@ if args.filename:
         text = f.read()
         f.close()
 
-    file_structure = os.path.join(reports_dir, 'fileStructure.json')
+    meta_data = os.path.join(reports_dir, 'metadata.json')
 
-    if os.path.isfile(file_structure):
-        with open(file_structure) as json_file:
-            latest = json.load(json_file)
+    if os.path.isfile(meta_data):
+        with open(meta_data) as json_file:
+            meta = json.load(json_file)
             json_file.close()
 
-        formated_date = str(latest['latest']).replace(
-            ".", "").replace(" ", "").replace(":", "")
-        print(formated_date)
+        if(meta['latest']):
+            file_structure = os.path.join(reports_dir, 'fileStructure.json')
 
-        for key, value in latest["files"].items():
-            print(key.replace(".", "").replace(" ", ""))
-            if str(formated_date) == str(key).replace(".", "").replace(" ", "").replace(":", ""):
-                data = value["totalCounts"]
-                print(data)
-                text = text.replace("{{TOTAL_TIME}}", str(data['totalExecutionTime'])).replace(
-                    "{{TOTAL_SPECS}}", str(data['total'])).replace(
-                    "{{TOTAL_PASSED}}", str(data['totalSpecs'])).replace(
-                    "{{TOTAL_FAILED}}", str(data['failed']))
+            if os.path.isfile(file_structure):
+                with open(file_structure) as json_file:
+                    latest = json.load(json_file)
+                    json_file.close()
 
-                meta_data = os.path.join(reports_dir, 'metadata.json')
+                formated_date = str(meta['latest']).replace(
+                    ".", "").replace(" ", "").replace(":", "")
+                print(formated_date)
 
-                if os.path.isfile(meta_data):
-                    with open(meta_data) as json_file:
-                        meta = json.load(json_file)
-                        json_file.close()
+                for key, value in latest["files"].items():
+                    print(key.replace(".", "").replace(" ", ""))
+                    if str(formated_date) == str(key).replace(".", "").replace(" ", "").replace(":", ""):
+                        data = value["totalCounts"]
+                        print(data)
+                        text = text.replace("{{TOTAL_TIME}}", str(data['totalExecutionTime'])).replace(
+                            "{{TOTAL_SPECS}}", str(data['total'])).replace(
+                            "{{TOTAL_PASSED}}", str(data['totalSpecs'])).replace(
+                            "{{TOTAL_FAILED}}", str(data['failed']))
 
-                    text = text.replace("{{BASE_URL}}", str(
-                        meta[formated_date]['baseUrl'])).replace(" ", "").replace("\n", "")
-                print(text)
-                with open("email/output/"+args.filename+".txt", "w") as file:
-                    file.write(text)
-                    file.close()
-                break
+                        text = text.replace("{{BASE_URL}}", str(
+                            meta[formated_date]['baseUrl'])).replace(" ", "").replace("\n", "")
+                        print(text)
+                        with open("email/output/"+args.filename+".txt", "w") as file:
+                            file.write(text)
+                            file.close()
+                        break
