@@ -55,29 +55,29 @@ try:
                     formated_date = str(meta['latest']).replace(
                         ".", "").replace(" ", "").replace(":", "")
                     # print(formated_date)
+                    if latest["files"] and latest["files"].items():
+                        for key, value in latest["files"].items():
+                            # print(key.replace(".", "").replace(" ", ""))
+                            if str(formated_date) == str(key).replace(".", "").replace(" ", "").replace(":", ""):
+                                data = value["totalCounts"]
+                                # print(data)
+                                text = text.replace("{{TOTAL_TIME}}", str(data['totalExecutionTime'])).replace(
+                                    "{{TOTAL_PASSED}}", str(data['passed'])).replace(
+                                    "{{TOTAL_FAILED}}", str(data['failed']))
 
-                    for key, value in latest["files"].items():
-                        # print(key.replace(".", "").replace(" ", ""))
-                        if str(formated_date) == str(key).replace(".", "").replace(" ", "").replace(":", ""):
-                            data = value["totalCounts"]
-                            # print(data)
-                            text = text.replace("{{TOTAL_TIME}}", str(data['totalExecutionTime'])).replace(
-                                "{{TOTAL_PASSED}}", str(data['passed'])).replace(
-                                "{{TOTAL_FAILED}}", str(data['failed']))
-
-                            text = text.replace(
-                                "{{TOTAL_SPECS}}", str(meta[formated_date]['total'])).replace("{{BASE_URL}}", str(
-                                meta[formated_date]['baseUrl'])).replace(" ", "").replace("\n", "")
-                            # print("args.filename: " +args.filename)
-                            try:
-                                file = open("email/output/" +
-                                            args.filename+".txt", "w")
-                                file.write(text)
-                                # print(text)
-                                file.close()
-                            except OSError:
-                                print("error creating file")
-                            break
+                                text = text.replace(
+                                    "{{TOTAL_SPECS}}", str(meta[formated_date]['total'])).replace("{{BASE_URL}}", str(
+                                        meta[formated_date]['baseUrl'])).replace("\n", "")
+                                # print("args.filename: " +args.filename)
+                                try:
+                                    file = open("email/output/" +
+                                                args.filename+".txt", "w")
+                                    file.write(text)
+                                    # print(text)
+                                    file.close()
+                                except OSError:
+                                    print("error creating file")
+                                break
 
 except OSError:
     print("Error while deleting text files")
