@@ -18,6 +18,7 @@
 </table> -->
 <!-- {{counts|json}} -->
 <ul *ngIf="baseUrl || (counts && counts.length)">
-    <li *ngIf="baseUrl"><b>Base URL: </b> {{baseUrl}}</li>
+    <li *ngIf="baseUrl"><b>Test System: </b> {{baseUrl}}</li>
+    <!-- <li><b>Not Addressed: </b> {{baseUrl}}</li> -->
     <li *ngFor="let reason of counts" class="capitalise" (click)="reasonClicked(reason?.fileNames)"><b>{{reason?.key}} Issue: </b> {{reason?.value}}</li>
 </ul> 
