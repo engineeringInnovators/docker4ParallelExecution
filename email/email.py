@@ -29,7 +29,8 @@ try:
             print(file)
             file_path = os.path.join(output_dir, file)
             print(file_path)
-            os.remove(file_path)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
 
     if args.filename:
         with open("email/template.html", "r", encoding='utf-8') as f:
