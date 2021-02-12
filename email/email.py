@@ -81,5 +81,5 @@ try:
 
 except OSError:
     print("Error while deleting text files")
-else:
-    print("error")
+# else:
+#     print("error")
