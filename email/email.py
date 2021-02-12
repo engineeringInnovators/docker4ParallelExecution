@@ -67,7 +67,7 @@ if args.filename:
 
                         text = text.replace(
                             "{{TOTAL_SPECS}}", str(meta[formated_date]['total'])).replace("{{BASE_URL}}", str(
-                            meta[formated_date]['baseUrl'])).replace("\n", "")
+                            meta[formated_date]['baseUrl'])).replace(" ","").replace("#"," ").replace("\n", "")
                         # print("args.filename: " +args.filename)
                         try:
                             file = open("email/output/" +

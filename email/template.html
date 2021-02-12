@@ -1,25 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E2E Status</title>
     <style>
-        table{
-            margin: 0 auto ;
+        table {
+            margin-top: 0px;
+            margin-right: auto;
+            margin-bottom: 0px;
+            margin-left: auto;
         }
-        td{
-            border: 1px solid;
+
+        td {
+            border-width: 1px;
             padding: 10px;
+            border-style: solid;
         }
     </style>
 </head>
+
 <body>
     <table>
         <tbody>
             <tr>
-                <td>Total Tests</td>
+                <td>Total#Tests</td>
                 <td>{{TOTAL_SPECS}}</td>
             </tr>
             <tr>
@@ -31,14 +38,15 @@
                 <td>{{TOTAL_FAILED}}</td>
             </tr>
             <tr>
-                <td>Time (Mins)</td>
+                <td>Time#(Mins)</td>
                 <td>{{TOTAL_TIME}}</td>
             </tr>
             <tr>
-                <td>Test System</td>
+                <td>Test#System</td>
                 <td>{{BASE_URL}}</td>
             </tr>
         </tbody>
     </table>
 </body>
+
 </html>
