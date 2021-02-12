@@ -73,12 +73,14 @@ if args.filename:
 
                 for key, value in latest["files"].items():
                     # print(key.replace(".", "").replace(" ", ""))
+                    old_key = key
+                    print(old_key)
                     if str(formated_date) == str(key).replace(".", "").replace(" ", "").replace(":", ""):
                         data = value["totalCounts"]
                         # print(data)
                         text = text.replace("{{TOTAL_TIME}}", str(data['totalExecutionTime'])).replace(
                             "{{TOTAL_PASSED}}", str(data['passed'])).replace(
-                            "{{TOTAL_FAILED}}", str(data['failed'])).replace("{{BUILD_DATE}}", key)
+                            "{{TOTAL_FAILED}}", str(data['failed'])).replace("{{BUILD_DATE}}", old_key)
 
                         text = text.replace(
                             "{{TOTAL_SPECS}}", str(meta[formated_date]['total'])).replace("{{BASE_URL}}", str(
