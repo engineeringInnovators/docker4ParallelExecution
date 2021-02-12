@@ -45,7 +45,8 @@ url_regex = re.compile(
     r'(?::\d+)?'  # optional port
     r'(?:/?|[/?]\S+)$', re.IGNORECASE)
 
-if args.filename and re.match(url_regex, args.reporturl):
+#  and re.match(url_regex, args.reporturl)
+if args.filename:
     with open("email/template.html", "r", encoding='utf-8') as f:
         text = f.read()
         f.close()
