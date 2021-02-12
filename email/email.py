@@ -16,8 +16,8 @@ parser.add_argument("-u", "--url", dest="reporturl",
 
 args = parser.parse_args()
 
-print("Folder Name: " +args.filename)
-print("Reports URL: " +args.reporturl)
+print("Folder Name: " + args.filename)
+print("Reports URL: " + args.reporturl)
 
 text = ""
 latest = {}
@@ -74,8 +74,8 @@ if args.filename:
                 for key, value in latest["files"].items():
                     # print(key.replace(".", "").replace(" ", ""))
                     old_key = key
-                    print(old_key)
                     if str(formated_date) == str(key).replace(".", "").replace(" ", "").replace(":", ""):
+                        print("old_key: "+old_key)
                         data = value["totalCounts"]
                         # print(data)
                         text = text.replace("{{TOTAL_TIME}}", str(data['totalExecutionTime'])).replace(
@@ -84,9 +84,9 @@ if args.filename:
 
                         text = text.replace(
                             "{{TOTAL_SPECS}}", str(meta[formated_date]['total'])).replace("{{BASE_URL}}", str(
-                            meta[formated_date]['baseUrl'])).replace(" ","").replace("#"," ").replace("\n", "")
+                                meta[formated_date]['baseUrl'])).replace(" ", "").replace("#", " ").replace("\n", "")
                         # print("args.filename: " +args.filename)
-                        text = text.replace("{{REPORT_URL}}",args.reporturl)
+                        text = text.replace("{{REPORT_URL}}", args.reporturl)
                         try:
                             file = open("email/output/" +
                                         args.filename+".txt", "w")

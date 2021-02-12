@@ -19,6 +19,12 @@
             padding: 10px;
             border-style: solid;
         }
+        td.passed {
+            color: #8bb697;
+        }
+        td.failed {
+            color: #D90429;
+        }
     </style>
 </head>
 
@@ -31,11 +37,11 @@
             </tr>
             <tr>
                 <td>Passed</td>
-                <td style="color: #2b9348;">{{TOTAL_PASSED}}</td>
+                <td class="passed">{{TOTAL_PASSED}}</td>
             </tr>
             <tr>
                 <td>Failed</td>
-                <td style="color: #D90429;">{{TOTAL_FAILED}}</td>
+                <td class="failed">{{TOTAL_FAILED}}</td>
             </tr>
             <tr>
                 <td>Time#(Mins)</td>
