@@ -23,6 +23,7 @@ RUN npm config set strict-ssl=false \
 
 RUN npm install vyperForAll@latest -g -ignore-scripts
 RUN vyper webdriver-update
+RUN vyper execute-patches
 RUN echo 'export DISPLAY=:99.0;Xvfb -ac $DISPLAY &' >>/root/.bashrc
 
 # Create ccloud user
