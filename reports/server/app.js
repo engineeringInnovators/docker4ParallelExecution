@@ -343,9 +343,30 @@ watch(rootPath, {
     if (prevActiveTimeOut) clearTimeout(prevActiveTimeOut);
     prevActiveTimeOut = setTimeout(async () => {
         console.log('%s changed.', name, evt);
+
+        await lockFileAsReading();
         await GetFiles();
     }, 5000);
 });
+
+function lockFileAsReading(value = 1, fileName = "./metadata.json") {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            let data = await readJsonFile(fileName);
+            data = JSON.parse(data.toString());
+
+            data["locked"] = value;
+
+            fs.writeFileSync(fileName, JSON.stringify(data));
+
+            return resolve();
+
+        } catch (error) {
+            return reject(error);
+        }
+    });
+}
 
 function getDate(date, format = "dd.MMM.yyyy HH:MM:SS") {
     if (date === 'now') date = new Date();
@@ -471,6 +492,8 @@ function GetFiles(path = rootPath) {
             _struc.new = _struc.totalSpecs != currentJson.totalSpecs;
             fs.writeFileSync("./fileStructure.json", JSON.stringify(_struc));
 
+
+            await lockFileAsReading(0);
             // console.log(_struc);
             return resolve(_struc);
 
