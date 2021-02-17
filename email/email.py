@@ -1,3 +1,4 @@
+import time
 import re
 import os
 import json
@@ -44,6 +45,21 @@ url_regex = re.compile(
     r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
     r'(?::\d+)?'  # optional port
     r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+
+def checkWhetherFileIsLocked():
+    _data = os.path.join(reports_dir, 'metadata.json')
+    if os.path.isfile(_data):
+        with open(_data) as json_file:
+            _meta = json.load(json_file)
+            json_file.close()
+        return _meta["locked"]
+    else:
+        return 1
+
+
+while(checkWhetherFileIsLocked()):
+    print("File is still locked for reading.")
+    time.sleep(10)
 
 #  and re.match(url_regex, args.reporturl)
 if args.filename and re.match(url_regex, args.reporturl):
