@@ -418,6 +418,7 @@ function GetFiles(path = rootPath) {
 
         try {
 
+            await lockFileAsReading(1);
             let fileStructure = await readJsonFile("./fileStructure.json");
 
             fileStructure = JSON.parse(fileStructure.toString());

@@ -59,7 +59,7 @@ def checkWhetherFileIsLocked():
 
 while(checkWhetherFileIsLocked()):
     print("File is still locked for reading.")
-    time.sleep(5)
+    time.sleep(10)
 
 #  and re.match(url_regex, args.reporturl)
 if args.filename and re.match(url_regex, args.reporturl):
