@@ -61,7 +61,7 @@ while(checkWhetherFileIsLocked()):
     print("File is still locked for reading.")
     time.sleep(10)
 
-#  and re.match(url_regex, args.reporturl)
+# and re.match(url_regex, args.reporturl)
 if args.filename and re.match(url_regex, args.reporturl):
     with open("email/template.html", "r", encoding='utf-8') as f:
         text = f.read()
