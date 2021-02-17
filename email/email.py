@@ -46,6 +46,7 @@ url_regex = re.compile(
     r'(?::\d+)?'  # optional port
     r'(?:/?|[/?]\S+)$', re.IGNORECASE)
 
+
 def checkWhetherFileIsLocked():
     _data = os.path.join(reports_dir, 'metadata.json')
     if os.path.isfile(_data):
@@ -56,6 +57,8 @@ def checkWhetherFileIsLocked():
     else:
         return 1
 
+
+time.sleep(10)
 
 while(checkWhetherFileIsLocked()):
     print("File is still locked for reading.")
@@ -100,7 +103,8 @@ if args.filename and re.match(url_regex, args.reporturl):
                             "{{TOTAL_SPECS}}", str(meta[formated_date]['total'])).replace("{{BASE_URL}}", str(
                                 meta[formated_date]['baseUrl'])).replace(" ", "").replace("#", " ").replace("\n", "")
                         # print("args.filename: " +args.filename)
-                        text = text.replace("{{REPORT_URL}}", args.reporturl).replace("{{BUILD_DATE}}", key)
+                        text = text.replace("{{REPORT_URL}}", args.reporturl).replace(
+                            "{{BUILD_DATE}}", key)
                         try:
                             file = open("email/output/" +
                                         args.filename+".txt", "w")
