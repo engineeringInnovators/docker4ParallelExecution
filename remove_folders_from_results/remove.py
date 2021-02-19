@@ -45,6 +45,8 @@ def getFolderInResults():
             _list = _list[args.builds_to_keep:]
             _list = list(map(replaceAllSpecialChar, _list))
             return _list
+        else:
+            print("No files")
     else:
         return []
 
