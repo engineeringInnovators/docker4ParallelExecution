@@ -28,13 +28,13 @@ output_dir = os.path.join(root_dir, "email" + os.sep + "output")
 # print("output_dir: "+output_dir)
 
 # try:
-# for subdir, dirs, files in os.walk(output_dir):
-#     # print(files.count())
-#     for file in files:
-#         file_path = os.path.join(output_dir, file)
-#         # print(file_path)
-#         print("Deleting previous txt file: "+file_path)
-#         os.remove(file_path)
+for subdir, dirs, files in os.walk(output_dir):
+    # print(files.count())
+    for file in files:
+        file_path = os.path.join(output_dir, file)
+        # print(file_path)
+        print("Deleting previous txt file: "+file_path)
+        os.remove(file_path)
 
 
 url_regex = re.compile(
