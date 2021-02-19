@@ -17,8 +17,8 @@ args = parser.parse_args()
 if(args.builds_to_keep):
     args.builds_to_keep = int(args.builds_to_keep)
 
-# if(args.builds_to_keep < 10):
-#     args.builds_to_keep = 10
+if(args.builds_to_keep < 10):
+    args.builds_to_keep = 10
     
 
 print("Total Number of build to keep: " + str(args.builds_to_keep))
