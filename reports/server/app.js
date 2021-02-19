@@ -78,7 +78,6 @@ app.use(function (req, res, next) {
     next();
 });
 
-
 app.get('/syncBrowser', async (req, res) => {
     let struc = await readFiles();
     if (struc && struc.data && struc.data.files && struc.data.files.totalCounts && typeof (struc.data.files.totalCounts.totalExecutionTime) == 'string') {
