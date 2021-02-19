@@ -28,13 +28,13 @@ output_dir = os.path.join(root_dir, "email" + os.sep + "output")
 # print("output_dir: "+output_dir)
 
 # try:
-# for subdir, dirs, files in os.walk(output_dir):
-#     # print(files.count())
-#     for file in files:
-#         file_path = os.path.join(output_dir, file)
-#         # print(file_path)
-#         print("Deleting previous txt file: "+file_path)
-#         os.remove(file_path)
+for subdir, dirs, files in os.walk(output_dir):
+    # print(files.count())
+    for file in files:
+        file_path = os.path.join(output_dir, file)
+        # print(file_path)
+        print("Deleting previous txt file: "+file_path)
+        os.remove(file_path)
 
 
 url_regex = re.compile(
@@ -46,6 +46,7 @@ url_regex = re.compile(
     r'(?::\d+)?'  # optional port
     r'(?:/?|[/?]\S+)$', re.IGNORECASE)
 
+
 def checkWhetherFileIsLocked():
     _data = os.path.join(reports_dir, 'metadata.json')
     if os.path.isfile(_data):
@@ -56,6 +57,8 @@ def checkWhetherFileIsLocked():
     else:
         return 1
 
+
+time.sleep(10)
 
 while(checkWhetherFileIsLocked()):
     print("File is still locked for reading.")
@@ -100,7 +103,8 @@ if args.filename and re.match(url_regex, args.reporturl):
                             "{{TOTAL_SPECS}}", str(meta[formated_date]['total'])).replace("{{BASE_URL}}", str(
                                 meta[formated_date]['baseUrl'])).replace(" ", "").replace("#", " ").replace("\n", "")
                         # print("args.filename: " +args.filename)
-                        text = text.replace("{{REPORT_URL}}", args.reporturl).replace("{{BUILD_DATE}}", key)
+                        text = text.replace("{{REPORT_URL}}", args.reporturl).replace(
+                            "{{BUILD_DATE}}", key)
                         try:
                             file = open("email/output/" +
                                         args.filename+".txt", "w")

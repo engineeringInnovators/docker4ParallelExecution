@@ -32,11 +32,11 @@ if (!fs.existsSync('./fileStructure.json')) {
     console.log("fileStructure.json file found");
 }
 
-if (!fs.existsSync('./meatadata.json')) {
-    console.log("Creating meatadata.json");
-    fs.writeFileSync('./meatadata.json', JSON.stringify({}));
+if (!fs.existsSync('./metadata.json')) {
+    console.log("Creating metadata.json");
+    fs.writeFileSync('./metadata.json', JSON.stringify({}));
 } else {
-    console.log("meatadata.json file found");
+    console.log("metadata.json file found");
 }
 
 app.use(bodyParser.json());
