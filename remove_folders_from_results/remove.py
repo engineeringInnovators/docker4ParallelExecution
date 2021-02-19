@@ -19,6 +19,9 @@ print("Total Number of build to keep: " + str(args.builds_to_keep))
 if(args.builds_to_keep):
     args.builds_to_keep = int(args.builds_to_keep)
 
+if(args.builds_to_keep < 10):
+    args.builds_to_keep = 10
+
 root_dir = os.getcwd()
 reports_dir = os.path.join(root_dir, "reports" + os.sep + 'server' + os.sep)
 results_dir = os.path.join(root_dir, "reports" +
