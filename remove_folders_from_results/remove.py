@@ -14,13 +14,14 @@ parser.add_argument("-k", "--buildstokeep", dest="builds_to_keep", default=10,
 
 args = parser.parse_args()
 
-print("Total Number of build to keep: " + str(args.builds_to_keep))
-
 if(args.builds_to_keep):
     args.builds_to_keep = int(args.builds_to_keep)
 
 if(args.builds_to_keep < 10):
+    print("Builds to keep is less than 10. Setting value to 10")
     args.builds_to_keep = 10
+
+print("Total Number of build to keep: " + str(args.builds_to_keep))
 
 root_dir = os.getcwd()
 reports_dir = os.path.join(root_dir, "reports" + os.sep + 'server' + os.sep)
@@ -39,10 +40,14 @@ def getFolderInResults():
             fileStructure = json.load(json_file)
             json_file.close()
         if len(fileStructure["dates"]) > 0:
-            _list = list(fileStructure["dates"])
+            _list = fileStructure["dates"]
+            print(_list)
             _list = _list[args.builds_to_keep:]
             _list = list(map(replaceAllSpecialChar, _list))
             return _list
+        else:
+            print("No files")
+            return []
     else:
         return []
 
@@ -57,7 +62,7 @@ if args.builds_to_keep > 1:
                 dir_path = os.path.join(results_dir, item)
                 print(dir_path)
                 print("Deleting previous txt dir: "+dir_path)
-                shutil.rmtree(dir_path,ignore_errors=True)
+                shutil.rmtree(dir_path, ignore_errors=True)
                 # os.removedirs(dir_path)
 
 else:
