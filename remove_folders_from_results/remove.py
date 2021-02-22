@@ -18,8 +18,8 @@ if(args.builds_to_keep):
     args.builds_to_keep = int(args.builds_to_keep)
 
 if(args.builds_to_keep < 10):
+    print("Builds to keep is less than 10. Setting value to 10")
     args.builds_to_keep = 10
-    
 
 print("Total Number of build to keep: " + str(args.builds_to_keep))
 
@@ -47,6 +47,7 @@ def getFolderInResults():
             return _list
         else:
             print("No files")
+            return []
     else:
         return []
 
@@ -61,7 +62,7 @@ if args.builds_to_keep > 1:
                 dir_path = os.path.join(results_dir, item)
                 print(dir_path)
                 print("Deleting previous txt dir: "+dir_path)
-                shutil.rmtree(dir_path,ignore_errors=True)
+                shutil.rmtree(dir_path, ignore_errors=True)
                 # os.removedirs(dir_path)
 
 else:
