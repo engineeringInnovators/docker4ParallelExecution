@@ -34,7 +34,7 @@ if (!fs.existsSync('./fileStructure.json')) {
 
 if (!fs.existsSync('./metadata.json')) {
     console.log("Creating metadata.json");
-    fs.writeFileSync('./metadata.json', JSON.stringify({}));
+    fs.writeFileSync('./metadata.json', JSON.stringify({"locked": 0}));
 } else {
     console.log("metadata.json file found");
 }
