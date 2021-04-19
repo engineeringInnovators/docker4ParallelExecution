@@ -1,0 +1,34 @@
+/* td {
+    border-bottom: 1px solid #393939;
+}
+
+tr:last-child td {
+    border-bottom: none;
+} */
+
+ul {
+    list-style: none;
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    background: #393939;
+    color: #fff;
+    padding: 10px;
+    margin: 0;
+    width: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: row-reverse;
+}
+li {
+    padding: 0 20px 0 0px;
+}
+
+b{
+    color: orange;
+}
+
+.capitalise {
+    text-transform: capitalize;
+    cursor: pointer;
+}

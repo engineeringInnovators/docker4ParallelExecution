@@ -1,0 +1,96 @@
+.svg-item {
+  width: 100%;
+  font-size: 16px;
+  margin: 0 auto;
+  animation: donutfade 1s;
+  cursor: pointer;
+}
+
+@keyframes donutfade {
+
+  /* this applies to the whole svg item wrapper */
+  0% {
+    opacity: .2;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 992px) {
+  .svg-item {
+    width: 80%;
+  }
+}
+
+.donut-ring {
+  stroke: #EBEBEB;
+}
+
+.donut-segment {
+  transform-origin: center;
+  animation: donut 3s;
+}
+
+
+.donut-percent {
+  animation: donutfadelong 1s;
+}
+
+@keyframes donutfadelong {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes donut {
+  0% {
+    stroke-dasharray: 0, 100;
+  }
+
+  100% {
+    stroke-dasharray: --value, --total;
+  }
+}
+
+
+.donut-text {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.donut-percent {
+  font-size: 0.35em;
+  line-height: 1;
+  transform: translateY(0.5em);
+  font-weight: bold;
+}
+
+.donut-data {
+  font-size: 0.20em;
+  /* text-transform: uppercase; */
+  line-height: 1;
+  transform: translateY(0.5em);
+  text-align: center;
+  text-anchor: middle;
+  color: #666;
+  fill: #666;
+  animation: donutfadelong 1s;
+  margin-top: 10px;
+}
+
+
+
+
+
+.svg-item {
+  max-width: 100px;
+  display: inline-block;
+  /* margin: 5px;
+  border-bottom: 5px solid transparent; */
+}

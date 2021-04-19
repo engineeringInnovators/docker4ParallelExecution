@@ -1,0 +1,270 @@
+body {
+  margin-bottom: 25px;
+  font-family: monospace;
+}
+
+h1 {
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+h4 {
+  margin: 3px;
+}
+
+.container {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 18% 2% 18% 2% 18% 2% 18% 2% 18%;
+  grid-template-columns: 18% 18% 18% 18% 18%;
+  grid-column-gap: 2%;
+  grid-row-gap: 2%;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  /* text-align: center; */
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  /* font-family: 'Baloo Paaji 2', cursive; */
+  margin-bottom: 50px;
+}
+
+.card {
+  position: relative;
+  min-height: 50px;
+  border-radius: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  /* -webkit-box-shadow: 0 0 18px rgba(110, 110, 110, 0.5); */
+  /* box-shadow: 0 0 18px rgba(110, 110, 110, 0.5); */
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.card p {
+  margin: 10px;
+  font-size: 13px;
+  /* letter-spacing: -0.2px; */
+  text-align: center;
+}
+
+
+/* .card .spec_number {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(110, 110, 110, 0.4);
+    text-align: center;
+    display: flex;
+    color: #fff;
+    margin-top: 0;
+} */
+
+/* .card .spec_number.failed, */
+span.failed::before {
+  background-color: #D90429;
+}
+
+/* .card .spec_number.passed,  */
+span.passed::before {
+  background: #2B9348;
+}
+
+/* .card .spec_number span {
+    margin: auto auto;
+    font-size: 20px;
+} */
+
+.card .file_name {
+  margin: 10px 0 0 0;
+  /* font-size: 1em; */
+  padding: 5px;
+}
+
+.card .file_name a {
+  text-transform: capitalize;
+  overflow-wrap: anywhere;
+  color: #fff;
+  letter-spacing: 1px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.card.passed {
+  background: #2B9348;
+}
+
+.card.failed {
+  background: #D90429;
+}
+
+.card.failed .file_name a {
+  color: #fff;
+
+}
+
+.card .duration {
+    color: #fff;
+}
+
+.card .duration img{
+    width: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+    margin-top: -5px;
+}
+
+.passed {
+  color: #2B9348;
+}
+
+
+.dates {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  max-height: 75px;
+  overflow-y: auto;
+  margin-bottom: 30px;
+  padding: 10px;
+  border: 1px solid;
+}
+
+.dates .date {
+  list-style: none;
+  padding: 5px 10px;
+  margin: 5px;
+  background: #fff;
+  letter-spacing: 1px;
+  border: 1.5px solid;
+  min-width: 165px;
+  text-align: center;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: color 0.5s ease-in-out;
+}
+
+
+.dates .date.active {
+  border: 2px solid;
+  color: #2B9348;
+  font-weight: bold;
+}
+
+
+.d-inline-block {
+  display: inline-block;
+}
+
+.w-50 {
+  width: 48%;
+}
+
+
+div.filter {
+  text-align: right;
+  position: relative;
+}
+
+div.filter img#filter-img {
+  cursor: pointer;
+}
+
+div.filter ul#filter-ul {
+  position: absolute;
+  right: 10px;
+  border: 1px solid #999;
+  border-radius: 5px;
+  text-align: center;
+  margin: 0;
+  padding: 10px;
+  background: #fff;
+}
+
+div.filter ul#filter-ul li {
+  padding: 5px;
+  list-style: none;
+  cursor: pointer;
+}
+
+div.filter ul#filter-ul li:hover {
+  color: #2B9348;
+}
+
+span#selectedFilter {
+  display: inline-block;
+  border: 1px solid;
+  padding: 1px 5px;
+  border-radius: 8px;
+  text-transform: capitalize;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+
+table {
+  border-collapse: separate;
+  white-space: normal;
+  line-height: normal;
+  font-weight: normal;
+  font-size: medium;
+  font-style: normal;
+  color: -internal-quirk-inherit;
+  text-align: start;
+  border-spacing: 0px !important;
+  font-variant: normal;
+  margin: auto;
+  margin-top: 15px;
+  text-align: center;
+  box-shadow: 0 0 40px 0 rgba(0, 0, 0, .15);
+  border-radius: 10px;
+}
+
+table tr {
+  border-radius: 10px;
+}
+
+table tr th {
+  font-size: 15px;
+  color: #fff;
+  line-height: 1.4;
+  text-transform: uppercase;
+  background-color: #393939;
+  letter-spacing: 1px;
+}
+
+table tr th,
+table tr td {
+  border: transparent;
+  padding: 10px;
+  min-width: 75px;
+}
+
+table tr th {
+  border-bottom: none;
+}
+
+input {
+  padding: 3px 3px 3px 10px;
+  border-radius: 12px;
+  border: 1px solid;
+}
+
+.main{
+  /* display: grid;
+  grid-template-columns: 10% 90%;
+  justify-content: center; */
+}
