@@ -85,10 +85,9 @@ export class AppComponent {
 
   filterSpecsByReason(fileNames = []) {
     // console.log(fileNames);
-    
     this.files = this.files.map(file => {
       // console.log(file);
-      if(fileNames.includes(file['filename'])) file.show = true;
+      if (fileNames.includes(file['filename'])) file.show = true;
       else file.show = false;
       return file;
     });
@@ -102,7 +101,7 @@ export class AppComponent {
           this.specs = res['data']['all'];
           this.dates = res['data']['dates'];
           this.filteredDates = res['data']['dates'];
-          if (this.filteredDates.length){
+          if (this.filteredDates.length) {
             this.selectedDate = this.filteredDates[0];
             this.getReasons(this.selectedDate);
           }
@@ -119,10 +118,9 @@ export class AppComponent {
   }
 
   getReasons(date) {
-    
     const folder = this.getDate(date, "ddMMMyyyyHHMMSS");
-    this.appService.getReasons(folder).subscribe(res=>{
-      if(res && res['code'] === 200) {
+    this.appService.getReasons(folder).subscribe(res => {
+      if (res && res['code'] === 200) {
         this.counts = res['data'];
       } else {
         this.counts = [];
@@ -151,7 +149,7 @@ export class AppComponent {
 
       this.filterDates("");
     }
-    
+
   }
 
   updateCount(_counts) {
@@ -324,11 +322,11 @@ export class AppComponent {
         yyyy = date.getFullYear();
 
       format = format
+        .replace(/yyyy/g, yyyy)
         .replace(/dd/g, dd)
         .replace(/mm/g, mm)
         .replace(/m/g, m)
         .replace(/MMM/g, MMM)
-        .replace(/yyyy/g, yyyy)
         .replace(/HH/g, HH)
         .replace(/MM/g, MM)
         .replace(/SS/g, SS);

@@ -34,7 +34,9 @@ if (!fs.existsSync('./fileStructure.json')) {
 
 if (!fs.existsSync('./metadata.json')) {
     console.log("Creating metadata.json");
-    fs.writeFileSync('./metadata.json', JSON.stringify({}));
+    fs.writeFileSync('./metadata.json', JSON.stringify({
+        "locked": 0
+    }));
 } else {
     console.log("metadata.json file found");
 }
@@ -387,11 +389,11 @@ function getDate(date, format = "dd.MMM.yyyy HH:MM:SS") {
             yyyy = date.getFullYear();
 
         format = format
+            .replace(/yyyy/g, yyyy)
             .replace(/dd/g, dd)
             .replace(/mm/g, mm)
             .replace(/m/g, m)
             .replace(/MMM/g, MMM)
-            .replace(/yyyy/g, yyyy)
             .replace(/HH/g, HH)
             .replace(/MM/g, MM)
             .replace(/SS/g, SS);

@@ -53,7 +53,7 @@ def checkWhetherFileIsLocked():
         with open(_data) as json_file:
             _meta = json.load(json_file)
             json_file.close()
-        return _meta["locked"]
+        return _meta.get('locked', 0)
     else:
         return 1
 

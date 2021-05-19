@@ -297,6 +297,12 @@ if args.dirname and args.docker_image:
                             list_ids.append(artifact.id)
                         if container in list_ids:
                             if docker_client.containers.get(container).status == 'exited':
+                                # pass number of time retrigger should happen as an argument
+                                # failedScripts as array - push failed job into the list by checking the job status in combined.json
+                                # ask asif when we should I trigger failed jobs
+                                # Make "run container" function as generic function
+                                # Maintain results of retriggered jobs in same folder, which is created earlier
+                                # Delete failed specs in results folder before retriggering
                                 prepare_results_report(container)
                                 left_containers = left_containers - 1
                                 build_metadata(
