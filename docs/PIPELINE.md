@@ -167,7 +167,6 @@ stage('Script execution'){
     }
     
     stage("Remove Prev build") {
-        
           sh '''#!/bin/sh
                 BUILD_TO_KEEP=15
                 cd "DockerForE2ETests"
