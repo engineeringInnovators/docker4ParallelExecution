@@ -73,6 +73,8 @@ templ_script = 'tplstart.sh'
 # Selected test file to replace in tplstart.sh with actual test file
 selected_test = '/tmp/test/config.js'
 
+to_run = 3
+
 ##### Declaring all functions needed ########
 
 
@@ -157,30 +159,36 @@ def prepare_results_report(container):
         datetime.now().strftime("%H:%M:%S"), container_name))
     container_volume = os.path.join(volumes_dir, container_name)
     logs = container_object.logs()
-    for log in logs:
-        print("-----------------------------------------------------")
-        print(logs[log])
-        print("-----------------------------------------------------")
+    spec_failed = False
     if re.search("] E/launcher - Process exited with error code", str(logs)):
         print("error found")
-    container_object.remove(v=False)
+        spec_failed = True
+    if to_run == 0 and not spec_failed:
+        container_object.remove(v=False)
+    else:
+        to_run = to_run - 1
+        container_object.exec_run("/bin/bash /vyper/start.sh")
     container_name = container_name[:-3]
     result_folder = os.path.join(container_volume, 'results')
     # print("result_folder: " + result_folder)
     if os.path.isdir(result_folder):
         new_results_name = os.path.join(main_folder_path, container_name)
         print("new_results_name: " + new_results_name)
-        shutil.move(result_folder, new_results_name)
-        # Change the files and folders permission for security purposes
-        os.chown(new_results_name, 1000, 1000)
-        os.chmod(new_results_name, 0o755)
-        for root, dirs, files in os.walk(new_results_name):
-            for dir in [os.path.join(root, d) for d in dirs]:
-                os.chown(dir, 1000, 1000)
-                os.chmod(dir, 0o755)
-            for file in [os.path.join(root, f) for f in files]:
-                os.chown(file, 1000, 1000)
-                os.chmod(file, 0o644)
+        if spec_failed:
+            print("remove the results")
+        else:
+            print("Moving results folder into destination results folder") 
+            shutil.move(result_folder, new_results_name)
+            # Change the files and folders permission for security purposes
+            os.chown(new_results_name, 1000, 1000)
+            os.chmod(new_results_name, 0o755)
+            for root, dirs, files in os.walk(new_results_name):
+                for dir in [os.path.join(root, d) for d in dirs]:
+                    os.chown(dir, 1000, 1000)
+                    os.chmod(dir, 0o755)
+                for file in [os.path.join(root, f) for f in files]:
+                    os.chown(file, 1000, 1000)
+                    os.chmod(file, 0o644)
     else:
         list_containers_failed.append(container_name)
         print("--------------------------------------------------------")
@@ -287,7 +295,7 @@ if args.dirname and args.docker_image:
                 shutil.copytree(work_dir, relative_workdir)
                 build_start_script(filepath, client_base_url)
                 docker_client.containers.run(vyper_image, volumes={container_volume: {
-                                             'bind': '/vyper', 'mode': 'rw'}}, detach=True, name=filename, command="/bin/bash /vyper/start.sh  ")
+                                             'bind': '/vyper', 'mode': 'rw'}}, detach=True, name=filename, command="/bin/bash /vyper/start.sh")
                 print('{} |  {} : is created'.format(datetime.now().strftime(
                     "%H:%M:%S"), docker_client.containers.get(filename).name))
                 list_containers.append(
