@@ -157,8 +157,12 @@ def prepare_results_report(container):
         datetime.now().strftime("%H:%M:%S"), container_name))
     container_volume = os.path.join(volumes_dir, container_name)
     logs = container_object.logs()
-    if re.search("] E/launcher - Process exited with error code", logs):
-        print(logs)
+    for log in logs:
+        print("-----------------------------------------------------")
+        print(log)
+        print("-----------------------------------------------------")
+    if re.search("] E/launcher - Process exited with error code", str(logs)):
+        print("error found")
     container_object.remove(v=False)
     container_name = container_name[:-3]
     result_folder = os.path.join(container_volume, 'results')
