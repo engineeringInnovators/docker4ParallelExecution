@@ -190,7 +190,7 @@ def prepare_results_report(container):
         print("--------------------------------------------------------")
         print("Script could have syntax error: " + result_folder)
         print("--------------------------------------------------------")
-    if args.to_run == 0 and not spec_failed:
+    if args.to_run == 0 or not spec_failed:
         print("Spec passed or exhausted max re-running - "+ container_object.name)
         container_object.remove(v=False)
     else:
