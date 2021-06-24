@@ -167,7 +167,7 @@ def prepare_results_report(container):
         container_object.remove(v=False)
     else:
         args.to_run = args.to_run - 1
-        print("Rerunning the container " + (3 - args.to_run))
+        print("Rerunning the container " + str(3 - args.to_run))
         container_object.restart()
     container_name = container_name[:-3]
     result_folder = os.path.join(container_volume, 'results')
