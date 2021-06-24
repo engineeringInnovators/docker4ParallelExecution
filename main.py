@@ -167,7 +167,7 @@ def prepare_results_report(container):
         container_object.remove(v=False)
     else:
         args.to_run = args.to_run - 1
-        container_object.exec_run("/bin/bash /vyper/start.sh")
+        container_object.restart()
     container_name = container_name[:-3]
     result_folder = os.path.join(container_volume, 'results')
     # print("result_folder: " + result_folder)
