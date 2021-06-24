@@ -159,7 +159,7 @@ def prepare_results_report(container):
     logs = container_object.logs()
     for log in logs:
         print("-----------------------------------------------------")
-        print(log)
+        print(logs[log])
         print("-----------------------------------------------------")
     if re.search("] E/launcher - Process exited with error code", str(logs)):
         print("error found")
@@ -184,7 +184,7 @@ def prepare_results_report(container):
     else:
         list_containers_failed.append(container_name)
         print("--------------------------------------------------------")
-        print("Not a directory: " + result_folder)
+        print("Script could have syntax error: " + result_folder)
         print("--------------------------------------------------------")
 
 
