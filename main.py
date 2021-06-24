@@ -163,12 +163,6 @@ def prepare_results_report(container):
     if re.search("] E/launcher - Process exited with error code", str(logs)):
         print("error found")
         spec_failed = True
-    if args.to_run == 0 and not spec_failed:
-        container_object.remove(v=False)
-    else:
-        args.to_run = args.to_run - 1
-        print("Rerunning the container " + str(3 - args.to_run))
-        container_object.restart()
     container_name = container_name[:-3]
     result_folder = os.path.join(container_volume, 'results')
     # print("result_folder: " + result_folder)
@@ -177,6 +171,7 @@ def prepare_results_report(container):
         print("new_results_name: " + new_results_name)
         if spec_failed:
             print("remove the results")
+            shutil.rmtree(result_folder)
         else:
             print("Moving results folder into destination results folder") 
             shutil.move(result_folder, new_results_name)
@@ -195,6 +190,15 @@ def prepare_results_report(container):
         print("--------------------------------------------------------")
         print("Script could have syntax error: " + result_folder)
         print("--------------------------------------------------------")
+    if args.to_run == 0 and not spec_failed:
+        print("Spec passed or exhausted max re-running - "+ container_object.name)
+        container_object.remove(v=False)
+    else:
+        args.to_run = args.to_run - 1
+        print("Rerunning the container " + str(3 - args.to_run))
+        container_object.restart()
+        print("Restrated the container for : "+container_object.name)
+    
     return spec_failed
 
 
@@ -268,6 +272,7 @@ if args.dirname and args.docker_image:
     docker_client.images.build(path=root_dir, tag=args.docker_image)
     client_base_url = get_config_file(client_base_url)
     tests_number = get_testfiles_number()
+    spec_failed = False
     print('{} |  There will be {} containers to be created'.format(
         datetime.now().strftime("%H:%M:%S"), str(tests_number)))
     print('The results will be stored at {}'.format(main_folder_path))
@@ -321,6 +326,7 @@ if args.dirname and args.docker_image:
                                 # Maintain results of retriggered jobs in same folder, which is created earlier
                                 # Delete failed specs in results folder before retriggering
                                 spec_failed = prepare_results_report(container)
+                                print("Did spec passed? " + str(spec_failed))
                                 if not spec_failed:
                                     left_containers = left_containers - 1
                                     build_metadata(
@@ -338,6 +344,7 @@ if args.dirname and args.docker_image:
                             if container in list_ids:
                                 if docker_client.containers.get(container).status == 'exited':
                                     spec_failed = prepare_results_report(container)
+                                    print("Did spec passed? " + str(spec_failed))
                                     if not spec_failed:
                                         left_containers = left_containers - 1
                                         build_metadata(
