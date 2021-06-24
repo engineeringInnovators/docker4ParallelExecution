@@ -36,6 +36,7 @@ if args.folder_to_read:
 else:
     folder_to_read = ""
 
+args.to_run = 3
 # Assigning baseurl from arg if passed. Or default baseurl will be assigned in get_config_file() funtion
 client_base_url = ""
 url_regex = re.compile(
@@ -73,7 +74,6 @@ templ_script = 'tplstart.sh'
 # Selected test file to replace in tplstart.sh with actual test file
 selected_test = '/tmp/test/config.js'
 
-to_run = 3
 
 ##### Declaring all functions needed ########
 
@@ -163,10 +163,10 @@ def prepare_results_report(container):
     if re.search("] E/launcher - Process exited with error code", str(logs)):
         print("error found")
         spec_failed = True
-    if to_run == 0 and not spec_failed:
+    if args.to_run == 0 and not spec_failed:
         container_object.remove(v=False)
     else:
-        to_run = to_run - 1
+        args.to_run = args.to_run - 1
         container_object.exec_run("/bin/bash /vyper/start.sh")
     container_name = container_name[:-3]
     result_folder = os.path.join(container_volume, 'results')
