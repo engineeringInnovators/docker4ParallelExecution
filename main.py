@@ -195,6 +195,7 @@ def prepare_results_report(container):
         print("--------------------------------------------------------")
         print("Script could have syntax error: " + result_folder)
         print("--------------------------------------------------------")
+    return spec_failed
 
 
 def build_metadata(total, starttime, endtime, inprogress, client_base_url):
@@ -319,10 +320,11 @@ if args.dirname and args.docker_image:
                                 # Make "run container" function as generic function
                                 # Maintain results of retriggered jobs in same folder, which is created earlier
                                 # Delete failed specs in results folder before retriggering
-                                prepare_results_report(container)
-                                left_containers = left_containers - 1
-                                build_metadata(
-                                    tests_number, job_starttime, job_endtime, left_containers, client_base_url)
+                                spec_failed = prepare_results_report(container)
+                                if not spec_failed:
+                                    left_containers = left_containers - 1
+                                    build_metadata(
+                                        tests_number, job_starttime, job_endtime, left_containers, client_base_url)
                 elif len(list_containers) == tests_number:
                     print('{} |  All containers are created! Waiting for the running ones'.format(
                         datetime.now().strftime("%H:%M:%S")))
@@ -335,10 +337,11 @@ if args.dirname and args.docker_image:
                                 list_ids.append(artifact.id)
                             if container in list_ids:
                                 if docker_client.containers.get(container).status == 'exited':
-                                    prepare_results_report(container)
-                                    left_containers = left_containers - 1
-                                    build_metadata(
-                                        tests_number, job_starttime, job_endtime, left_containers, client_base_url)
+                                    spec_failed = prepare_results_report(container)
+                                    if not spec_failed:
+                                        left_containers = left_containers - 1
+                                        build_metadata(
+                                            tests_number, job_starttime, job_endtime, left_containers, client_base_url)
                     if left_containers == 0:
                         job_endtime = datetime.now()
                         build_metadata(tests_number, job_starttime,
