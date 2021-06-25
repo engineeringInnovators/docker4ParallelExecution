@@ -175,7 +175,7 @@ def prepare_results_report(container):
     container_name = container_name[:-3]
     result_folder = os.path.join(container_volume, 'results')
     # print("result_folder: " + result_folder)
-    print("Container re-reun remaining: " +container_rerun[container])
+    print("Container re-reun remaining: " +str(container_rerun[container]))
     if os.path.isdir(result_folder):
         new_results_name = os.path.join(main_folder_path, container_name)
         print("new_results_name: " + new_results_name)
