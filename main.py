@@ -194,6 +194,7 @@ def prepare_results_report(container):
     if args.to_run == 0 or not spec_failed:
         print("Spec passed or exhausted max re-running - " + container_object.name)
         container_object.remove(v=False)
+        spec_failed = False
     else:
         args.to_run = args.to_run - 1
         print("Rerunning the container " + str(3 - args.to_run))
