@@ -38,8 +38,11 @@ if args.folder_to_read:
 else:
     folder_to_read = ""
 
-if not args.to_re_run:
+if args.to_re_run:
+    args.to_re_run = int(args.to_re_run)
+else:
     args.to_re_run = 3
+
 # Assigning baseurl from arg if passed. Or default baseurl will be assigned in get_config_file() funtion
 client_base_url = ""
 url_regex = re.compile(
