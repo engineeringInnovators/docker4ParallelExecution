@@ -169,7 +169,7 @@ def prepare_results_report(container):
     if os.path.isdir(result_folder):
         new_results_name = os.path.join(main_folder_path, container_name)
         print("new_results_name: " + new_results_name)
-        if spec_failed:
+        if spec_failed and args.to_run != 0:
             print("remove the results")
             shutil.rmtree(result_folder)
         else:
