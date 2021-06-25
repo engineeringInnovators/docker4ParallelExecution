@@ -21,7 +21,7 @@ parser.add_argument("-f", "--folder", default="", nargs="?", const="", dest="fol
                     required=False, help="folder from where to read")
 parser.add_argument("-n", "--number", default=50, dest="containers_number",
                     help="The maximum number of containers that will be running simultaneously. 5 is the default value. 0 for unlimited number ")
-parser.add_argument("-rerun", "--number", default=3, dest="to_re_run",
+parser.add_argument("-r", "--rerun", default=3, dest="to_re_run",
                     help="The maximum number of time containers should re-run")
 # parser.add_argument("-f", "--string", dest="targeted_server", help= "")
 args = parser.parse_args()
