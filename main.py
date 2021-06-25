@@ -21,6 +21,8 @@ parser.add_argument("-f", "--folder", default="", nargs="?", const="", dest="fol
                     required=False, help="folder from where to read")
 parser.add_argument("-n", "--number", default=50, dest="containers_number",
                     help="The maximum number of containers that will be running simultaneously. 5 is the default value. 0 for unlimited number ")
+parser.add_argument("-r", "--number", default=3, dest="to_re_run",
+                    help="The maximum number of time containers should re-run")
 # parser.add_argument("-f", "--string", dest="targeted_server", help= "")
 args = parser.parse_args()
 ##### Initiating the global variables #######
@@ -36,7 +38,8 @@ if args.folder_to_read:
 else:
     folder_to_read = ""
 
-args.to_run = 3
+if not args.to_re_run:
+    args.to_re_run = 3
 # Assigning baseurl from arg if passed. Or default baseurl will be assigned in get_config_file() funtion
 client_base_url = ""
 url_regex = re.compile(
@@ -55,6 +58,7 @@ print("client_base_url " + client_base_url)
 
 list_containers = []
 list_containers_failed = []
+container_rerun = {}
 job_endtime = 'Job still ongoing'
 # Commented below line for testing
 # final_destination = '/home/ccloud/reports/server/results/'
@@ -166,10 +170,11 @@ def prepare_results_report(container):
     container_name = container_name[:-3]
     result_folder = os.path.join(container_volume, 'results')
     # print("result_folder: " + result_folder)
+    print("Container re-reun remaining: " +container_rerun[container])
     if os.path.isdir(result_folder):
         new_results_name = os.path.join(main_folder_path, container_name)
         print("new_results_name: " + new_results_name)
-        if spec_failed and args.to_run != 0:
+        if spec_failed and container_rerun[container] != 0:
             print("remove the results")
             shutil.rmtree(result_folder)
         else:
@@ -190,14 +195,14 @@ def prepare_results_report(container):
         print("--------------------------------------------------------")
         print("Script could have syntax error: " + result_folder)
         print("--------------------------------------------------------")
-    
-    if args.to_run == 0 or not spec_failed:
+
+    if container_rerun[container] == 0 or not spec_failed:
         print("Spec passed or exhausted max re-running - " + container_object.name)
         container_object.remove(v=False)
         spec_failed = False
     else:
-        args.to_run = args.to_run - 1
-        print("Rerunning the container " + str(3 - args.to_run))
+        container_rerun[container] = container_rerun[container] - 1
+        print("Rerunning the container " + str(args.to_re_run - container_rerun[container]))
         container_object.restart()
         print("Restrated the container for : "+container_object.name)
 
@@ -309,6 +314,9 @@ if args.dirname and args.docker_image:
                     "%H:%M:%S"), docker_client.containers.get(filename).name))
                 list_containers.append(
                     docker_client.containers.get(str(filename)).id)
+                container_rerun[docker_client.containers.get(
+                    str(filename)).id] = args.to_re_run
+                print(container_rerun)
                 # Get the first container creation time
                 if len(list_containers) == 1:
                     job_starttime = datetime.now()
