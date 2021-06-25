@@ -21,10 +21,11 @@ parser.add_argument("-f", "--folder", default="", nargs="?", const="", dest="fol
                     required=False, help="folder from where to read")
 parser.add_argument("-n", "--number", default=50, dest="containers_number",
                     help="The maximum number of containers that will be running simultaneously. 5 is the default value. 0 for unlimited number ")
-parser.add_argument("-r", "--number", default=3, dest="to_re_run",
+parser.add_argument("-rerun", "--number", default=3, dest="to_re_run",
                     help="The maximum number of time containers should re-run")
 # parser.add_argument("-f", "--string", dest="targeted_server", help= "")
 args = parser.parse_args()
+print(args)
 ##### Initiating the global variables #######
 dateTimeObj = datetime.now()
 if args.containers_number:
@@ -38,6 +39,7 @@ if args.folder_to_read:
 else:
     folder_to_read = ""
 
+print("args.to_re_run : "+ str(args.to_re_run))
 if args.to_re_run:
     args.to_re_run = int(args.to_re_run)
 else:
