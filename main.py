@@ -319,8 +319,8 @@ if args.dirname and args.docker_image:
                     "%H:%M:%S"), docker_client.containers.get(filename).name))
                 list_containers.append(
                     docker_client.containers.get(str(filename)).id)
-                container_rerun[docker_client.containers.get(
-                    str(filename)).id] = args.to_re_run
+                if docker_client.containers.get(str(filename)).id not in container_rerun:
+                    container_rerun[docker_client.containers.get(str(filename)).id] = args.to_re_run
                 print(container_rerun)
                 # Get the first container creation time
                 if len(list_containers) == 1:
