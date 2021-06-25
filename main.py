@@ -25,7 +25,7 @@ parser.add_argument("-r", "--rerun", default=1, nargs="?", const="", dest="to_re
                     help="The maximum number of time containers should re-run")
 # parser.add_argument("-f", "--string", dest="targeted_server", help= "")
 args = parser.parse_args()
-print(args)
+# print(args)
 ##### Initiating the global variables #######
 dateTimeObj = datetime.now()
 if args.containers_number:
@@ -39,11 +39,11 @@ if args.folder_to_read:
 else:
     folder_to_read = ""
 
-print("args.to_re_run : "+ str(args.to_re_run))
+print("args.to_re_run : " + str(args.to_re_run))
 if args.to_re_run:
     args.to_re_run = int(args.to_re_run)
 else:
-    args.to_re_run = 1
+    args.to_re_run = 0
 
 # Assigning baseurl from arg if passed. Or default baseurl will be assigned in get_config_file() funtion
 client_base_url = ""
@@ -170,12 +170,12 @@ def prepare_results_report(container):
     logs = container_object.logs()
     spec_failed = False
     if re.search("] E/launcher - Process exited with error code", str(logs)):
-        print("error found")
+        print("Vyper script " + container_name + " failed")
         spec_failed = True
     container_name = container_name[:-3]
     result_folder = os.path.join(container_volume, 'results')
     # print("result_folder: " + result_folder)
-    print("Container re-reun remaining: " +str(container_rerun[container]))
+    # print("Container re-reun remaining: " +str(container_rerun[container]))
     if os.path.isdir(result_folder):
         new_results_name = os.path.join(main_folder_path, container_name)
         print("new_results_name: " + new_results_name)
@@ -202,15 +202,14 @@ def prepare_results_report(container):
         print("--------------------------------------------------------")
 
     if container_rerun[container] == 0 or not spec_failed:
-        print("Spec passed or exhausted max re-running - " + container_object.name)
         container_object.remove(v=False)
+        if spec_failed and container_rerun[container] != args.to_re_run:
+            print("Spec "+container_object.name +" failed in first run and passed in '" + str(args.to_re_run - container_rerun[container] +1) + "' run")
         spec_failed = False
     else:
         container_rerun[container] = container_rerun[container] - 1
-        print("Rerunning the container " + str(args.to_re_run - container_rerun[container]))
+        print("Rerunning the container "+ container_object.name+" for " +str(args.to_re_run - container_rerun[container] + 1) + " time")
         container_object.restart()
-        print("Restrated the container for : "+container_object.name)
-
     return spec_failed
 
 
@@ -300,13 +299,12 @@ if args.dirname and args.docker_image:
                     time.sleep(5)
                     print('{} |  max permitted number of running container reached'.format(
                         datetime.now().strftime("%H:%M:%S")))
-                    print('{} |  waiting for running containers'.format(
+                    print('{} |  waiting for running containers to finish'.format(
                         datetime.now().strftime("%H:%M:%S")))
                 # Create a volume for every container and put all needed files in it
                 container_volume = os.path.join(volumes_dir, filename)
                 os.mkdir(container_volume)
                 run_script = os.path.join(container_volume, 'start.sh')
-                print("run_script path " + run_script)
                 source_config = os.path.join(root_dir, 'config.js')
                 dest_config = os.path.join(container_volume, 'config.js')
                 shutil.copy(source_config, dest_config)
@@ -320,8 +318,8 @@ if args.dirname and args.docker_image:
                 list_containers.append(
                     docker_client.containers.get(str(filename)).id)
                 if docker_client.containers.get(str(filename)).id not in container_rerun:
-                    container_rerun[docker_client.containers.get(str(filename)).id] = args.to_re_run
-                print(container_rerun)
+                    container_rerun[docker_client.containers.get(
+                        str(filename)).id] = args.to_re_run
                 # Get the first container creation time
                 if len(list_containers) == 1:
                     job_starttime = datetime.now()
@@ -341,7 +339,6 @@ if args.dirname and args.docker_image:
                                 # Maintain results of retriggered jobs in same folder, which is created earlier
                                 # Delete failed specs in results folder before retriggering
                                 spec_failed = prepare_results_report(container)
-                                print("Did spec passed? " + str(spec_failed))
                                 if not spec_failed:
                                     left_containers = left_containers - 1
                                     build_metadata(
@@ -360,8 +357,6 @@ if args.dirname and args.docker_image:
                                 if docker_client.containers.get(container).status == 'exited':
                                     spec_failed = prepare_results_report(
                                         container)
-                                    print("Did spec passed? " +
-                                          str(spec_failed))
                                     if not spec_failed:
                                         left_containers = left_containers - 1
                                         build_metadata(
