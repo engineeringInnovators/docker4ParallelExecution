@@ -25,6 +25,9 @@ parser.add_argument("-n", "--number", default=50, dest="containers_number",
 args = parser.parse_args()
 ##### Initiating the global variables #######
 dateTimeObj = datetime.now()
+
+args.dirname = "vyperScripts"
+args.docker_image  = "vyper:latest"
 if args.containers_number:
     max_containers_up = int(args.containers_number)
 else:
@@ -115,6 +118,7 @@ def get_testfiles_number():
     '''
     tests_number = 0
     for subdir, dirs, files in os.walk(folder_to_read):
+        print(len(files))
         for file in files:
             filepath = os.path.join(subdir, file)
             # filename = file
@@ -129,7 +133,7 @@ def get_testfiles_number():
 
 def build_start_script(filepath, client_base_url):
     '''
-    Update start.sh file to call the selected test, baseUrl. (Params can also passed in same function)
+    Update start.sh file to call the selected test
     '''
     with open(templ_script, "r") as file:
         text = file.readlines()
@@ -173,32 +177,32 @@ def prepare_results_report(container):
             print("remove the results")
             shutil.rmtree(result_folder)
         else:
-            print("Moving results folder into destination results folder")
+            print("Moving results folder into destination results folder") 
             shutil.move(result_folder, new_results_name)
             # Change the files and folders permission for security purposes
-            os.chown(new_results_name, 1000, 1000)
+            # os.chown(new_results_name, 1000, 1000)
             os.chmod(new_results_name, 0o755)
             for root, dirs, files in os.walk(new_results_name):
                 for dir in [os.path.join(root, d) for d in dirs]:
-                    os.chown(dir, 1000, 1000)
+                    # os.chown(dir, 1000, 1000)
                     os.chmod(dir, 0o755)
                 for file in [os.path.join(root, f) for f in files]:
-                    os.chown(file, 1000, 1000)
+                    # os.chown(file, 1000, 1000)
                     os.chmod(file, 0o644)
     else:
         list_containers_failed.append(container_name)
         print("--------------------------------------------------------")
         print("Script could have syntax error: " + result_folder)
         print("--------------------------------------------------------")
-    print(str(args.to_run == 0 or not spec_failed))
     if args.to_run == 0 or not spec_failed:
-        print("Spec passed or exhausted max re-running - " + container_object.name)
+        print("Spec passed or exhausted max re-running - "+ container_object.name)
         container_object.remove(v=False)
     else:
         args.to_run = args.to_run - 1
         print("Rerunning the container " + str(3 - args.to_run))
         container_object.restart()
         print("Restrated the container for : "+container_object.name)
+    
     return spec_failed
 
 
@@ -233,7 +237,7 @@ def build_metadata(total, starttime, endtime, inprogress, client_base_url):
         data = new_data
     with open(metadata_file, 'w') as f:
         json.dump(data, f, indent=4)
-    os.chown(metadata_file, 1000, 1000)
+    # os.chown(metadata_file, 1000, 1000)
     os.chmod(metadata_file, 0o644)
 
 
@@ -248,7 +252,7 @@ def update_latest_running_file():
         data = {"latest": main_folder}
     with open(metadata, 'w') as f:
         json.dump(data, f, indent=4)
-    os.chown(metadata, 1000, 1000)
+    # os.chown(metadata, 1000, 1000)
     os.chmod(metadata, 0o644)
 
 
@@ -264,8 +268,10 @@ if args.dirname and args.docker_image:
     else:
         print("Successfully created the directory %s " % main_folder_path)
     # print(main_folder_path + " Folder created")
-    os.chown(main_folder_path, 1000, 1000)
+    # os.chown(main_folder_path, 1000, 1000)
     os.chmod(main_folder_path, 0o644)
+    if os.path.isdir(volumes_dir):
+        shutil.rmtree(volumes_dir)
     os.mkdir(volumes_dir)
     # vyper_image = docker_client.images.pull(args.docker_image,tag='latest')
     vyper_image = args.docker_image
@@ -294,7 +300,7 @@ if args.dirname and args.docker_image:
                 container_volume = os.path.join(volumes_dir, filename)
                 os.mkdir(container_volume)
                 run_script = os.path.join(container_volume, 'start.sh')
-                print("run_script path " + run_script)
+                # print("run_script path " +run_script)
                 source_config = os.path.join(root_dir, 'config.js')
                 dest_config = os.path.join(container_volume, 'config.js')
                 shutil.copy(source_config, dest_config)
@@ -343,10 +349,8 @@ if args.dirname and args.docker_image:
                                 list_ids.append(artifact.id)
                             if container in list_ids:
                                 if docker_client.containers.get(container).status == 'exited':
-                                    spec_failed = prepare_results_report(
-                                        container)
-                                    print("Did spec passed? " +
-                                          str(spec_failed))
+                                    spec_failed = prepare_results_report(container)
+                                    print("Did spec passed? " + str(spec_failed))
                                     if not spec_failed:
                                         left_containers = left_containers - 1
                                         build_metadata(
