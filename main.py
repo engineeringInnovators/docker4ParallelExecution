@@ -163,32 +163,43 @@ def prepare_results_report(container):
     if re.search("] E/launcher - Process exited with error code", str(logs)):
         print("error found")
         spec_failed = True
-        args.to_run = args.to_run - 1
-    container_object.remove(v=False)
     container_name = container_name[:-3]
     result_folder = os.path.join(container_volume, 'results')
     # print("result_folder: " + result_folder)
     if os.path.isdir(result_folder):
         new_results_name = os.path.join(main_folder_path, container_name)
         print("new_results_name: " + new_results_name)
-        print("Moving results folder into destination results folder")
-        shutil.move(result_folder, new_results_name)
-        # Change the files and folders permission for security purposes
-        os.chown(new_results_name, 1000, 1000)
-        os.chmod(new_results_name, 0o755)
-        for root, dirs, files in os.walk(new_results_name):
-            for dir in [os.path.join(root, d) for d in dirs]:
-                os.chown(dir, 1000, 1000)
-                os.chmod(dir, 0o755)
-            for file in [os.path.join(root, f) for f in files]:
-                os.chown(file, 1000, 1000)
-                os.chmod(file, 0o644)
+        if spec_failed:
+            print("remove the results")
+            shutil.rmtree(result_folder)
+        else:
+            print("Moving results folder into destination results folder")
+            shutil.move(result_folder, new_results_name)
+            # Change the files and folders permission for security purposes
+            os.chown(new_results_name, 1000, 1000)
+            os.chmod(new_results_name, 0o755)
+            for root, dirs, files in os.walk(new_results_name):
+                for dir in [os.path.join(root, d) for d in dirs]:
+                    os.chown(dir, 1000, 1000)
+                    os.chmod(dir, 0o755)
+                for file in [os.path.join(root, f) for f in files]:
+                    os.chown(file, 1000, 1000)
+                    os.chmod(file, 0o644)
     else:
         list_containers_failed.append(container_name)
         print("--------------------------------------------------------")
         print("Script could have syntax error: " + result_folder)
         print("--------------------------------------------------------")
-    print(str(args.to_run == 0 or not spec_failed))
+    
+    if args.to_run == 0 or not spec_failed:
+        print("Spec passed or exhausted max re-running - " + container_object.name)
+        container_object.remove(v=False)
+    else:
+        args.to_run = args.to_run - 1
+        print("Rerunning the container " + str(3 - args.to_run))
+        container_object.restart()
+        print("Restrated the container for : "+container_object.name)
+
     return spec_failed
 
 
@@ -317,15 +328,8 @@ if args.dirname and args.docker_image:
                                 # Delete failed specs in results folder before retriggering
                                 spec_failed = prepare_results_report(container)
                                 print("Did spec passed? " + str(spec_failed))
-                                left_containers = left_containers - 1
-                                if spec_failed:
-                                    docker_client.containers.run(vyper_image, volumes={container_volume: {
-                                            'bind': '/vyper', 'mode': 'rw'}}, detach=True, name=filename, command="/bin/bash /vyper/start.sh")
-                                    print('{} |  {} : is created'.format(datetime.now().strftime(
-                                        "%H:%M:%S"), docker_client.containers.get(filename).name))
-                                    list_containers.append(
-                                        docker_client.containers.get(str(filename)).id)
-                                else:
+                                if not spec_failed:
+                                    left_containers = left_containers - 1
                                     build_metadata(
                                         tests_number, job_starttime, job_endtime, left_containers, client_base_url)
                 elif len(list_containers) == tests_number:
@@ -344,17 +348,10 @@ if args.dirname and args.docker_image:
                                         container)
                                     print("Did spec passed? " +
                                           str(spec_failed))
-                                    left_containers = left_containers - 1
-                                    if spec_failed:
-                                        docker_client.containers.run(vyper_image, volumes={container_volume: {
-                                                'bind': '/vyper', 'mode': 'rw'}}, detach=True, name=filename, command="/bin/bash /vyper/start.sh")
-                                        print('{} |  {} : is created'.format(datetime.now().strftime(
-                                            "%H:%M:%S"), docker_client.containers.get(filename).name))
-                                        list_containers.append(
-                                            docker_client.containers.get(str(filename)).id)
-                                    else:
-                                        build_metadata(tests_number, job_starttime, job_endtime, left_containers, client_base_url)
-                                        
+                                    if not spec_failed:
+                                        left_containers = left_containers - 1
+                                        build_metadata(
+                                            tests_number, job_starttime, job_endtime, left_containers, client_base_url)
                     if left_containers == 0:
                         job_endtime = datetime.now()
                         build_metadata(tests_number, job_starttime,
