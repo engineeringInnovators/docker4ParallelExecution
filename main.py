@@ -39,11 +39,11 @@ if args.folder_to_read:
 else:
     folder_to_read = ""
 
-print("args.to_re_run : " + str(args.to_re_run))
 if args.to_re_run:
     args.to_re_run = int(args.to_re_run)
 else:
     args.to_re_run = 0
+print("Number of times scripts re-run in case of failure : " + str(args.to_re_run))
 
 # Assigning baseurl from arg if passed. Or default baseurl will be assigned in get_config_file() funtion
 client_base_url = ""
@@ -64,6 +64,7 @@ print("client_base_url " + client_base_url)
 list_containers = []
 list_containers_failed = []
 container_rerun = {}
+retriggered_scripts = []
 job_endtime = 'Job still ongoing'
 # Commented below line for testing
 # final_destination = '/home/ccloud/reports/server/results/'
@@ -210,6 +211,7 @@ def prepare_results_report(container):
         container_rerun[container] = container_rerun[container] - 1
         print("Rerunning the container "+ container_object.name+" for " +str(args.to_re_run - container_rerun[container] + 1) + " time")
         container_object.restart()
+        retriggered_scripts.append(container_object.name)
     return spec_failed
 
 
@@ -372,5 +374,9 @@ if args.dirname and args.docker_image:
         print("Below are the list of containers which did not had results folder")
         for container in list_containers_failed:
             print(container)
+    if(len(retriggered_scripts) > 0):
+        print("Below are the list of the scripts which re triggered " + str(args.to_re_run) + " number of times")
+        for scripts in retriggered_scripts:
+            print(scripts)
 else:
     print('Arguments Missing')
