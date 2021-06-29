@@ -179,12 +179,10 @@ def prepare_results_report(container):
     # print("Container re-reun remaining: " +str(container_rerun[container]))
     if os.path.isdir(result_folder):
         new_results_name = os.path.join(main_folder_path, container_name)
-        print("new_results_name: " + new_results_name)
         if spec_failed and container_rerun[container] != 0:
-            print("remove the results")
             shutil.rmtree(result_folder)
         else:
-            print("Moving results folder into destination results folder")
+            print("Moving results to: " + new_results_name)
             shutil.move(result_folder, new_results_name)
             # Change the files and folders permission for security purposes
             os.chown(new_results_name, 1000, 1000)
@@ -204,14 +202,15 @@ def prepare_results_report(container):
 
     if container_rerun[container] == 0 or not spec_failed:
         container_object.remove(v=False)
-        if spec_failed and container_rerun[container] != args.to_re_run:
+        if not spec_failed and container_rerun[container] != args.to_re_run:
             print("Spec "+container_object.name +" failed in first run and passed in '" + str(args.to_re_run - container_rerun[container] +1) + "' run")
         spec_failed = False
     else:
         container_rerun[container] = container_rerun[container] - 1
         print("Rerunning the container "+ container_object.name+" for " +str(args.to_re_run - container_rerun[container] + 1) + " time")
         container_object.restart()
-        retriggered_scripts.append(container_object.name)
+        if container_object.name not in retriggered_scripts:
+            retriggered_scripts.append(container_object.name)
     return spec_failed
 
 
